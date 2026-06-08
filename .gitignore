@@ -1,0 +1,11 @@
+# Backups
+*.bak
+Flujo.html.bak
+
+# Shortcuts
+*.lnk
+Escritorio - Acceso directo.lnk
+
+# System / OS files
+Thumbs.db
+.DS_Store
