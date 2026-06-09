@@ -69,7 +69,7 @@ const PROFILES = [
     email: 'renatta.crovetto@walmart.cl',
     name: 'Renatta Crovetto',
     initials: 'RC',
-    role: 'Administrador',
+    role: 'Diseñadora Senior',
     access: 'full',
     avatar: 'Img/Usuarios/Renatta Crovetto.jpeg'
   },
@@ -85,7 +85,7 @@ const PROFILES = [
     email: 'paulina.bello@walmart.cl',
     name: 'Paulina Bello',
     initials: 'PB',
-    role: 'Compradora General',
+    role: 'Diseñadora de Hombre y Mujer',
     access: 'compras',
     avatar: 'Img/Usuarios/Paulina Bello.jpeg'
   },
@@ -3003,7 +3003,7 @@ const NavMasthead = ({ active = '', unread = 3 }) => {
         <span
           className="gm-mast__avatar"
           style={{ background: 'transparent', padding: 0, cursor: 'pointer', overflow: 'hidden', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-          title={`${user ? user.name : 'Renatta Crovetto'} (${user ? user.role : 'Administrador'}) · Hacer clic para cerrar sesión`}
+          title={`${user ? user.name : 'Renatta Crovetto'} (${user ? user.role : 'Diseñadora Senior'}) · Hacer clic para cerrar sesión`}
           onClick={() => {
             setUser(null);
             navigate('login');
