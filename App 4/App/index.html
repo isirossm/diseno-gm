@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diseño GM · Walmart Chile</title>
+  <link rel="icon" type="image/png" href="../../Img/Logo fav.png">
+  <link rel="stylesheet" href="_ds/walmart-design-system-a4d4052c-f342-4f6e-91ce-0b7b19d4cfe9/colors_and_type.css">
+  <link rel="stylesheet" href="lib/platform.css">
+  <link rel="stylesheet" href="lib/gestion.css">
+  <style>
+    #root { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <pre id="errbox" style="white-space:pre-wrap;color:#b00;font:13px monospace;padding:16px;display:none"></pre>
+  <script>
+    window.addEventListener("error", function (ev) {
+      var b = document.getElementById("errbox");
+      if (!b) return;
+      b.style.display = "block";
+      b.textContent += "\n" + (ev.message || "err") + "\n" + (ev.filename || "") + ":" + (ev.lineno || "") + "\n" + (ev.error && ev.error.stack ? ev.error.stack : "");
+    });
+  </script>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+
+  <script src="_ds/walmart-design-system-a4d4052c-f342-4f6e-91ce-0b7b19d4cfe9/_ds_bundle.js"></script>
+
+  <!-- Data + shared UI -->
+  <script src="app/data.js"></script>
+  <script src="app/profiles.js"></script>
+  <script src="app/icons.js"></script>
+  <script src="app/components.js"></script>
+  <script src="app/chrome.js"></script>
+
+  <!-- Pantallas de gestión -->
+  <script src="app/screen_splash.js"></script>
+  <script src="app/screen_login.js"></script>
+  <script src="app/screen_panel.js"></script>
+  <script src="app/screen_moda.js"></script>
+  <script src="app/screen_moda_mujer.js"></script>
+
+  <!-- Herramientas de gestión (extraídas de Renata.html) -->
+  <script src="app/screen_correo.js"></script>
+  <script src="app/screen_calendario.js"></script>
+  <script src="app/screen_documentos.js"></script>
+  <script src="app/screen_historial.js"></script>
+
+  <!-- Pantallas de flujo de producción -->
+  <script src="app/screen_inicio.js"></script>
+  <script src="app/screen_tendencias.js"></script>
+  <script src="app/screen_viaje.js"></script>
+  <script src="app/screen_coleccion.js"></script>
+  <script src="app/screen_muestras.js"></script>
+  <script src="app/screen_fichas.js"></script>
+  <script src="app/screen_contramuestras.js"></script>
+  <script src="app/screen_manuales.js?v=3"></script>
+  <script src="app/screen_negociacion.js"></script>
+  <script src="app/screen_fichas_revisadas.js"></script>
+  <script src="app/screen_cierre.js"></script>
+  <script src="app/screen_validacion.js"></script>
+
+  <!-- Router principal -->
+  <script src="app/app.js"></script>
+
+  <script>
+    ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(window.GMApp));
+  </script>
+</body>
+</html>

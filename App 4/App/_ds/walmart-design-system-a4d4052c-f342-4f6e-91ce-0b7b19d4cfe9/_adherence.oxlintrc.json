@@ -1,0 +1,232 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "ui_kits/walmart-shop/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Bogle))/i]",
+        "message": "Font not provided by the design system. Available: Bogle."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {},
+    "tokens": [
+      "--color-accent",
+      "--color-bg",
+      "--color-bg-subtle",
+      "--color-bg-tinted",
+      "--color-border",
+      "--color-border-strong",
+      "--color-brand",
+      "--color-brand-deep",
+      "--color-error",
+      "--color-fg",
+      "--color-fg-inverse",
+      "--color-fg-muted",
+      "--color-fg-subtle",
+      "--color-link",
+      "--color-link-hover",
+      "--color-success",
+      "--color-surface",
+      "--color-surface-alt",
+      "--font-body",
+      "--font-display",
+      "--font-sans",
+      "--fs-body-lg",
+      "--fs-body-md",
+      "--fs-body-sm",
+      "--fs-caption",
+      "--fs-subtitle-lg",
+      "--fs-subtitle-sm",
+      "--fs-title-2xl",
+      "--fs-title-3xl",
+      "--fs-title-lg",
+      "--fs-title-md",
+      "--fs-title-xl",
+      "--lh-normal",
+      "--lh-relaxed",
+      "--lh-snug",
+      "--lh-tight",
+      "--radius-circle",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-pill",
+      "--radius-sm",
+      "--radius-xs",
+      "--shadow-card",
+      "--shadow-focus",
+      "--shadow-hover",
+      "--shadow-press",
+      "--space-1",
+      "--space-10",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-7",
+      "--space-8",
+      "--space-9",
+      "--stroke-medium",
+      "--stroke-regular",
+      "--stroke-thick",
+      "--stroke-thin",
+      "--wm-bb-brown",
+      "--wm-bb-green-dark",
+      "--wm-bb-green-light",
+      "--wm-bb-red",
+      "--wm-error-100",
+      "--wm-error-500",
+      "--wm-ns-000",
+      "--wm-ns-050",
+      "--wm-ns-100",
+      "--wm-ns-200",
+      "--wm-ns-300",
+      "--wm-ns-400",
+      "--wm-ns-500",
+      "--wm-ns-600",
+      "--wm-ns-700",
+      "--wm-sb-200",
+      "--wm-sb-300",
+      "--wm-sb-400",
+      "--wm-sb-500",
+      "--wm-sb-600",
+      "--wm-spark-300",
+      "--wm-spark-400",
+      "--wm-spark-500",
+      "--wm-success-100",
+      "--wm-success-500"
+    ],
+    "tokenKinds": {
+      "--wm-sb-200": "color",
+      "--wm-sb-300": "color",
+      "--wm-sb-400": "color",
+      "--wm-sb-500": "color",
+      "--wm-sb-600": "color",
+      "--wm-spark-300": "color",
+      "--wm-spark-400": "color",
+      "--wm-spark-500": "color",
+      "--wm-ns-000": "color",
+      "--wm-ns-050": "color",
+      "--wm-ns-100": "color",
+      "--wm-ns-200": "color",
+      "--wm-ns-300": "color",
+      "--wm-ns-400": "color",
+      "--wm-ns-500": "color",
+      "--wm-ns-600": "color",
+      "--wm-ns-700": "color",
+      "--wm-success-500": "color",
+      "--wm-success-100": "color",
+      "--wm-error-500": "color",
+      "--wm-error-100": "color",
+      "--wm-bb-green-light": "color",
+      "--wm-bb-green-dark": "color",
+      "--wm-bb-red": "color",
+      "--wm-bb-brown": "color",
+      "--color-bg": "color",
+      "--color-bg-subtle": "color",
+      "--color-bg-tinted": "color",
+      "--color-surface": "color",
+      "--color-surface-alt": "color",
+      "--color-fg": "color",
+      "--color-fg-muted": "color",
+      "--color-fg-subtle": "color",
+      "--color-fg-inverse": "color",
+      "--color-link": "color",
+      "--color-link-hover": "color",
+      "--color-border": "color",
+      "--color-border-strong": "color",
+      "--color-brand": "color",
+      "--color-brand-deep": "color",
+      "--color-accent": "color",
+      "--color-success": "color",
+      "--color-error": "color",
+      "--font-sans": "font",
+      "--font-body": "font",
+      "--font-display": "font",
+      "--fs-title-3xl": "spacing",
+      "--fs-title-2xl": "spacing",
+      "--fs-title-xl": "spacing",
+      "--fs-title-lg": "spacing",
+      "--fs-title-md": "spacing",
+      "--fs-subtitle-lg": "spacing",
+      "--fs-subtitle-sm": "spacing",
+      "--fs-body-lg": "spacing",
+      "--fs-body-md": "spacing",
+      "--fs-body-sm": "spacing",
+      "--fs-caption": "spacing",
+      "--lh-tight": "other",
+      "--lh-snug": "other",
+      "--lh-normal": "other",
+      "--lh-relaxed": "other",
+      "--radius-xs": "radius",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-pill": "radius",
+      "--radius-circle": "radius",
+      "--stroke-thin": "color",
+      "--stroke-regular": "color",
+      "--stroke-medium": "color",
+      "--stroke-thick": "color",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-7": "spacing",
+      "--space-8": "spacing",
+      "--space-9": "spacing",
+      "--space-10": "spacing",
+      "--shadow-card": "shadow",
+      "--shadow-hover": "shadow",
+      "--shadow-focus": "shadow",
+      "--shadow-press": "shadow"
+    },
+    "fontFamilies": [
+      "Bogle"
+    ]
+  }
+}

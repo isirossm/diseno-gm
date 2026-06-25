@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ficha Técnica — Diseño GM · Walmart Chile</title>
+<link rel="icon" type="image/png" href="../../Img/Logo fav.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ─── Bogle (Walmart house typeface) — integración al sistema de diseño ── */
+@font-face { font-family:"Bogle"; src:url("../fonts/Bogle-Regular.otf") format("opentype"); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:"Bogle"; src:url("../fonts/Bogle-Italic.otf") format("opentype"); font-weight:400; font-style:italic; font-display:swap; }
+@font-face { font-family:"Bogle"; src:url("../fonts/Bogle-Bold.otf") format("opentype"); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:"Bogle"; src:url("../fonts/Bogle-Black.otf") format("opentype"); font-weight:900; font-style:normal; font-display:swap; }
+
+/* ─── GM DESIGN SYSTEM TOKENS ─────────────────────────────── */
+:root {
+  --font-sans: 'Bogle', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Walmart Blue */
+  --wm-sb-400: #0071dc;
+  --wm-sb-500: #004f9a;
+  --wm-sb-600: #004f9a; /* navy #002d58 retirado del sistema */
+  --wm-sb-300: #e6f1fc;
+  --wm-sb-200: #f2f8fd;
+
+  /* Spark Yellow */
+  --wm-spark-400: #ffc220;
+  --wm-spark-500: #f3a800;
+
+  /* Neutral */
+  --wm-ns-600: #030303;
+  --wm-ns-500: #2e2f32;
+  --wm-ns-400: #46474a;
+  --wm-ns-300: #74767c;
+  --wm-ns-200: #c6c7c9;
+  --wm-ns-100: #f1f1f2;
+  --wm-ns-050: #fafafa;
+
+  /* Status */
+  --wm-success-500: #2a8703;
+  --wm-success-100: #e7f5df;
+  --wm-error-500: #de1c24;
+  --wm-error-100: #fde8e9;
+  --wm-warning-500: #f5a800;
+  --wm-warning-100: #fff9e6;
+
+  /* Módulo Fichas Técnicas */
+  --mod-fichas: #73a0cb;
+
+  /* Spacing */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+
+  /* Radius */
+  --radius-xs:    4px;
+  --radius-sm:    6px;
+  --radius-md:    8px;
+  --radius-btn:   10px;
+  --radius-card:  12px;
+  --radius-pill:  100px;
+
+  /* Shadows */
+  --shadow-card:  0 2px 8px rgba(0,0,0,0.08);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.14);
+  --shadow-focus: 0 0 0 3px rgba(0,113,220,0.30);
+}
+
+/* ─── RESET ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--wm-ns-100);
+  min-height: 100vh;
+  font-size: 11px;
+  color: var(--wm-ns-600);
+}
+
+/* ─── MASTHEAD ───────────────────────────────────────────────── */
+.gm-mast {
+  background: var(--wm-sb-400);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  gap: var(--space-sm);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.gm-mast__logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.gm-mast__logo-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+.gm-mast__spark {
+  color: var(--wm-spark-400);
+  font-size: 17px;
+  line-height: 1;
+}
+.gm-mast__sub {
+  color: rgba(255,255,255,.75);
+  font-size: 11px;
+}
+.gm-mast__div {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,.25);
+  margin: 0 var(--space-xs);
+}
+.gm-mast__module {
+  color: rgba(255,255,255,.9);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+.gm-mast__spacer { flex: 1; }
+.gm-mast__actions { display: flex; align-items: center; gap: var(--space-xs); }
+
+.gm-btn {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 16px;
+  transition: background .15s, box-shadow .15s;
+  text-decoration: none;
+  line-height: 1;
+}
+.gm-btn--primary {
+  background: var(--wm-sb-400);
+  color: #fff;
+}
+.gm-btn--primary:hover { background: var(--wm-sb-500); }
+.gm-btn--ghost {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+}
+.gm-btn--ghost:hover { background: rgba(255,255,255,.22); }
+.gm-btn--outline {
+  background: #fff;
+  color: var(--wm-sb-400);
+  border: 1.5px solid var(--wm-sb-400);
+}
+.gm-btn--outline:hover { background: var(--wm-sb-300); }
+.gm-btn--sm { padding: 5px 12px; font-size: 11px; }
+
+/* ─── SUBBAR ─────────────────────────────────────────────────── */
+.gm-bar {
+  background: var(--wm-sb-200);
+  border-bottom: 1px solid var(--wm-sb-300);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  gap: var(--space-xs);
+  font-size: 11px;
+}
+.crumb { color: var(--wm-ns-400); }
+.crumb.is-current { color: var(--wm-sb-400); font-weight: 600; }
+.sep { color: var(--wm-ns-300); }
+.gm-bar__spacer { flex: 1; }
+.gm-bar__dept {
+  background: var(--wm-sb-400);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  letter-spacing: .04em;
+}
+
+/* ─── PAGE SHELL ─────────────────────────────────────────────── */
+.gm-page {
+  padding: var(--space-md);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* ─── TYPE SELECTOR (segmented control) ─────────────────────── */
+.type-selector {
+  display: inline-flex;
+  background: #fff;
+  border: 1.5px solid var(--wm-ns-200);
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--space-sm);
+}
+.type-btn {
+  padding: 6px 18px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-right: 1.5px solid var(--wm-ns-200);
+  color: var(--wm-ns-400);
+  transition: all .15s;
+  letter-spacing: .02em;
+}
+.type-btn:last-child { border-right: none; }
+.type-btn.active {
+  background: var(--wm-sb-400);
+  color: #fff;
+}
+.type-btn:hover:not(.active) { background: var(--wm-sb-200); color: var(--wm-sb-400); }
+
+/* ─── FICHA CARD ─────────────────────────────────────────────── */
+.ficha-wrap {
+  background: #fff;
+  border: 1px solid var(--wm-ns-200);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* ─── HEADER FICHA ───────────────────────────────────────────── */
+.ficha-header {
+  display: flex;
+  align-items: center;
+  background: var(--wm-sb-600);
+  padding: 8px 14px;
+  gap: var(--space-xs);
+}
+.fh-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fh-logo-text { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -.4px; }
+.fh-spark { color: var(--wm-spark-400); font-size: 16px; }
+.fh-sub { color: rgba(255,255,255,.7); font-size: 11px; }
+.fh-divider { width: 1px; height: 18px; background: rgba(255,255,255,.2); margin: 0 6px; }
+.fh-module-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+}
+.fh-module-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.9);
+}
+.fh-spacer { flex: 1; }
+.fh-dept {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.fh-dept-label {
+  font-size: 8px;
+  font-weight: 700;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.fh-dept-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+/* ─── FIELDS GRID ────────────────────────────────────────────── */
+.fields-grid {
+  display: grid;
+  grid-template-columns: 175px 175px 180px 1fr 200px;
+  border-bottom: 1px solid var(--wm-ns-200);
+}
+
+/* field cell — horizontal row layout: LABEL | VALUE */
+.fc {
+  border-right: 1px solid var(--wm-ns-100);
+  border-bottom: 1px solid var(--wm-ns-100);
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  min-height: 26px;
+  align-items: stretch;
+  height: auto;
+}
+.fc:last-child { border-right: none; }
+.fc-label {
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--wm-ns-400);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 0 4px;
+  background: var(--wm-ns-050);
+  border-right: 1px solid var(--wm-ns-100);
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+  flex-shrink: 0;
+  word-break: break-word;
+}
+.fc input, .fc select {
+  border: none;
+  outline: none;
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 3px 5px;
+  background: transparent;
+  color: var(--wm-ns-600);
+  font-family: var(--font-sans);
+  width: 100%;
+  min-height: 26px;
+  height: auto;
+}
+.fc textarea {
+  font-size: 9.5px;
+  padding: 3px 5px;
+  line-height: 1.4;
+}
+.fc input:focus { background: var(--wm-sb-200); }
+.fc textarea {
+  border: none;
+  outline: none;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 6px;
+  background: transparent;
+  color: var(--wm-ns-600);
+  font-family: var(--font-sans);
+  width: 100%;
+  resize: none;
+  line-height: 1.4;
+}
+
+/* Cells that need the full width (no label column) */
+.fc--full {
+  grid-template-columns: 1fr;
+}
+
+/* sidebar column in fields grid */
+.fc-sidebar {
+  border-left: 1.5px solid var(--wm-ns-200);
+  border-right: none;
+  display: grid;
+}
+
+/* ─── COMPOSITION CELL ───────────────────────────────────────── */
+.comp-area {
+  padding: 4px 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-height: 24px;
+  align-items: center;
+  flex: 1;
+}
+
+/* GM chip adapted for fibers */
+.fiber-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 9.5px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+.fiber-chip.nat {
+  background: var(--wm-success-100);
+  color: var(--wm-success-500);
+  border-color: #c3e6b0;
+}
+.fiber-chip.syn {
+  background: var(--wm-sb-200);
+  color: var(--wm-sb-500);
+  border-color: var(--wm-sb-300);
+}
+.fiber-chip .pct {
+  background: rgba(0,0,0,.08);
+  padding: 0 3px;
+  border-radius: 2px;
+  font-size: 8.5px;
+  cursor: pointer;
+}
+.fiber-chip .rm {
+  opacity: .45;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+.fiber-chip .rm:hover { opacity: 1; color: var(--wm-error-500); }
+.comp-add {
+  font-size: 9px;
+  padding: 2px 7px;
+  border: 1.5px dashed var(--wm-ns-200);
+  border-radius: var(--radius-xs);
+  background: none;
+  cursor: pointer;
+  color: var(--wm-ns-300);
+  font-family: var(--font-sans);
+  transition: all .15s;
+}
+.comp-add:hover { border-color: var(--wm-sb-400); color: var(--wm-sb-400); }
+.comp-total {
+  font-size: 8.5px;
+  font-weight: 700;
+  margin-left: 2px;
+}
+.comp-total.ok { color: var(--wm-success-500); }
+.comp-total.err { color: var(--wm-error-500); }
+
+/* ─── CHECKBOXES / RADIOS ────────────────────────────────────── */
+.cb-area {
+  padding: 3px 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+  align-items: center;
+}
+.cb-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--wm-ns-500);
+  font-weight: 500;
+}
+.cb-item input[type=checkbox] {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  accent-color: var(--wm-sb-400);
+  margin: 0;
+}
+.rb-area {
+  padding: 0 6px;
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  height: 100%;
+}
+.rb-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9px;
+  cursor: pointer;
+  color: var(--wm-ns-500);
+  font-weight: 500;
+}
+.rb-item input { accent-color: var(--wm-sb-400); width: 10px; height: 10px; margin: 0; }
+.pkg-area {
+  padding: 3px 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 4px;
+}
+
+/* ─── DROPDOWN PRO ───────────────────────────────────────────── */
+.dp-wrap { position: relative; width: 100%; }
+.dp-btn {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 3px 5px;
+  min-height: 26px;
+  height: auto;
+  background: transparent;
+  color: var(--wm-ns-600);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: normal;
+  word-break: break-word;
+}
+.dp-btn:hover { background: var(--wm-sb-200); }
+.dp-btn .arr { font-size: 8px; color: var(--wm-ns-300); flex-shrink: 0; margin-left: 3px; }
+.dp-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  background: #fff;
+  border: 1.5px solid var(--wm-ns-200);
+  box-shadow: var(--shadow-hover);
+  z-index: 200;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.dp-panel.open { display: block; }
+.dp-search {
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-bottom: 1px solid var(--wm-ns-100);
+  font-size: 10px;
+  outline: none;
+  font-family: var(--font-sans);
+  background: var(--wm-ns-050);
+}
+.dp-grp {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--wm-ns-300);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 5px 8px 2px;
+  background: var(--wm-ns-050);
+}
+.dp-opt {
+  padding: 5px 10px;
+  font-size: 10px;
+  cursor: pointer;
+  color: var(--wm-ns-600);
+  font-family: var(--font-sans);
+}
+.dp-opt:hover { background: var(--wm-sb-200); color: var(--wm-sb-400); }
+.dp-opt .sub { font-size: 8.5px; color: var(--wm-ns-300); margin-left: 5px; }
+.dp-custom {
+  display: flex;
+  border-top: 1px solid var(--wm-ns-100);
+}
+.dp-custom input {
+  flex: 1;
+  padding: 5px 8px;
+  border: none;
+  font-size: 10px;
+  outline: none;
+  font-family: var(--font-sans);
+}
+.dp-custom button {
+  padding: 5px 12px;
+  background: var(--wm-sb-400);
+  color: #fff;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+.dp-custom button:hover { background: var(--wm-sb-500); }
+
+/* ─── ALARM / N-FIELDS ROW ───────────────────────────────────── */
+.nfields-grid {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  border-bottom: 1px solid var(--wm-ns-200);
+}
+.n-inner { display: grid; grid-template-columns: 1fr 1fr; height: 100%; }
+.n-cell {
+  border-right: 1px solid var(--wm-ns-100);
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  min-height: 26px;
+  align-items: stretch;
+}
+.n-cell:last-child { border-right: none; }
+.n-cell-label {
+  font-size: 7.5px;
+  font-weight: 700;
+  color: var(--wm-ns-400);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 0 5px;
+  background: var(--wm-ns-050);
+  border-right: 1px solid var(--wm-ns-100);
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+.n-cell input {
+  border: none;
+  outline: none;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 0 6px;
+  background: transparent;
+  font-family: var(--font-sans);
+  color: var(--wm-ns-600);
+  width: 100%;
+}
+.n-cell input:focus { background: var(--wm-sb-200); }
+.alarm-hanger {
+  border-left: 1.5px solid var(--wm-ns-200);
+  display: flex;
+  flex-direction: column;
+}
+.ah-cell { flex: 1; border-bottom: 1px solid var(--wm-ns-100); }
+.ah-cell:last-child { border-bottom: none; }
+
+/* ─── TECH ROWS ──────────────────────────────────────────────── */
+.tech-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  border-bottom: 1px solid var(--wm-ns-100);
+}
+.tech-label-cell {
+  background: var(--wm-ns-050);
+  border-right: 1px solid var(--wm-ns-100);
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+}
+.tech-label-cell span {
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--wm-ns-400);
+  line-height: 1.4;
+}
+.tech-checks-cell {
+  padding: 5px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+.tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 9px;
+  font-family: var(--font-sans);
+  padding: 2px 7px;
+  border: 1.5px solid var(--wm-ns-200);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  user-select: none;
+  transition: all .12s;
+  color: var(--wm-ns-400);
+}
+.tech-tag input { display: none; }
+.tech-tag:hover { border-color: var(--wm-sb-400); color: var(--wm-sb-400); }
+.tech-tag.checked {
+  background: var(--wm-error-100);
+  border-color: var(--wm-error-500);
+  color: var(--wm-error-500);
+  font-weight: 600;
+}
+
+/* ─── FICHA BODY ─────────────────────────────────────────────── */
+.ficha-body {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+}
+.ficha-main { border-right: 1.5px solid var(--wm-ns-200); }
+
+/* ─── ALERT BANNER ───────────────────────────────────────────── */
+.alert-banner {
+  background: var(--wm-error-500);
+  color: #fff;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.alert-banner-star { color: var(--wm-spark-400); font-size: 13px; }
+.alert-banner input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  flex: 1;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.alert-banner input::placeholder { color: rgba(255,255,255,.45); font-weight: 400; }
+
+/* ─── DESIGN AREA ────────────────────────────────────────────── */
+.design-area { border-bottom: 1px solid var(--wm-ns-100); }
+input[type=file] { display: none; }
+
+.variants-wrap { display: flex; gap: 0; }
+.variant-panel {
+  flex: 1;
+  border-right: 1px solid var(--wm-ns-100);
+  display: flex;
+  flex-direction: column;
+}
+.variant-panel:last-child { border-right: none; }
+.variant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  background: var(--wm-ns-050);
+  border-bottom: 1px solid var(--wm-ns-100);
+}
+.variant-label { font-size: 9.5px; font-weight: 700; color: var(--wm-ns-500); }
+.vbtn {
+  font-size: 8px;
+  font-family: var(--font-sans);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  border: 1.5px solid var(--wm-ns-200);
+  background: #fff;
+  cursor: pointer;
+  color: var(--wm-ns-400);
+  transition: all .12s;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.vbtn:hover { border-color: var(--wm-sb-400); color: var(--wm-sb-400); }
+.vbtn.active { background: var(--wm-error-500); border-color: var(--wm-error-500); color: #fff; }
+
+.canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 340px;
+  background: #fafafa;
+  overflow: hidden;
+}
+.canvas-wrap.mode-arrow { cursor: crosshair; }
+.canvas-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.canvas-drop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 1.5px dashed var(--wm-ns-200);
+  transition: border-color .15s;
+}
+.canvas-drop:hover { border-color: var(--wm-sb-400); background: var(--wm-sb-200); }
+.canvas-drop .drop-icon { font-size: 24px; color: var(--wm-ns-200); }
+.canvas-drop .drop-txt  { font-size: 8.5px; color: var(--wm-ns-200); }
+.callout-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.callout-label {
+  position: absolute;
+  font-size: 7.5px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  color: var(--wm-error-500);
+  background: rgba(255,255,255,.93);
+  border: none;
+  outline: none;
+  padding: 1px 3px;
+  border-bottom: 1.5px solid var(--wm-error-500);
+  min-width: 50px;
+  max-width: 150px;
+  text-transform: uppercase;
+  pointer-events: all;
+  cursor: text;
+  letter-spacing: .02em;
+  line-height: 1.3;
+}
+
+/* ── Observations / Combos table ── */
+.obs-section { border-top: 1px solid var(--wm-ns-200); }
+.obs-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.obs-col:first-child { border-right: 1px solid var(--wm-ns-200); }
+.obs-header {
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--wm-ns-400);
+  padding: 5px 10px;
+  background: var(--wm-ns-050);
+  border-bottom: 1px solid var(--wm-ns-100);
+}
+.obs-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--wm-ns-100);
+  min-height: 22px;
+}
+.obs-row:last-child { border-bottom: none; }
+.obs-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 10px;
+  font-family: var(--font-sans);
+  padding: 4px 10px;
+  background: transparent;
+  color: var(--wm-ns-600);
+  width: 100%;
+}
+.obs-input.is-alert { color: var(--wm-error-500); font-weight: 600; }
+.obs-input:focus { background: var(--wm-sb-200); }
+.obs-add-btn {
+  font-size: 9px;
+  padding: 4px 10px;
+  border: none;
+  border-top: 1px dashed var(--wm-ns-200);
+  background: none;
+  cursor: pointer;
+  color: var(--wm-ns-300);
+  font-family: var(--font-sans);
+  text-align: left;
+  width: 100%;
+}
+.obs-add-btn:hover { color: var(--wm-sb-400); }
+
+/* Extra fields calzones */
+.extra-fields { border-bottom: 1px solid var(--wm-ns-200); }
+.ef-row { display: grid; grid-template-columns: 140px 1fr; border-bottom: 1px solid var(--wm-ns-100); }
+.ef-row:last-child { border-bottom: none; }
+.ef-label {
+  font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--wm-ns-400); padding: 5px 8px; background: var(--wm-ns-050);
+  border-right: 1px solid var(--wm-ns-100); display: flex; align-items: center;
+}
+.ef-input {
+  border: none; outline: none; font-size: 10px; font-family: var(--font-sans);
+  padding: 4px 8px; color: var(--wm-ns-600); background: transparent; width: 100%;
+}
+.ef-input:focus { background: var(--wm-sb-200); }
+
+/* ─── PIPING BOX ─────────────────────────────────────────────── */
+.piping-box {
+  border: 1px solid var(--wm-ns-100);
+  margin: 8px 12px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: var(--space-xs);
+  padding: 8px;
+  align-items: center;
+  background: var(--wm-ns-050);
+}
+.piping-img {
+  width: 110px;
+  height: 72px;
+  border: 1.5px dashed var(--wm-ns-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+.piping-img:hover { border-color: var(--wm-sb-400); }
+.piping-img img { width: 100%; height: 100%; object-fit: cover; }
+.piping-img .ph { font-size: 8.5px; color: var(--wm-ns-200); text-align: center; }
+.piping-label { font-size: 9.5px; font-weight: 700; color: var(--wm-ns-500); }
+.piping-detail input {
+  border: none;
+  border-bottom: 1px solid var(--wm-ns-100);
+  font-size: 10px;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  color: var(--wm-ns-600);
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* ─── FIT SECTION ────────────────────────────────────────────── */
+.fit-section { padding: 8px 12px; border-top: 1px solid var(--wm-ns-100); }
+.section-title {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--wm-ns-300);
+  margin-bottom: 6px;
+}
+.fit-sils { display: flex; gap: 8px; align-items: flex-end; }
+.sil-item { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+.sil-item svg .body { fill: var(--wm-ns-200); transition: fill .12s; }
+.sil-item.active svg .body { fill: var(--wm-error-500); }
+.sil-label { font-size: 7.5px; color: var(--wm-ns-300); font-weight: 500; text-align: center; }
+.sil-item.active .sil-label { color: var(--wm-error-500); font-weight: 700; }
+
+/* ─── COPYRIGHT ──────────────────────────────────────────────── */
+.copyright-area {
+  padding: 8px 12px;
+  border-top: 1px solid var(--wm-ns-100);
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+  background: var(--wm-ns-050);
+}
+.copyright-title { font-size: 13px; font-weight: 700; color: var(--wm-ns-600); letter-spacing: .04em; }
+.copyright-sub { font-size: 11.5px; color: var(--wm-ns-400); display: flex; align-items: center; gap: 2px; }
+.copyright-sub input {
+  border: none;
+  border-bottom: 1px solid var(--wm-ns-200);
+  outline: none;
+  font-size: 11.5px;
+  width: 80px;
+  background: transparent;
+  font-family: var(--font-sans);
+  color: var(--wm-ns-500);
+}
+.copyright-colors { display: flex; flex-direction: column; gap: 4px; margin-top: 2px; }
+.cp-row { display: flex; align-items: center; gap: 5px; }
+.cp-swatch {
+  width: 18px; height: 18px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--wm-ns-200);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cp-name input {
+  border: none;
+  border-bottom: 1px solid var(--wm-ns-100);
+  font-size: 9.5px;
+  outline: none;
+  width: 80px;
+  background: transparent;
+  font-family: var(--font-sans);
+  color: var(--wm-ns-500);
+}
+
+/* ─── SIDEBAR ────────────────────────────────────────────────── */
+.ficha-sidebar { display: flex; flex-direction: column; }
+.sb-block { padding: 8px 10px; border-bottom: 1px solid var(--wm-ns-100); }
+.sb-title {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--wm-ns-300);
+  margin-bottom: 6px;
+}
+.ref-photo-box, .pack-box {
+  width: 100%;
+  border: 1.5px dashed var(--wm-ns-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wm-ns-050);
+  transition: border-color .15s;
+}
+.ref-photo-box { height: 140px; }
+.pack-box { height: 96px; }
+.ref-photo-box:hover, .pack-box:hover { border-color: var(--wm-sb-400); background: var(--wm-sb-200); }
+.ref-photo-box img, .pack-box img { width: 100%; height: 100%; object-fit: cover; }
+.ref-photo-box .ph, .pack-box .ph { font-size: 8.5px; color: var(--wm-ns-200); text-align: center; padding: 8px; }
+.color-rows { display: flex; flex-direction: column; gap: 5px; }
+.color-row-item { display: flex; align-items: center; gap: 5px; }
+.variant-tag { font-size: 9px; font-weight: 700; color: var(--wm-ns-300); min-width: 14px; }
+.cswatch {
+  width: 20px; height: 20px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--wm-ns-200);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cname input {
+  border: none;
+  border-bottom: 1px solid var(--wm-ns-100);
+  font-size: 9px;
+  outline: none;
+  width: 70px;
+  background: transparent;
+  font-family: var(--font-sans);
+  color: var(--wm-ns-500);
+}
+.color-add-btn {
+  width: 100%;
+  font-size: 8.5px;
+  padding: 3px;
+  border: 1.5px dashed var(--wm-ns-200);
+  border-radius: var(--radius-xs);
+  background: none;
+  cursor: pointer;
+  color: var(--wm-ns-300);
+  font-family: var(--font-sans);
+  margin-top: 4px;
+  transition: all .15s;
+}
+.color-add-btn:hover { border-color: var(--wm-sb-400); color: var(--wm-sb-400); }
+
+/* ─── FIBER MODAL ────────────────────────────────────────────── */
+.fp-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.3);
+  z-index: 300;
+  backdrop-filter: blur(1px);
+}
+.fp-overlay.open { display: block; }
+.fp-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #fff;
+  border: 1.5px solid var(--wm-ns-200);
+  box-shadow: var(--shadow-hover);
+  z-index: 301;
+  border-radius: var(--radius-card);
+  width: 260px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.fp-modal.open { display: block; }
+.fp-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--wm-ns-100);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  color: var(--wm-ns-600);
+}
+.fp-close { cursor: pointer; color: var(--wm-ns-300); font-size: 16px; line-height: 1; }
+.fp-close:hover { color: var(--wm-ns-600); }
+.fp-grp {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--wm-ns-300);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 6px 10px 2px;
+  background: var(--wm-ns-050);
+}
+.fp-opt {
+  padding: 6px 12px;
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--wm-ns-600);
+  font-family: var(--font-sans);
+}
+.fp-opt:hover { background: var(--wm-sb-200); }
+.fp-cat { font-size: 8px; padding: 1px 5px; border-radius: var(--radius-xs); font-weight: 600; }
+.fp-cat.nat { background: var(--wm-success-100); color: var(--wm-success-500); }
+.fp-cat.syn { background: var(--wm-sb-200); color: var(--wm-sb-500); }
+
+/* ─── PRINT ──────────────────────────────────────────────────── */
+.print-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+.print-bar h1 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--wm-ns-400);
+}
+
+@page {
+  size: A4 landscape;
+  margin: 8mm 10mm;
+}
+
+@media print {
+  /* Hide chrome */
+  .gm-mast, .gm-bar, .print-bar { display: none !important; }
+
+  /* Reset body */
+  html, body {
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    font-size: 10px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Page shell */
+  .gm-page {
+    padding: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  /* Ficha — fixed width for A4 landscape */
+  .ficha-wrap {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    max-width: 277mm !important;   /* A4 landscape minus margins */
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  /* Fields grid — fixed pixel columns so nothing wraps */
+  .fields-grid {
+    grid-template-columns: 155px 155px 160px 1fr 180px !important;
+    width: 100% !important;
+  }
+
+  /* Cells — enforce single line, no overflow */
+  .fc {
+    overflow: hidden !important;
+    min-height: 22px !important;
+    grid-template-columns: 56px 1fr !important;
+  }
+
+  .fc input,
+  .fc textarea,
+  .dp-btn {
+    font-size: 8.5px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  .fc-label, .n-cell-label, .tech-label-cell span {
+    font-size: 7px !important;
+  }
+
+  /* N-cell row */
+  .n-cell {
+    grid-template-columns: 70px 1fr !important;
+    min-height: 22px !important;
+  }
+
+  /* Tech tags */
+  .tech-tag { font-size: 8px !important; padding: 1px 5px !important; }
+
+  /* Fiber chips */
+  .fiber-chip { font-size: 8px !important; padding: 1px 4px !important; }
+
+  /* Buttons hidden */
+  .vbtn, .comp-add, .color-add-btn, .obs-add-btn,
+  .gm-btn, .dp-btn .arr { }
+
+  /* Design area */
+  .canvas-wrap { min-height: 280px !important; }
+
+  /* Sidebar */
+  .ficha-body { grid-template-columns: 1fr 180px !important; }
+  .ficha-sidebar .ref-photo-box { height: 110px !important; }
+  .ficha-sidebar .pack-box { height: 80px !important; }
+
+  /* Alarm/hanger sidebar */
+  .alarm-hanger { width: 180px !important; }
+
+  /* No page break inside key sections */
+  .ficha-body, .fields-grid, .tech-rows, .nfields-grid { page-break-inside: avoid; }
+
+  /* Dropdowns — hide panel, show value only */
+  .dp-panel { display: none !important; }
+  .dp-btn { pointer-events: none; }
+
+  /* Hide interactive controls */
+  .fp-overlay, .fp-modal { display: none !important; }
+}
+
+/* ─── UTILITY ────────────────────────────────────────────────── */
+.border-right { border-right: 1.5px solid var(--wm-ns-200); }
+
+/* ─── EMBED MODE (cuando se monta dentro de la plataforma GM) ── */
+body.embed { background: var(--wm-ns-050); }
+body.embed .gm-mast, body.embed .gm-bar { display: none !important; }
+body.embed .print-bar   { display: none !important; }
+body.embed .ficha-header { display: none !important; }
+body.embed .gm-page { padding: 18px 8px 40px; max-width: 1000px; }
+</style>
+</head>
+<body>
+<script>
+  // Embed mode: when mounted inside the GM platform via iframe, hide its own chrome.
+  (function () {
+    var q = new URLSearchParams(location.search);
+    if (q.get("embed") === "1") document.body.classList.add("embed");
+    window.__gmInitType = q.get("type") || null;
+  })();
+</script>
+
+<!-- MASTHEAD -->
+<div class="gm-mast">
+  <div class="gm-mast__logo">
+    <img src="../../Img/Logo walmart chile.png" alt="Walmart Chile" style="height: 40px; display: block;" />
+  </div>
+  <div class="gm-mast__spacer"></div>
+  <div class="gm-mast__actions">
+    <button class="gm-btn gm-btn--ghost gm-btn--sm" id="btn-export" onclick="exportPDF()">↓ Descargar PDF</button>
+  </div>
+</div>
+
+<!-- SUBBAR -->
+<div class="gm-bar">
+  <span class="crumb">Fichas Técnicas</span>
+  <span class="sep">/</span>
+  <span class="crumb">Fichas Técnicas</span>
+  <span class="sep">/</span>
+  <span class="crumb is-current" id="breadcrumb-current">Nueva ficha</span>
+  <div class="gm-bar__spacer"></div>
+  <span class="gm-bar__dept" id="dept-badge">D27</span>
+</div>
+
+<!-- PAGE -->
+<div class="gm-page">
+  <div class="print-bar">
+    <div class="type-selector">
+      <button class="type-btn active" data-type="calcetines" onclick="setType('calcetines')">Calcetines</button>
+      <button class="type-btn" data-type="interior" onclick="setType('interior')">Ropa Interior</button>
+      <button class="type-btn" data-type="poleras" onclick="setType('poleras')">Poleras</button>
+      <button class="type-btn" data-type="pantalones" onclick="setType('pantalones')">Pantalones</button>
+    </div>
+  </div>
+
+  <div class="ficha-wrap" id="ficha-wrap-id">
+
+    <!-- HEADER FICHA -->
+    <div class="ficha-header">
+      <div class="fh-logo">
+        <span class="fh-logo-text">Walmart</span>
+        <span class="fh-spark">✸</span>
+        <span class="fh-sub">Chile</span>
+      </div>
+      <div class="fh-divider"></div>
+      <div>
+        <div class="fh-module-label">Módulo</div>
+        <div class="fh-module-name">Fichas Técnicas</div>
+      </div>
+      <div class="fh-spacer"></div>
+      <div class="fh-dept">
+        <span class="fh-dept-label">DEPT</span>
+        <span class="fh-dept-num" id="dept-num">D27</span>
+      </div>
+    </div>
+
+    <!-- FIELDS GRID -->
+    <div class="fields-grid" id="fields-main">
+
+      <!-- col 1: Style -->
+      <div class="fc">
+        <span class="fc-label">Style</span>
+        <input type="text" id="f-style" value="I27NA-STI-CALQ">
+      </div>
+
+      <!-- col 2: T.S Number -->
+      <div class="fc">
+        <span class="fc-label">T.S Number</span>
+        <input type="text" id="f-tsnum" value="N°2">
+      </div>
+
+      <!-- col 3: Composition — span 4 rows, full-width layout -->
+      <div style="grid-row: span 4; border-bottom: none; border-right: 1px solid var(--wm-ns-100); display:flex; flex-direction:column;" id="comp-cell">
+        <div style="font-size:7.5px;font-weight:700;color:var(--wm-ns-400);text-transform:uppercase;letter-spacing:.05em;padding:4px 8px;background:var(--wm-ns-050);border-bottom:1px solid var(--wm-ns-100);">Composition</div>
+        <div class="comp-area" id="comp-area" style="flex:1;"></div>
+        <button class="comp-add" onclick="openFP()" style="margin: 0 7px 5px; align-self:flex-start;">+ fibra</button>
+      </div>
+
+      <!-- col 4: Type of Packaging — full-width layout -->
+      <div style="border-right: none; border-bottom: 1px solid var(--wm-ns-100); display:flex; flex-direction:column;">
+        <div style="font-size:7.5px;font-weight:700;color:var(--wm-ns-400);text-transform:uppercase;letter-spacing:.05em;padding:4px 8px;background:var(--wm-ns-050);border-bottom:1px solid var(--wm-ns-100);">Type of Packaging</div>
+        <div class="pkg-area" id="pkg-area">
+          <label class="cb-item"><input type="checkbox"> BOX</label>
+          <label class="cb-item"><input type="checkbox"> PDQ</label>
+          <label class="cb-item"><input type="checkbox" checked> 1/4 PALLET</label>
+          <label class="cb-item"><input type="checkbox"> CLIPSTRIP</label>
+          <label class="cb-item"><input type="checkbox"> 1/2 PALLET</label>
+          <label class="cb-item"><input type="checkbox"> RRP</label>
+        </div>
+      </div>
+
+      <!-- col 5: Alarm + Hanger (sidebar, span 4 rows) -->
+      <div class="alarm-hanger" style="grid-row: span 4; border-left: 1.5px solid var(--wm-ns-200);">
+        <div class="ah-cell fc">
+          <span class="fc-label">Alarm</span>
+          <div class="rb-area">
+            <label class="rb-item"><input type="radio" name="alarm" value="YES"> YES</label>
+            <label class="rb-item"><input type="radio" name="alarm" value="NO" checked> NO</label>
+          </div>
+        </div>
+        <div class="ah-cell fc" style="border-bottom: none;">
+          <span class="fc-label">Hanger</span>
+          <div class="rb-area">
+            <label class="rb-item"><input type="radio" name="hanger" value="YES" checked> YES</label>
+            <label class="rb-item"><input type="radio" name="hanger" value="NO"> NO</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- row 2 -->
+      <div class="fc">
+        <span class="fc-label">Buyers</span>
+        <textarea id="f-buyers" rows="2">TOMÁS ESCOBAR
+ANTONIA CAMUS</textarea>
+      </div>
+      <div class="fc">
+        <span class="fc-label">Season</span>
+        <div class="dp-wrap">
+          <button class="dp-btn" onclick="toggleDp('season-p')" id="season-v">WINTER 2027 <span class="arr">▾</span></button>
+          <div class="dp-panel" id="season-p">
+            <div class="dp-grp">Temporada regular</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','WINTER 2025')">WINTER 2025</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','SUMMER 2025')">SUMMER 2025</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','WINTER 2026')">WINTER 2026</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','SUMMER 2026')">SUMMER 2026</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','WINTER 2027')">WINTER 2027</div>
+            <div class="dp-grp">Colecciones especiales</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','PERMANENT')">PERMANENT</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','DÍA DE LA MADRE 2025')">DÍA DE LA MADRE 2025</div>
+            <div class="dp-opt" onclick="pickDp('season-v','season-p','NAVIDAD 2025')">NAVIDAD 2025</div>
+            <div class="dp-custom">
+              <input type="text" placeholder="Otra..." id="season-ci">
+              <button onclick="customDp('season-v','season-p','season-ci')">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fc" style="border-right: none;">
+        <span class="fc-label">Weight</span>
+        <input type="text" id="f-weight" value="168N">
+      </div>
+
+      <!-- row 3 -->
+      <div class="fc">
+        <span class="fc-label">Designer</span>
+        <div class="dp-wrap">
+          <button class="dp-btn" onclick="toggleDp('designer-p')" id="designer-v">GABRIELA MEJÍAS <span class="arr">▾</span></button>
+          <div class="dp-panel" id="designer-p">
+            <input class="dp-search" type="text" placeholder="Buscar..." oninput="filterDp(this,'designer-p')">
+            <div class="dp-grp">Adulto — Moda Mujer</div>
+            <div class="dp-opt" onclick="pickDp('designer-v','designer-p','GABRIELA MEJÍAS')">GABRIELA MEJÍAS <span class="sub">Moda Mujer</span></div>
+            <div class="dp-opt" onclick="pickDp('designer-v','designer-p','ANA GARCÍA')">ANA GARCÍA <span class="sub">Moda Mujer</span></div>
+            <div class="dp-opt" onclick="pickDp('designer-v','designer-p','VALENTINA ROJAS')">VALENTINA ROJAS <span class="sub">Moda Mujer</span></div>
+            <div class="dp-grp">Infantil</div>
+            <div class="dp-opt" onclick="pickDp('designer-v','designer-p','SOFÍA HERRERA')">SOFÍA HERRERA <span class="sub">Infantil</span></div>
+            <div class="dp-opt" onclick="pickDp('designer-v','designer-p','ISABEL MORA')">ISABEL MORA <span class="sub">Infantil</span></div>
+            <div class="dp-grp">Hombre</div>
+            <div class="dp-opt" onclick="pickDp('designer-v','designer-p','CAMILA SOTO')">CAMILA SOTO <span class="sub">Hombre</span></div>
+            <div class="dp-custom">
+              <input type="text" placeholder="Agregar nombre..." id="designer-ci">
+              <button onclick="customDp('designer-v','designer-p','designer-ci')">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fc">
+        <span class="fc-label">Window</span>
+        <div class="dp-wrap">
+          <button class="dp-btn" onclick="toggleDp('window-p')" id="window-v">1ST WINDOW <span class="arr">▾</span></button>
+          <div class="dp-panel" id="window-p">
+            <div class="dp-opt" onclick="pickDp('window-v','window-p','1ST WINDOW')">1ST WINDOW</div>
+            <div class="dp-opt" onclick="pickDp('window-v','window-p','2ND WINDOW')">2ND WINDOW</div>
+            <div class="dp-opt" onclick="pickDp('window-v','window-p','3RD WINDOW')">3RD WINDOW</div>
+            <div class="dp-opt" onclick="pickDp('window-v','window-p','PERMANENT')">PERMANENT</div>
+            <div class="dp-custom">
+              <input type="text" placeholder="Otro..." id="window-ci">
+              <button onclick="customDp('window-v','window-p','window-ci')">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fc" style="border-right: none;">
+        <span class="fc-label">Size Range</span>
+        <input type="text" id="f-sizerange" value="23-26 / 27-30 / 31-34">
+      </div>
+
+      <!-- row 4 -->
+      <div class="fc" style="border-bottom: none;">
+        <span class="fc-label">Brand</span>
+        <input type="text" id="f-brand" value="DTR DISNEY STITCH">
+      </div>
+      <div class="fc" style="border-bottom: none;">
+        <span class="fc-label">Fit Size</span>
+        <input type="text" id="f-fitsize" value="27-30">
+      </div>
+      <div style="border-right: none; border-bottom: none; display:flex; flex-direction:column;" id="lenght-cell">
+        <div style="font-size:7.5px;font-weight:700;color:var(--wm-ns-400);text-transform:uppercase;letter-spacing:.05em;padding:4px 8px;background:var(--wm-ns-050);border-bottom:1px solid var(--wm-ns-100);">Length</div>
+        <div class="cb-area">
+          <label class="cb-item"><input type="checkbox"> INVISIBLE</label>
+          <label class="cb-item"><input type="checkbox"> NON-SHOW</label>
+          <label class="cb-item"><input type="checkbox"> CREW</label>
+          <label class="cb-item"><input type="checkbox"> LONG</label>
+          <label class="cb-item"><input type="checkbox"> KNEE</label>
+          <label class="cb-item"><input type="checkbox"> QUARTER</label>
+        </div>
+      </div>
+
+    </div><!-- /fields-grid -->
+
+    <!-- N° GUÍA / OPA ROW -->
+    <div class="nfields-grid">
+      <div class="n-inner">
+        <div class="n-cell">
+          <div class="n-cell-label">N° Guía Arte</div>
+          <input type="text" id="f-guia" value="3003872">
+        </div>
+        <div class="n-cell">
+          <div class="n-cell-label">N° Ref. OPA</div>
+          <input type="text" id="f-opa" placeholder="—">
+        </div>
+      </div>
+      <!-- empty right cell to align with sidebar column -->
+      <div style="border-left: 1.5px solid var(--wm-ns-200);"></div>
+    </div>
+
+    <!-- TECHNIQUE ROWS -->
+    <div id="tech-rows"></div>
+
+    <!-- FICHA BODY -->
+    <div class="ficha-body">
+      <div class="ficha-main">
+
+        <!-- ALERT BANNER -->
+        <div class="alert-banner" id="alert-banner">
+          <span class="alert-banner-star">★</span>
+          <input type="text" placeholder="Nota importante / alerta de colección..." value="*THIS COMBO MUST BE QUARTER FIT*">
+        </div>
+
+        <!-- DESIGN AREA -->
+        <div class="design-area" id="design-area"></div>
+
+        <!-- OBSERVATIONS / COMBOS -->
+        <div class="obs-section" id="obs-section">
+          <div class="obs-grid">
+            <div class="obs-col">
+              <div class="obs-header">Important Observations</div>
+              <div id="obs-left-rows"></div>
+              <button class="obs-add-btn" onclick="addObsRow('obs-left-rows', false)">+ agregar observación</button>
+            </div>
+            <div class="obs-col">
+              <div class="obs-header">Combos</div>
+              <div id="obs-right-rows"></div>
+              <button class="obs-add-btn" onclick="addObsRow('obs-right-rows', false)">+ agregar combo</button>
+            </div>
+          </div>
+        </div>
+        <div id="piping-box" style="display:none;">
+          <div class="piping-box">
+            <div class="piping-img" id="piping-img-box" onclick="document.getElementById('piping-upload').click()">
+              <div class="ph">+ imagen piping</div>
+            </div>
+            <input type="file" id="piping-upload" accept="image/*" onchange="loadInto(this,'piping-img-box')">
+            <div class="piping-detail" style="flex:1;">
+              <div class="piping-label">Detalle material / Piping</div>
+              <input type="text" value="10 MM BRAIDED PIPING">
+            </div>
+          </div>
+        </div>
+
+        <!-- FIT SECTION -->
+        <div class="fit-section" id="fit-section">
+          <div class="section-title">Length of the Fit:</div>
+          <div class="fit-sils" id="fit-sils"></div>
+        </div>
+
+        <!-- COPYRIGHT -->
+        <div class="copyright-area" id="copyright-area">
+          <div>
+            <div class="copyright-title">COPYRIGHT</div>
+            <div class="copyright-sub">©<input type="text" value="Disney"></div>
+          </div>
+          <div class="copyright-colors" id="cp-colors"></div>
+        </div>
+
+      </div><!-- /ficha-main -->
+
+      <!-- SIDEBAR -->
+      <div class="ficha-sidebar">
+        <div class="sb-block">
+          <div class="sb-title">Reference Photo</div>
+          <div class="ref-photo-box" id="ref-photo-box" onclick="document.getElementById('ref-upload').click()">
+            <div class="ph">+ click para subir foto de referencia</div>
+          </div>
+          <input type="file" id="ref-upload" accept="image/*" onchange="loadInto(this,'ref-photo-box')">
+        </div>
+        <div class="sb-block">
+          <div class="sb-title">Main Colors</div>
+          <div class="color-rows" id="color-rows"></div>
+          <button class="color-add-btn" onclick="addColor()">+ agregar color</button>
+        </div>
+        <div class="sb-block" id="packing-sb">
+          <div class="sb-title">Packing Reference</div>
+          <div class="pack-box" id="pack-box" onclick="document.getElementById('pack-upload').click()">
+            <div class="ph">+ click para subir imagen</div>
+          </div>
+          <input type="file" id="pack-upload" accept="image/*" onchange="loadInto(this,'pack-box')">
+        </div>
+      </div>
+
+    </div><!-- /ficha-body -->
+  </div><!-- /ficha-wrap -->
+</div><!-- /gm-page -->
+
+<!-- FIBER MODAL -->
+<div class="fp-overlay" id="fp-overlay" onclick="closeFP()"></div>
+<div class="fp-modal" id="fp-modal">
+  <div class="fp-header">Agregar fibra <span class="fp-close" onclick="closeFP()">✕</span></div>
+  <div class="fp-grp">Naturales</div>
+  <div class="fp-opt" onclick="addFiber('COTTON','nat')">Cotton / Algodón <span class="fp-cat nat">nat</span></div>
+  <div class="fp-opt" onclick="addFiber('WOOL','nat')">Wool / Lana <span class="fp-cat nat">nat</span></div>
+  <div class="fp-opt" onclick="addFiber('BAMBOO','nat')">Bamboo <span class="fp-cat nat">nat</span></div>
+  <div class="fp-opt" onclick="addFiber('MODAL','nat')">Modal <span class="fp-cat nat">nat</span></div>
+  <div class="fp-opt" onclick="addFiber('SILK','nat')">Silk / Seda <span class="fp-cat nat">nat</span></div>
+  <div class="fp-grp">Sintéticas</div>
+  <div class="fp-opt" onclick="addFiber('POLYESTER','syn')">Polyester <span class="fp-cat syn">sin</span></div>
+  <div class="fp-opt" onclick="addFiber('NYLON','syn')">Nylon <span class="fp-cat syn">sin</span></div>
+  <div class="fp-opt" onclick="addFiber('SPANDEX','syn')">Spandex / Elastano <span class="fp-cat syn">sin</span></div>
+  <div class="fp-opt" onclick="addFiber('ACRYLIC','syn')">Acrylic <span class="fp-cat syn">sin</span></div>
+  <div class="fp-opt" onclick="addFiber('VISCOSE','syn')">Viscose <span class="fp-cat syn">sin</span></div>
+  <div class="fp-opt" onclick="addFiber('TENCEL','syn')">Tencel <span class="fp-cat syn">sin</span></div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────
+let curType = 'calcetines';
+let fibers = [
+  {name:'COTTON',  cat:'nat', pct:70},
+  {name:'POLYESTER',cat:'syn',pct:27},
+  {name:'SPANDEX', cat:'syn', pct:3}
+];
+let colors = [
+  {hex:'#f5f5c8', name:'7499 C',    variant:'A'},
+  {hex:'#9b88cc', name:'5295 C',    variant:'A'},
+  {hex:'#c8ddf5', name:'Full print',variant:'B'},
+  {hex:'#9b88cc', name:'5295 C',    variant:'B'}
+];
+let fitActive = 2;
+
+const fitDefs = [
+  {id:0,label:'Invisible', h:20,  w:38},
+  {id:1,label:'Non-show',  h:32,  w:38},
+  {id:2,label:'Crew',      h:52,  w:38},
+  {id:3,label:'Quarter',   h:72,  w:38},
+  {id:4,label:'Knee',      h:96,  w:38},
+  {id:5,label:'Long',      h:124, w:38}
+];
+
+const patternItems = ['JAGUARD','SUBLIMATION','EMBROIDERY'];
+const addedItems   = ['CUSHION','SHERPA','BRUSHED INNER LINING','RIBBING','NON SKID','SILICONE TOE','RIB','HEEL TAB','RUFFLE'];
+const fabricItems  = ['TENCEL BRUSH','LT. ENZYME WASH','W/R CIRE','BRUSHED','MILKY COATING','SILICON WASH','ENZYME WASH','COATING','AS O.S. FINISHING'];
+
+// ─── DROPDOWN ────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dp-wrap'))
+    document.querySelectorAll('.dp-panel').forEach(p => p.classList.remove('open'));
+});
+function toggleDp(id) {
+  const p = document.getElementById(id);
+  const wasOpen = p.classList.contains('open');
+  document.querySelectorAll('.dp-panel').forEach(x => x.classList.remove('open'));
+  if (!wasOpen) p.classList.add('open');
+}
+function pickDp(btnId, panelId, val) {
+  const btn = document.getElementById(btnId);
+  btn.childNodes[0].textContent = val + ' ';
+  document.getElementById(panelId).classList.remove('open');
+}
+function customDp(btnId, panelId, inputId) {
+  const v = document.getElementById(inputId).value.trim();
+  if (!v) return;
+  pickDp(btnId, panelId, v);
+  document.getElementById(inputId).value = '';
+}
+function filterDp(inp, panelId) {
+  const q = inp.value.toLowerCase();
+  document.getElementById(panelId).querySelectorAll('.dp-opt').forEach(o => {
+    o.style.display = o.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// ─── COMPOSITION ─────────────────────────────────────────────
+function renderComp() {
+  const area  = document.getElementById('comp-area');
+  const total = fibers.reduce((s,f) => s + f.pct, 0);
+  area.innerHTML = fibers.map((f,i) => `
+    <span class="fiber-chip ${f.cat}">
+      ${f.name}
+      <span class="pct" onclick="editPct(${i})" title="Editar %">${f.pct}%</span>
+      <span class="rm" onclick="removeFiber(${i})">×</span>
+    </span>`).join('') +
+    `<span class="comp-total ${total===100?'ok':'err'}">${total===100?'✓':'⚠'} ${total}%</span>`;
+}
+function openFP()  { document.getElementById('fp-modal').classList.add('open');  document.getElementById('fp-overlay').classList.add('open'); }
+function closeFP() { document.getElementById('fp-modal').classList.remove('open'); document.getElementById('fp-overlay').classList.remove('open'); }
+function addFiber(name, cat) {
+  if (fibers.find(f => f.name === name)) { closeFP(); return; }
+  const used = fibers.reduce((s,f) => s+f.pct, 0);
+  fibers.push({name, cat, pct: Math.max(0, 100-used)});
+  renderComp(); closeFP();
+}
+function removeFiber(i) { fibers.splice(i,1); renderComp(); }
+function editPct(i) {
+  const v = prompt('Porcentaje para ' + fibers[i].name + ':', fibers[i].pct);
+  if (v === null) return;
+  const n = parseInt(v);
+  if (!isNaN(n) && n >= 0 && n <= 100) { fibers[i].pct = n; renderComp(); }
+}
+
+// ─── COLORS ──────────────────────────────────────────────────
+function renderColors() {
+  document.getElementById('color-rows').innerHTML = colors.map((c,i) => `
+    <div class="color-row-item">
+      <span class="variant-tag">${c.variant})</span>
+      <input type="color" class="cswatch" value="${c.hex}" onchange="colors[${i}].hex=this.value;renderColors()">
+      <div class="cname"><input type="text" value="${c.name}" onchange="colors[${i}].name=this.value"></div>
+    </div>`).join('');
+
+  const cpc = document.getElementById('cp-colors');
+  if (cpc) {
+    const variants = [...new Set(colors.map(c=>c.variant))];
+    cpc.innerHTML = variants.map(v => {
+      const vc = colors.filter(c=>c.variant===v);
+      return vc.map((c,i) => `
+        <div class="cp-row">
+          ${i===0?`<strong style="font-size:9px;min-width:18px;color:var(--wm-ns-400)">${v})</strong>`:'<span style="min-width:18px;"></span>'}
+          <input type="color" class="cp-swatch" value="${c.hex}">
+          <div class="cp-name"><input type="text" value="${c.name}"></div>
+        </div>`).join('');
+    }).join('');
+  }
+}
+function addColor() {
+  const variants = [...new Set(colors.map(c=>c.variant))];
+  const last = variants[variants.length-1];
+  const next = String.fromCharCode(last.charCodeAt(0)+1);
+  colors.push({hex:'#cccccc', name:'', variant: next});
+  renderColors();
+}
+
+// ─── IMAGE UPLOAD ─────────────────────────────────────────────
+function loadInto(input, boxId) {
+  if (!input.files || !input.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    const box = document.getElementById(boxId);
+    box.innerHTML = `<img src="${e.target.result}" alt="img">`;
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+// ─── TECH ROWS ────────────────────────────────────────────────
+function renderTech() {
+  const el = document.getElementById('tech-rows');
+  if (curType === 'calcetines') {
+    el.innerHTML = `
+      <div class="tech-row">
+        <div class="tech-label-cell"><span>Pattern<br>Technique</span></div>
+        <div class="tech-checks-cell">
+          ${patternItems.map(t=>`<label class="tech-tag" onclick="this.classList.toggle('checked')"><input type="checkbox">${t}</label>`).join('')}
+        </div>
+      </div>
+      <div class="tech-row">
+        <div class="tech-label-cell"><span>Added<br>Technique</span></div>
+        <div class="tech-checks-cell">
+          ${addedItems.map(t=>`<label class="tech-tag ${t==='RUFFLE'?'checked':''}" onclick="this.classList.toggle('checked')"><input type="checkbox">${t}</label>`).join('')}
+        </div>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <div class="tech-row">
+        <div class="tech-label-cell"><span>Fabric<br>Finishing</span></div>
+        <div class="tech-checks-cell">
+          ${fabricItems.map(t=>`<label class="tech-tag" onclick="this.classList.toggle('checked')"><input type="checkbox">${t}</label>`).join('')}
+        </div>
+      </div>`;
+  }
+}
+
+// ─── FIT SILHOUETTES ─────────────────────────────────────────
+function renderFit() {
+  const el = document.getElementById('fit-sils');
+  el.innerHTML = fitDefs.map(f => {
+    const active = f.id === fitActive;
+    const totalH = 130;
+    const topY   = totalH - f.h;
+    return `
+      <div class="sil-item ${active?'active':''}" onclick="fitActive=${f.id};renderFit()">
+        <svg width="40" height="${totalH}" viewBox="0 0 40 ${totalH}">
+          <rect x="6" y="${topY}" width="28" height="${f.h}" rx="3" class="body"/>
+        </svg>
+        <span class="sil-label">${f.label}</span>
+      </div>`;
+  }).join('');
+}
+
+// ─── INTERACTIVE CALLOUT SYSTEM ──────────────────────────────
+// Each variant: { imgSrc, arrows: [{x1,y1,x2,y2,text}] }
+const variantState = {};
+
+function renderDesign() {
+  const el = document.getElementById('design-area');
+  const variantMap = {
+    calcetines: [
+      { id:'v-a', label:'A)' },
+      { id:'v-b', label:'B)' }
+    ],
+    interior: [
+      { id:'v-a', label:'A)' },
+      { id:'v-b', label:'B)' },
+      { id:'v-c', label:'C)' }
+    ],
+    poleras: [
+      { id:'v-a', label:'A) Frente' },
+      { id:'v-b', label:'B) Espalda' }
+    ],
+    pantalones: [
+      { id:'v-a', label:'A) Frente' },
+      { id:'v-b', label:'B) Espalda' },
+      { id:'v-c', label:'C) Detalle' }
+    ]
+  };
+  const variants = variantMap[curType] || variantMap.calcetines;
+
+  el.innerHTML = `<div class="variants-wrap">${
+    variants.map(v => makeVariantCanvas(v)).join('')
+  }</div>`;
+
+  variants.forEach(v => {
+    if (!variantState[v.id]) {
+      variantState[v.id] = { imgSrc: null, arrows: [], addMode: false };
+    }
+    renderCanvas(v.id);
+  });
+}
+
+function makeVariantCanvas(v) {
+  return `
+  <div class="variant-panel" id="panel-${v.id}">
+    <div class="variant-header">
+      <span class="variant-label">${v.label}</span>
+      <div style="display:flex;gap:4px;align-items:center;">
+        <button class="vbtn" id="btn-img-${v.id}" onclick="triggerImgUpload('${v.id}')">+ imagen</button>
+        <button class="vbtn" id="btn-arrow-${v.id}" onclick="toggleArrowMode('${v.id}')">✦ flecha</button>
+        <button class="vbtn" style="color:var(--wm-ns-300);border-color:transparent;" onclick="clearArrows('${v.id}')">limpiar</button>
+      </div>
+    </div>
+    <input type="file" id="file-${v.id}" accept="image/*" onchange="loadVariantImg('${v.id}',this)">
+    <div class="canvas-wrap" id="canvas-${v.id}" onclick="canvasClick('${v.id}',event)">
+      <div class="canvas-drop" id="drop-${v.id}" onclick="event.stopPropagation();triggerImgUpload('${v.id}')">
+        <span class="drop-icon">⊕</span>
+        <span class="drop-txt">Click para subir imagen variante ${v.label}</span>
+      </div>
+      <svg class="callout-svg" id="svg-${v.id}"></svg>
+    </div>
+  </div>`;
+}
+
+function triggerImgUpload(vid) {
+  document.getElementById('file-'+vid).click();
+}
+
+function loadVariantImg(vid, input) {
+  if (!input.files || !input.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    variantState[vid].imgSrc = e.target.result;
+    renderCanvas(vid);
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+function toggleArrowMode(vid) {
+  const st = variantState[vid];
+  st.addMode = !st.addMode;
+  st._step = 0; // 0=waiting for dot, 1=waiting for label pos
+  const wrap = document.getElementById('canvas-'+vid);
+  const btn  = document.getElementById('btn-arrow-'+vid);
+  wrap.classList.toggle('mode-arrow', st.addMode);
+  btn.classList.toggle('active', st.addMode);
+  if (st.addMode) {
+    wrap.title = 'Click en la prenda para anclar la flecha';
+  } else {
+    wrap.title = '';
+    st._pending = null;
+  }
+}
+
+function canvasClick(vid, e) {
+  const st = variantState[vid];
+  if (!st.addMode) return;
+  if (!st.imgSrc) { alert('Primero sube una imagen para esta variante.'); return; }
+
+  const wrap  = document.getElementById('canvas-'+vid);
+  const rect  = wrap.getBoundingClientRect();
+  const px    = ((e.clientX - rect.left) / rect.width)  * 100;
+  const py    = ((e.clientY - rect.top)  / rect.height) * 100;
+
+  if (!st._step || st._step === 0) {
+    // First click: anchor point (dot on prenda)
+    st._pending = { x1: px, y1: py };
+    st._step = 1;
+    wrap.title = 'Ahora click donde quieres el texto del callout';
+  } else {
+    // Second click: label position
+    const arrow = {
+      x1: st._pending.x1,
+      y1: st._pending.y1,
+      x2: px,
+      y2: py,
+      text: 'CALLOUT'
+    };
+    st.arrows.push(arrow);
+    st._step = 0;
+    st._pending = null;
+    renderCanvas(vid);
+    // Auto-focus the new label
+    setTimeout(() => {
+      const idx = st.arrows.length - 1;
+      const inp = document.getElementById(`lbl-${vid}-${idx}`);
+      if (inp) { inp.focus(); inp.select(); }
+    }, 30);
+  }
+}
+
+function clearArrows(vid) {
+  variantState[vid].arrows = [];
+  variantState[vid].addMode = false;
+  variantState[vid]._step = 0;
+  document.getElementById('canvas-'+vid).classList.remove('mode-arrow');
+  document.getElementById('btn-arrow-'+vid).classList.remove('active');
+  renderCanvas(vid);
+}
+
+function renderCanvas(vid) {
+  const st   = variantState[vid];
+  const wrap = document.getElementById('canvas-'+vid);
+  const svg  = document.getElementById('svg-'+vid);
+  const drop = document.getElementById('drop-'+vid);
+
+  // Background image
+  let img = wrap.querySelector('.canvas-img');
+  if (st.imgSrc) {
+    if (!img) {
+      img = document.createElement('img');
+      img.className = 'canvas-img';
+      wrap.insertBefore(img, wrap.firstChild);
+    }
+    img.src = st.imgSrc;
+    if (drop) drop.style.display = 'none';
+  } else {
+    if (img) img.remove();
+    if (drop) drop.style.display = '';
+  }
+
+  // Remove old inputs
+  wrap.querySelectorAll('.callout-label').forEach(e => e.remove());
+
+  // SVG arrows
+  svg.innerHTML = st.arrows.map((a, i) => {
+    // SVG line from dot to label anchor
+    return `
+      <line
+        x1="${a.x1}%" y1="${a.y1}%"
+        x2="${a.x2}%" y2="${a.y2}%"
+        stroke="#de1c24" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="${a.x1}%" cy="${a.y1}%" r="3.5" fill="#de1c24"/>`;
+  }).join('');
+
+  // Labels as positioned inputs
+  st.arrows.forEach((a, i) => {
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'callout-label';
+    inp.id = `lbl-${vid}-${i}`;
+    inp.value = a.text;
+    inp.style.left  = a.x2 + '%';
+    inp.style.top   = a.y2 + '%';
+    inp.style.transform = 'translate(-50%, -50%)';
+    inp.addEventListener('input', ev => {
+      st.arrows[i].text = ev.target.value;
+    });
+    inp.addEventListener('click', ev => ev.stopPropagation());
+    inp.addEventListener('dblclick', ev => {
+      ev.stopPropagation();
+      if (confirm('¿Eliminar este callout?')) {
+        st.arrows.splice(i, 1);
+        renderCanvas(vid);
+      }
+    });
+    wrap.appendChild(inp);
+  });
+}
+
+// ─── OBSERVATIONS / COMBOS ───────────────────────────────────
+function initObs() {
+  const isInterior = curType === 'interior';
+  const leftRows = isInterior
+    ? [
+        { text: 'CANCEL BRAND IN ALL LABELS AND USE OUR PACKING MANUAL', alert: true },
+        { text: 'FIT: SAS LY LEGGING', alert: false },
+        { text: '1/4 PALLET - WITH SIZE STICKER - WITH SHERPA CALLOUT', alert: false },
+        { text: 'RIB WITH SHERPA', alert: false }
+      ]
+    : [];
+  const rightRows = isInterior
+    ? [{ text: 'FLOWERS', alert: false }]
+    : [];
+  renderObsRows('obs-left-rows',  leftRows);
+  renderObsRows('obs-right-rows', rightRows);
+}
+
+function renderObsRows(containerId, rows) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = rows.map((r, i) => `
+    <div class="obs-row">
+      <input class="obs-input ${r.alert ? 'is-alert' : ''}"
+        type="text" value="${r.text.replace(/"/g, '&quot;')}"
+        placeholder="Escribir..."
+        oninput="this.classList.toggle('is-alert', this.value.startsWith('*') || this.value === this.value.toUpperCase() && this.value.length > 5)">
+    </div>`).join('');
+}
+
+function addObsRow(containerId, isAlert) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const row = document.createElement('div');
+  row.className = 'obs-row';
+  row.innerHTML = `<input class="obs-input ${isAlert ? 'is-alert' : ''}" type="text" placeholder="Escribir...">`;
+  el.appendChild(row);
+  row.querySelector('input').focus();
+}
+
+// ─── TYPE SWITCH ──────────────────────────────────────────────
+function setType(type) {
+  curType = type;
+  Object.keys(variantState).forEach(k => delete variantState[k]);
+
+  // Fix: match by data-type attribute, not text content
+  document.querySelectorAll('.type-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.type === type);
+  });
+
+  // Dept numbers per category
+  const deptMap = { calcetines:'D27', interior:'D30', poleras:'D35', pantalones:'D40' };
+  const dept = deptMap[type] || 'D27';
+  document.getElementById('dept-num').textContent   = dept;
+  document.getElementById('dept-badge').textContent = dept;
+
+  const labelMap = { calcetines:'Calcetines', interior:'Ropa Interior', poleras:'Poleras', pantalones:'Pantalones' };
+  document.getElementById('breadcrumb-current').textContent = labelMap[type] || type;
+
+  const isCalc    = type === 'calcetines';
+  const isInterior = type === 'interior';
+  const isTop     = type === 'poleras';
+  const isPant    = type === 'pantalones';
+
+  // Sections conditional
+  document.getElementById('lenght-cell').style.display    = isCalc ? '' : 'none';
+  document.getElementById('fit-section').style.display    = isCalc ? '' : 'none';
+  document.getElementById('copyright-area').style.display = isCalc ? '' : 'none';
+  document.getElementById('alert-banner').style.display   = isCalc ? '' : 'none';
+  document.getElementById('piping-box').style.display     = isInterior ? '' : 'none';
+
+  // Field defaults per category
+  const defaults = {
+    calcetines: {
+      style:'I27NA-STI-CALQ', tsnum:'N°2', weight:'168N',
+      sizerange:'23-26 / 27-30 / 31-34', fitsize:'27-30',
+      guia:'3003872', brand:'DTR DISNEY STITCH',
+      buyers:'TOMÁS ESCOBAR\nANTONIA CAMUS',
+      fibers:[{name:'COTTON',cat:'nat',pct:70},{name:'POLYESTER',cat:'syn',pct:27},{name:'SPANDEX',cat:'syn',pct:3}],
+      colors:[
+        {hex:'#f5f5c8',name:'7499 C',variant:'A'},{hex:'#9b88cc',name:'5295 C',variant:'A'},
+        {hex:'#c8ddf5',name:'Full print',variant:'B'},{hex:'#9b88cc',name:'5295 C',variant:'B'}
+      ]
+    },
+    interior: {
+      style:'I2NA-STI-3BI1', tsnum:'N°3', weight:'180 GSM.',
+      sizerange:'3-4-6-8', fitsize:'SIZE 6',
+      guia:'', brand:'DTR DISNEY STITCH',
+      buyers:'- ROSSANA SANTANDER\n- SERGIO SÁNCHEZ',
+      fibers:[{name:'COTTON',cat:'nat',pct:100}],
+      colors:[
+        {hex:'#c8d8f5',name:'Full print',variant:'A'},{hex:'#b0c0e8',name:'13-4306 tpg',variant:'A'},
+        {hex:'#c8c8c8',name:'Light gray melange',variant:'B'},
+        {hex:'#f5c8d8',name:'Full print',variant:'C'},{hex:'#e8a8c0',name:'13-2705 tpg',variant:'C'}
+      ]
+    },
+    poleras: {
+      style:'', tsnum:'N°1', weight:'160 GSM.',
+      sizerange:'XS / S / M / L / XL', fitsize:'M',
+      guia:'', brand:'',
+      buyers:'',
+      fibers:[{name:'COTTON',cat:'nat',pct:100}],
+      colors:[{hex:'#ffffff',name:'White',variant:'A'},{hex:'#222222',name:'Black',variant:'B'}]
+    },
+    pantalones: {
+      style:'', tsnum:'N°1', weight:'280 GSM.',
+      sizerange:'XS / S / M / L / XL', fitsize:'M',
+      guia:'', brand:'',
+      buyers:'',
+      fibers:[{name:'COTTON',cat:'nat',pct:98},{name:'SPANDEX',cat:'syn',pct:2}],
+      colors:[{hex:'#1a3a5c',name:'Navy',variant:'A'},{hex:'#444444',name:'Charcoal',variant:'B'}]
+    }
+  };
+
+  const d = defaults[type] || defaults.calcetines;
+  document.getElementById('f-style').value    = d.style;
+  document.getElementById('f-tsnum').value    = d.tsnum;
+  document.getElementById('f-weight').value   = d.weight;
+  document.getElementById('f-sizerange').value= d.sizerange;
+  document.getElementById('f-fitsize').value  = d.fitsize;
+  document.getElementById('f-guia').value     = d.guia;
+  document.getElementById('f-brand').value    = d.brand;
+  document.getElementById('f-buyers').value   = d.buyers;
+  fibers = d.fibers.map(f => ({...f}));
+  colors = d.colors.map(c => ({...c}));
+
+  renderComp();
+  renderColors();
+  renderTech();
+  renderDesign();
+  initObs();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+renderComp();
+renderColors();
+renderTech();
+renderFit();
+renderDesign();
+initObs();
+
+// If mounted from the platform with a garment type, apply it + sync the selector.
+if (window.__gmInitType && ['calcetines','interior','poleras','pantalones'].includes(window.__gmInitType)) {
+  setType(window.__gmInitType);
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === window.__gmInitType));
+}
+
+// ─── EXPORT PDF ───────────────────────────────────────────────
+async function exportPDF() {
+  const btn = document.getElementById('btn-export');
+  const ficha = document.getElementById('ficha-wrap-id');
+
+  // feedback
+  btn.textContent = '⏳ Generando...';
+  btn.disabled = true;
+
+  // Hide interactive UI elements before capture
+  const hideEls = document.querySelectorAll('.vbtn, .comp-add, .color-add-btn, .obs-add-btn, .dp-panel, .fp-modal, .fp-overlay, .type-selector, .print-bar');
+  hideEls.forEach(el => el.dataset._prevDisplay = el.style.display || '');
+  hideEls.forEach(el => el.style.display = 'none');
+
+  // Make all callout inputs not look like inputs
+  const inputs = document.querySelectorAll('.callout-label');
+  inputs.forEach(i => i.style.outline = 'none');
+
+  try {
+    const { jsPDF } = window.jspdf;
+
+    // Capture at 2x for sharpness
+    const canvas = await html2canvas(ficha, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      imageTimeout: 0,
+    });
+
+    const imgData = canvas.toDataURL('image/png', 1.0);
+    const imgW = canvas.width;
+    const imgH = canvas.height;
+
+    // A4 landscape: 297 x 210 mm
+    const pageW = 297;
+    const pageH = 210;
+    const margin = 5; // mm
+
+    const availW = pageW - margin * 2;
+    const availH = pageH - margin * 2;
+
+    // Scale to fit page
+    const ratio = Math.min(availW / (imgW / 3.7795), availH / (imgH / 3.7795));
+    const pdfW = (imgW / 3.7795) * ratio;
+    const pdfH = (imgH / 3.7795) * ratio;
+
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    pdf.addImage(imgData, 'PNG', margin, margin, pdfW, pdfH, '', 'FAST');
+
+    // Filename with type and date
+    const typeLabel = { calcetines:'Calcetines', interior:'Ropa-Interior', poleras:'Poleras', pantalones:'Pantalones' };
+    const dateStr = new Date().toISOString().slice(0,10);
+    const style = document.getElementById('f-style').value.trim() || 'FichaTecnica';
+    pdf.save(`GM_${typeLabel[curType]}_${style}_${dateStr}.pdf`);
+
+  } catch(err) {
+    alert('Error al generar PDF: ' + err.message);
+    console.error(err);
+  } finally {
+    // Restore hidden elements
+    hideEls.forEach(el => el.style.display = el.dataset._prevDisplay || '');
+    btn.textContent = '↓ Descargar PDF';
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

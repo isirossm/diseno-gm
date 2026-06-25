@@ -1,0 +1,265 @@
+/* =========================================================================
+   Walmart Design System — Colors & Type
+   Derived from the Walmart.fig design source.
+   Bogle is Walmart's proprietary typeface, used at every level.
+   ========================================================================= */
+
+/* ---------- Webfonts ---------- */
+
+@font-face {
+  font-family: "Bogle";
+  src: url("./fonts/Bogle-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bogle";
+  src: url("./fonts/Bogle-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bogle";
+  src: url("./fonts/Bogle-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bogle";
+  src: url("./fonts/Bogle-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bogle";
+  src: url("./fonts/Bogle-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bogle";
+  src: url("./fonts/Bogle-BlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bogle has no Medium (500) cut shipped here. Browsers will synthesise a
+   slightly heavier weight from 400 — that matches the look in the Figma. */
+
+:root {
+  /* ---------------------------------------------------------------------
+     COLORS
+     --------------------------------------------------------------------- */
+
+  /* Signature Blues (SB) — Walmart's brand spine. SB-400 is the canonical
+     "Walmart Blue" used on the masthead, primary buttons, and links. */
+  --wm-sb-200: #f2f8fd;   /* near-white wash — used as page bg in nav */
+  --wm-sb-300: #e6f1fc;   /* pale tint — tertiary nav bar, hover states */
+  --wm-sb-400: #0071dc;   /* WALMART BLUE — primary brand color */
+  --wm-sb-500: #004f9a;   /* hover/pressed for primary actions */
+  --wm-sb-600: #002d58;   /* deep navy — used for headings on light bg */
+
+  /* Spark Yellow — Walmart's secondary accent. The "Spark" logo is this
+     yellow. Used for tags, badges, energy moments. */
+  --wm-spark-300: #ffd569;
+  --wm-spark-400: #ffc220;   /* canonical Spark Yellow */
+  --wm-spark-500: #f3a800;
+
+  /* Neutral Shades (NS) */
+  --wm-ns-000: #ffffff;
+  --wm-ns-050: #fafafa;
+  --wm-ns-100: #f1f1f2;
+  --wm-ns-200: #c6c7c9;
+  --wm-ns-300: #74767c;
+  --wm-ns-400: #46474a;
+  --wm-ns-500: #2e2f32;
+  --wm-ns-600: #030303;   /* near-black — body copy */
+  --wm-ns-700: #000000;
+
+  /* Status Hues (SH) */
+  --wm-success-500: #2a8703;
+  --wm-success-100: #e7f5df;
+  --wm-error-500:   #de1c24;
+  --wm-error-100:   #fde8e9;
+
+  /* Beyond Basics (BB) — extended accents seen in marketing surfaces */
+  --wm-bb-green-light: #92c17d;
+  --wm-bb-green-dark:  #2a8703;
+  --wm-bb-red:         #de1c24;
+  --wm-bb-brown:       #ad652a;
+
+  /* ---------------------------------------------------------------------
+     SEMANTIC ALIASES
+     --------------------------------------------------------------------- */
+  --color-bg:           var(--wm-ns-000);
+  --color-bg-subtle:    var(--wm-sb-200);
+  --color-bg-tinted:    var(--wm-sb-300);
+  --color-surface:      var(--wm-ns-000);
+  --color-surface-alt:  var(--wm-ns-050);
+
+  --color-fg:           var(--wm-ns-600);   /* primary text */
+  --color-fg-muted:     var(--wm-ns-300);   /* secondary text */
+  --color-fg-subtle:    var(--wm-ns-200);   /* disabled / placeholder */
+  --color-fg-inverse:   var(--wm-ns-000);
+
+  --color-link:         var(--wm-sb-400);
+  --color-link-hover:   var(--wm-sb-500);
+
+  --color-border:       #f0f0f0;
+  --color-border-strong:var(--wm-ns-200);
+
+  --color-brand:        var(--wm-sb-400);
+  --color-brand-deep:   var(--wm-sb-600);
+  --color-accent:       var(--wm-spark-400);
+
+  --color-success:      var(--wm-success-500);
+  --color-error:        var(--wm-error-500);
+
+  /* ---------------------------------------------------------------------
+     TYPOGRAPHY
+     --------------------------------------------------------------------- */
+  /* Bogle for everything — UI, body, headings. Walmart's house typeface. */
+  --font-sans:    "Bogle", "Helvetica Neue", Arial, sans-serif;
+  --font-body:    "Bogle", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Bogle", "Helvetica Neue", Arial, sans-serif;
+
+  /* Type scale (px) — from the Figma typography spec */
+  --fs-title-3xl: 56px;  /* hero */
+  --fs-title-2xl: 48px;
+  --fs-title-xl:  40px;
+  --fs-title-lg:  32px;
+  --fs-title-md:  28px;
+  --fs-subtitle-lg: 24px;
+  --fs-subtitle-sm: 20px;
+  --fs-body-lg:   18px;
+  --fs-body-md:   16px;   /* base */
+  --fs-body-sm:   14px;
+  --fs-caption:   12px;
+
+  --lh-tight:   1.0;
+  --lh-snug:    1.2;
+  --lh-normal:  1.4;
+  --lh-relaxed: 1.55;
+
+  /* ---------------------------------------------------------------------
+     SHAPING & SIZING
+     --------------------------------------------------------------------- */
+  --radius-xs:  4px;    /* image tiles inside banners */
+  --radius-sm:  8px;    /* cards, banners */
+  --radius-md:  16px;
+  --radius-lg:  24px;   /* large promo color cards */
+  --radius-pill: 100px; /* buttons, chips, "Add" pills */
+  --radius-circle: 50%;
+
+  --stroke-thin:    0.5px;
+  --stroke-regular: 1px;
+  --stroke-medium:  1.5px;
+  --stroke-thick:   2px;
+
+  /* Spacing scale (4-step) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 96px;
+
+  /* Shadows — Walmart uses very restrained elevation. */
+  --shadow-card:  0 2px 6px rgba(0, 0, 0, 0.10);
+  --shadow-hover: 0 4px 14px rgba(0, 113, 220, 0.15);
+  --shadow-focus: 0 0 0 3px rgba(0, 113, 220, 0.30);
+  --shadow-press: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================================
+   SEMANTIC TYPE CLASSES — match the Figma "Type Scale: Large / web page"
+   ========================================================================= */
+
+.wm-title-3xl {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-3xl);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+}
+.wm-title-2xl {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-2xl);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--color-fg);
+}
+.wm-title-xl {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-xl);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--color-fg);
+}
+.wm-title-lg {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-lg);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--color-fg);
+}
+.wm-title-md {
+  font-family: var(--font-display);
+  font-size: var(--fs-title-md);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--color-fg);
+}
+.wm-subtitle-lg {
+  font-family: var(--font-sans);
+  font-size: var(--fs-subtitle-lg);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--color-fg);
+}
+.wm-subtitle-sm {
+  font-family: var(--font-sans);
+  font-size: var(--fs-subtitle-sm);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--color-fg);
+}
+.wm-body-lg {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-lg);
+  font-weight: 400;
+  line-height: var(--lh-relaxed);
+  color: var(--color-fg);
+}
+.wm-body-md {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-md);
+  font-weight: 400;
+  line-height: var(--lh-relaxed);
+  color: var(--color-fg);
+}
+.wm-body-sm {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  font-weight: 400;
+  line-height: var(--lh-relaxed);
+  color: var(--color-fg);
+}
+.wm-caption {
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  font-weight: 300;
+  line-height: var(--lh-snug);
+  color: var(--color-fg-muted);
+}
