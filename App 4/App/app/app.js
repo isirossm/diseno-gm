@@ -195,6 +195,9 @@
             profile && profile.id === "compradores" && mode === "flow" && route.screen !== "inicio"
               ? e(window.GMUI.ApprovalPanel, { stepId: route.screen })
               : null,
+            mode === "flow" && window.GMChrome.FlowTimelineCard
+              ? e(window.GMChrome.FlowTimelineCard, { screen: route.screen, go })
+              : null,
             e(ScreenComp, { key: route.screen + (route.tab || ""), go, tab: route.tab, tweaks, profile })))));
   }
 

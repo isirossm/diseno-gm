@@ -80,6 +80,9 @@
         e("main", { className: "app-main" },
           e(FlowBar, { screen: route.screen, go }),
           e("div", { className: "app-scroll" },
+            (window.GM_NAV.isWorkflow(route.screen) || route.screen === "inicio") && window.GMChrome.FlowTimelineCard
+              ? e(window.GMChrome.FlowTimelineCard, { screen: route.screen, go })
+              : null,
             e(ScreenComp, { key: route.screen + (route.tab || ""), go, tab: route.tab, tweaks })))));
   }
 

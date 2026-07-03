@@ -2582,12 +2582,14 @@
     const FLOW_STEPS = [
       { id: 'tendencias', label: 'Tendencias', no: 1, screen: 'tendencias', status: 'completado' },
       { id: 'viaje', label: 'Viaje', no: 2, screen: 'viaje', status: 'completado' },
-      { id: 'coleccion', label: 'Colección', no: 3, screen: 'coleccion', status: 'curso' },
+      { id: 'coleccion', label: 'Colección', no: 3, screen: 'coleccion', status: 'completado' },
       { id: 'muestras', label: 'Muestras', no: 4, screen: 'muestras', status: 'curso' },
-      { id: 'fichas', label: 'Fichas', no: 5, screen: 'fichas', status: 'pendiente' },
+      { id: 'fichas', label: 'Fichas', no: 5, screen: 'fichas', status: 'curso' },
       { id: 'contramuestras', label: 'Contramuestras', no: 6, screen: 'contramuestras', status: 'pendiente' },
-      { id: 'negociacion', label: 'Negociación', no: 7, screen: 'negociacion', status: 'pendiente' },
-      { id: 'validacion', label: 'Validación', no: 8, screen: 'validacion', status: 'pendiente' },
+      { id: 'manuales', label: 'Manuales', no: 7, screen: 'manuales', status: 'bloqueado' },
+      { id: 'negociacion', label: 'Negociación', no: 8, screen: 'negociacion', status: 'pendiente' },
+      { id: 'fichas_revisadas', label: 'Fichas revisadas', no: 9, screen: 'fichas_revisadas', status: 'pendiente' },
+      { id: 'validacion', label: 'Validación', no: 10, screen: 'validacion', status: 'pendiente' },
     ];
 
     const FLOW_ALERTS = [
@@ -2710,41 +2712,6 @@
               </div>
             </div>
 
-            {/* Timeline de flujo */}
-            <div className="gm-card" style={{ padding: '20px 24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: 18 }}>
-                <h2 className="gm-card__title" style={{ margin: 0 }}>Flujo de la temporada</h2>
-                <span style={{ marginLeft: 10, fontSize: 12.5, color: 'var(--wm-ns-300)', fontFamily: 'var(--font-sans)' }}>{FLOW_STEPS.length} pasos</span>
-                <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, fontSize: 11.5, color: 'var(--wm-ns-400)', fontFamily: 'var(--font-sans)' }}>
-                  {[['Completado', STEPC_COLOR.completado], ['En curso', STEPC_COLOR.curso], ['Pendiente', STEPC_COLOR.pendiente]].map(([l, c]) => (
-                    <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: c, display: 'inline-block' }} />{l}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: 0, overflowX: 'auto', paddingBottom: 6 }}>
-                {FLOW_STEPS.map((s, i) => {
-                  const c = STEPC_COLOR[s.status];
-                  const done = s.status === 'completado';
-                  return (
-                    <div key={s.id} style={{ flex: '1 1 0', minWidth: 88, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      {i < FLOW_STEPS.length - 1 && <div style={{ position: 'absolute', top: 17, left: '50%', width: '100%', height: 3, background: done ? STEPC_COLOR.completado : 'var(--wm-ns-100)', zIndex: 0 }} />}
-                      <button onClick={() => navigate(s.screen)} title={s.label} style={{
-                        width: 36, height: 36, borderRadius: '50%', border: `2.5px solid ${c}`, zIndex: 1,
-                        background: done ? c : '#fff', color: done ? '#fff' : c,
-                        display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 13, cursor: 'pointer',
-                        boxShadow: s.status === 'curso' ? '0 0 0 4px rgba(0,113,220,.18)' : 'none'
-                      }}>
-                        {done ? '✓' : s.no}
-                      </button>
-                      <div style={{ marginTop: 8, fontSize: 11.5, fontWeight: 600, textAlign: 'center', color: s.status === 'pendiente' ? 'var(--wm-ns-300)' : 'var(--wm-ns-600)', lineHeight: 1.2, fontFamily: 'var(--font-sans)' }}>{s.label}</div>
-                      {s.status === 'curso' && <span className="gm-chip gm-chip--active" style={{ marginTop: 4, fontSize: 9 }}>En curso</span>}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </AppLayout>
       );
@@ -5015,7 +4982,7 @@
 
     // ── App layout shell ─────────────────────────────────────────────────────────
     const AppLayout = ({ children, active = '', unread = 3 }) => {
-      const { screen } = React.useContext(RouterCtx);
+      const { screen, navigate } = React.useContext(RouterCtx);
       const childrenArray = React.Children.toArray(children);
       const subBarChild = childrenArray.find(c => {
         if (!c) return false;
@@ -5025,6 +4992,13 @@
       });
       const otherChildren = childrenArray.filter(c => c !== subBarChild);
 
+      const FLOW_SCREENS = [
+        'inicio', 'tendencias', 'viaje', 'coleccion', 
+        'muestras', 'fichas', 'contramuestras', 
+        'manuales', 'negociacion', 'fichas_revisadas', 'validacion'
+      ];
+      const isFlowScreen = FLOW_SCREENS.includes(screen);
+
       return (
         <div className="app-shell">
           <NavMasthead active={active} unread={unread} />
@@ -5032,6 +5006,45 @@
           <div className="app-body">
             <NavSidebar />
             <main className="app-main">
+              {isFlowScreen && (
+                <div className="gm-card" style={{ padding: '20px 24px', margin: '16px 24px 0 24px', flexShrink: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: 18 }}>
+                    <h2 className="gm-card__title" style={{ margin: 0, fontSize: '15px' }}>Flujo de la temporada</h2>
+                    <span style={{ marginLeft: 10, fontSize: 12.5, color: 'var(--wm-ns-300)', fontFamily: 'var(--font-sans)' }}>{FLOW_STEPS.length} pasos</span>
+                    <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, fontSize: 11.5, color: 'var(--wm-ns-400)', fontFamily: 'var(--font-sans)' }}>
+                      {[['Completado', STEPC_COLOR.completado], ['En curso', STEPC_COLOR.curso], ['Pendiente', STEPC_COLOR.pendiente], ['Bloqueado', STEPC_COLOR.bloqueado]].map(([l, c]) => (
+                        <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <span style={{ width: 8, height: 8, borderRadius: '50%', background: c, display: 'inline-block' }} />{l}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 0, overflowX: 'auto', paddingBottom: 6 }}>
+                    {FLOW_STEPS.map((s, i) => {
+                      const c = STEPC_COLOR[s.status];
+                      const done = s.status === 'completado';
+                      const isActive = s.screen === screen;
+                      return (
+                        <div key={s.id} style={{ flex: '1 1 0', minWidth: 88, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                          {i < FLOW_STEPS.length - 1 && <div style={{ position: 'absolute', top: 17, left: '50%', width: '100%', height: 3, background: done ? STEPC_COLOR.completado : 'var(--wm-ns-100)', zIndex: 0 }} />}
+                          <button onClick={() => navigate(s.screen)} title={s.label} style={{
+                            width: 36, height: 36, borderRadius: '50%', border: `2.5px solid ${isActive ? 'var(--wm-sb-400)' : c}`, zIndex: 1,
+                            background: done ? c : '#fff', color: done ? '#fff' : (isActive ? 'var(--wm-sb-400)' : c),
+                            display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 13, cursor: 'pointer',
+                            boxShadow: (s.status === 'curso' || isActive) ? '0 0 0 4px rgba(0,113,220,.18)' : 'none',
+                            transition: 'all 0.15s'
+                          }}>
+                            {done ? '✓' : s.no}
+                          </button>
+                          <div style={{ marginTop: 8, fontSize: 11.5, fontWeight: isActive ? 700 : 600, textAlign: 'center', color: isActive ? 'var(--wm-sb-500)' : (s.status === 'pendiente' ? 'var(--wm-ns-300)' : 'var(--wm-ns-600)'), lineHeight: 1.2, fontFamily: 'var(--font-sans)' }}>{s.label}</div>
+                          {s.status === 'curso' && <span className="gm-chip gm-chip--active" style={{ marginTop: 4, fontSize: 9 }}>En curso</span>}
+                          {s.status === 'bloqueado' && <span className="gm-chip gm-chip--error" style={{ marginTop: 4, fontSize: 9, borderColor: 'var(--wm-error-500)', color: 'var(--wm-error-500)' }}>Bloqueado</span>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               {otherChildren}
             </main>
           </div>
@@ -5461,7 +5474,9 @@
             {screen === 'muestras' && <MuestrasScreen />}
             {screen === 'fichas' && <FichasScreen />}
             {screen === 'contramuestras' && <ContramuestrasScreen />}
+            {screen === 'manuales' && window.GMScreens.Manuales && React.createElement(window.GMScreens.Manuales, { go: navigate })}
             {screen === 'negociacion' && <NegociacionScreen />}
+            {screen === 'fichas_revisadas' && window.GMScreens.FichasRevisadas && React.createElement(window.GMScreens.FichasRevisadas, { go: navigate })}
             {screen === 'validacion' && <ValidacionScreen />}
             {screen === 'cierre' && <CierreScreen />}
             {screen === 'app4' && window.GMApp && React.createElement(window.GMApp)}

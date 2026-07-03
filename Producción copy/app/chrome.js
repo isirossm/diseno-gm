@@ -18,9 +18,11 @@
       ]},
       { no: 3, label: "Materiales", steps: [
         { id: "contramuestras", label: "Contramuestras", icon: "image", screen: "contramuestras" },
+        { id: "manuales",       label: "Manuales",       icon: "doc",   screen: "manuales" },
       ]},
       { no: 4, label: "Producción", steps: [
         { id: "negociacion",      label: "Negociación",      icon: "handshake",     screen: "negociacion" },
+        { id: "fichas_revisadas", label: "Fichas revisadas", icon: "doc",           screen: "fichas_revisadas" },
         { id: "validacion",       label: "Validación",       icon: "clipboardCheck", screen: "validacion" },
       ]},
     ],
@@ -187,5 +189,45 @@
     );
   }
 
-  window.GMChrome = { Masthead, Sidebar, FlowBar };
+  function FlowTimelineCard({ screen, go }) {
+    const steps = GM.steps;
+    return e("div", { className: "gm-card", style: { padding: "20px 24px", margin: "16px 24px 0 24px", flexShrink: 0 } },
+      e("div", { style: { display: "flex", alignItems: "center", marginBottom: 18 } },
+        e("h2", { className: "gm-card__title", style: { margin: 0, fontSize: 15 } }, "Flujo de la temporada"),
+        e("span", { style: { marginLeft: 10, fontSize: 12.5, color: "var(--wm-ns-300)" } }, steps.length + " pasos"),
+        e("div", { style: { marginLeft: "auto", display: "flex", gap: 14, fontSize: 11.5, color: "var(--wm-ns-400)" } },
+          [["Completado", "var(--wm-success-500)"], ["En curso", "var(--wm-sb-400)"], ["Pendiente", "var(--wm-ns-200)"], ["Bloqueado", "var(--wm-error-500)"]].map(([l, c]) =>
+            e("span", { key: l, style: { display: "flex", alignItems: "center", gap: 5 } },
+              e("span", { style: { width: 8, height: 8, borderRadius: "50%", background: c, display: "inline-block" } }),
+              l
+            )
+          )
+        )
+      ),
+      e("div", { style: { display: "flex", gap: 0, overflowX: "auto", paddingBottom: 6 } },
+        steps.map((s, i) => {
+          const c = statusColor2[s.status] || "var(--wm-ns-200)";
+          const done = s.status === "completado";
+          const isActive = s.screen === screen;
+          return e("div", { key: s.id, style: { flex: "1 1 0", minWidth: 88, position: "relative", display: "flex", flexDirection: "column", alignItems: "center" } },
+            i < steps.length - 1 && e("div", { style: { position: "absolute", top: 17, left: "50%", width: "100%", height: 3, background: done ? "var(--wm-success-500)" : "var(--wm-ns-100)", zIndex: 0 } }),
+            e("button", { onClick: () => go(s.screen), title: s.label, style: {
+              width: 36, height: 36, borderRadius: "50%", border: "2.5px solid " + (isActive ? "var(--wm-sb-400)" : c), zIndex: 1,
+              background: done ? c : "#fff", color: done ? "#fff" : (isActive ? "var(--wm-sb-400)" : c),
+              display: "grid", placeItems: "center", fontWeight: 700, fontSize: 13, cursor: "pointer",
+              boxShadow: (s.status === "curso" || isActive) ? "0 0 0 4px rgba(0,113,220,.18)" : "none",
+              transition: "all 0.15s"
+            } },
+              done ? "✓" : s.no
+            ),
+            e("div", { style: { marginTop: 8, fontSize: 11.5, fontWeight: isActive ? 700 : 600, textAlign: "center", color: isActive ? "var(--wm-sb-500)" : (s.status === "pendiente" ? "var(--wm-ns-300)" : "var(--wm-ns-600)"), lineHeight: 1.2 } }, s.label),
+            s.status === "curso" && e("span", { className: "gm-chip gm-chip--active", style: { marginTop: 4, fontSize: 9 } }, "En curso"),
+            s.status === "bloqueado" && e("span", { className: "gm-chip gm-chip--error", style: { marginTop: 4, fontSize: 9, borderColor: "var(--wm-error-500)", color: "var(--wm-error-500)" } }, "Bloqueado")
+          );
+        })
+      )
+    );
+  }
+
+  window.GMChrome = { Masthead, Sidebar, FlowBar, FlowTimelineCard };
 })();
