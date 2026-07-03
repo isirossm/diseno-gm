@@ -10,3 +10,7 @@ Escritorio - Acceso directo.lnk
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# Node dependencies
+node_modules/
+

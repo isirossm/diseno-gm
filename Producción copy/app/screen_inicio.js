@@ -72,19 +72,23 @@
           e("div", { style: { fontSize: 24, fontWeight: 800, color: "var(--wm-ns-600)", lineHeight: 1.1 } }, primary.label),
           e("div", { style: { fontSize: 12.5, color: "var(--wm-ns-400)", marginTop: 4 } },
             "Paso " + primary.no + " · Fase 2 · Diseño",
-            secondary.length > 0 && e("span", { style: { marginLeft: 10, color: "var(--wm-sb-400)", fontWeight: 600 } },
-              "+ " + secondary.map((s) => s.label).join(", ") + " también en curso"))),
+            secondary.length > 0 && e("button", {
+              onClick: () => go(secondary[0].screen),
+              style: {
+                marginLeft: 10,
+                color: "var(--wm-sb-400)",
+                fontWeight: 600,
+                background: "none",
+                border: "none",
+                padding: 0,
+                fontFamily: "inherit",
+                fontSize: "inherit",
+                cursor: "pointer"
+              }
+            }, "+ " + secondary.map((s) => s.label).join(", ") + " también en curso"))),
 
-        // Responsable — avatar circular
-        e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 5, flexShrink: 0 } },
-          e("div", { style: {
-            width: 44, height: 44, borderRadius: "50%",
-            background: o.bg, color: o.color,
-            display: "grid", placeItems: "center",
-            border: "2px solid " + o.color + "44",
-          } }, e(I[o.icon], { size: 20 })),
-          e("div", { style: { fontSize: 10.5, fontWeight: 700, color: o.color, textAlign: "center", whiteSpace: "nowrap" } }, o.label),
-          e("div", { style: { fontSize: 10, color: "var(--wm-ns-300)", textAlign: "center" } }, b.since)),
+        // Responsable — avatar circular removed
+        null,
 
         e(Chip, { variant: "active", label: "En curso" })),
 
@@ -135,7 +139,7 @@
 
       // ── CTA ──
       e("button", { onClick: () => go(primary.screen), className: "gm-btn gm-btn--lg",
-        style: { background: "var(--wm-spark-400)", color: "var(--wm-sb-500)", width: "100%", fontWeight: 700 } },
+        style: { background: "var(--wm-spark-400)", color: "var(--wm-sb-500)", alignSelf: "start", fontWeight: 700 } },
         "Ir a ", primary.label, e(I.arrowRight, { size: 18 })));
   }
 
@@ -165,7 +169,9 @@
                     e("div", { style: { display: "flex", gap: 8, marginTop: 9, alignItems: "center" } },
                       e("button", { className: "gm-btn gm-btn--sm gm-btn--primary", onClick: () => go(a.screen) }, "Resolver"),
                       e("button", { className: "gm-btn gm-btn--sm gm-btn--ghost", onClick: () => remove(a.id) }, "Descartar"),
-                      e("span", { style: { marginLeft: "auto", fontSize: 11, color: "var(--wm-ns-300)", display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "100px", flexShrink: 0 } }, e(I.box, { size: 12 }), a.step)))));
+                      e("span", { style: { marginLeft: "auto", fontSize: 11, color: "var(--wm-ns-300)", display: "flex", alignItems: "center", gap: 4, minWidth: 0, flexShrink: 1, maxWidth: "90px" } },
+                        e(I.box, { size: 12 }),
+                        e("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, a.step))))));
             })));
   }
 

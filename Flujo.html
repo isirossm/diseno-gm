@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -1700,7 +1700,7 @@
                   const theme = SEASON_THEME[c.name] || SEASON_THEME['Primavera–Verano 26'] || SEASON_THEME['Verano 26'];
                   return (
                     <div key={i} className="gm-coll"
-                      style={c.disabled ? { cursor: 'default' } : { cursor: 'pointer' }}
+                      style={c.disabled ? { filter: 'grayscale(100%)', opacity: 0.6, cursor: 'default' } : { cursor: 'pointer' }}
                       onClick={() => {
                         if (c.name === 'Primavera–Verano 26' || c.name === 'Verano 26') {
                           localStorage.setItem("gm_route", JSON.stringify({ screen: "inicio" }));
@@ -2495,7 +2495,6 @@
       { id: 'contramuestras', label: 'Contramuestras', no: 6, screen: 'contramuestras', status: 'pendiente' },
       { id: 'negociacion', label: 'Negociación', no: 7, screen: 'negociacion', status: 'pendiente' },
       { id: 'validacion', label: 'Validación', no: 8, screen: 'validacion', status: 'pendiente' },
-      { id: 'cierre', label: 'Cierre', no: 9, screen: 'cierre', status: 'pendiente' },
     ];
 
     const FLOW_ALERTS = [

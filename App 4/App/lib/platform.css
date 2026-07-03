@@ -182,10 +182,10 @@ button { font-family:inherit; cursor:pointer; }
   border-bottom:1px solid var(--wm-sb-600); z-index:20;
   color:#ffffff;
 }
-.gm-bar__crumb { color:rgba(255, 255, 255, 0.85); text-decoration:none; font-weight: 600; }
-.gm-bar__crumb:hover { color:#ffffff; text-decoration:underline; }
-.gm-bar__crumb.is-active { color:#ffffff; font-weight:700; }
-.gm-bar__sep { color:rgba(255, 255, 255, 0.4); }
+.gm-bar__crumb, .gm-bar .crumb, .gm-bar a { color:rgba(255, 255, 255, 0.85); text-decoration:none; font-weight: 600; }
+.gm-bar__crumb:hover, .gm-bar .crumb:hover, .gm-bar a:hover { color:#ffffff; text-decoration:underline; }
+.gm-bar__crumb.is-active, .gm-bar .crumb.is-active, .gm-bar .crumb.is-current { color:#ffffff; font-weight:700; }
+.gm-bar__sep, .gm-bar .sep { color:rgba(255, 255, 255, 0.4); }
 .gm-bar__spacer { flex:1; }
 .gm-bar__meta { color:rgba(255, 255, 255, 0.85); font-size:12.5px; display:flex; align-items:center; gap:7px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
 

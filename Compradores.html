@@ -3100,7 +3100,7 @@ const ModaMujer = ({ selectedStep = null }) =>
               const theme = SEASON_THEME[c.name] || SEASON_THEME['Verano 25'];
               return (
                 <div key={i} className="gm-coll"
-                  style={c.disabled ? { opacity: 0.4, cursor: 'not-allowed', filter: 'grayscale(0.5)', pointerEvents: 'none' } : {}}>
+                  style={c.disabled ? { opacity: 0.6, cursor: 'not-allowed', filter: 'grayscale(100%)', pointerEvents: 'none' } : {}}>
                   <div className="gm-coll__img" style={{ background: theme.bg, color: '#3889a4' }}>
                     <div className="gm-coll__img-icon" style={{ color: theme.fg }}>
                       <SeasonIcon name={theme.icon} size={44} />

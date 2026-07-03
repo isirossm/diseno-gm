@@ -27,11 +27,9 @@
       ]},
       { no: 3, label: "Materiales", steps: [
         { id: "contramuestras", label: "Contramuestras", icon: "image", screen: "contramuestras" },
-        { id: "manuales",       label: "Manual",         icon: "box",   screen: "manuales" },
       ]},
       { no: 4, label: "Producción", steps: [
         { id: "negociacion",      label: "Negociación",      icon: "handshake",     screen: "negociacion" },
-        { id: "fichas_revisadas", label: "Fichas revisadas", icon: "docCheck",      screen: "fichas_revisadas" },
         { id: "validacion",       label: "Validación",       icon: "clipboardCheck", screen: "validacion" },
       ]},
     ],

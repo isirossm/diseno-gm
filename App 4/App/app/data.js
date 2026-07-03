@@ -48,10 +48,8 @@ window.GM = (function () {
     { id: "muestras",       no: 4, label: "Muestras",       phase: 2, status: "curso",      screen: "muestras" },
     { id: "fichas",         no: 5, label: "Fichas",         phase: 2, status: "curso",      screen: "fichas" },
     { id: "contramuestras", no: 6, label: "Contramuestras", phase: 3, status: "pendiente",  screen: "contramuestras" },
-    { id: "manuales",       no: 7, label: "Manuales",       phase: 3, status: "bloqueado",  screen: "manuales" },
-    { id: "negociacion",       no: 8,  label: "Negociación",       phase: 4, status: "pendiente",  screen: "negociacion" },
-    { id: "fichas_revisadas",  no: 9,  label: "Fichas revisadas",  phase: 4, status: "pendiente",  screen: "fichas_revisadas" },
-    { id: "validacion",        no: 10, label: "Validación",        phase: 4, status: "pendiente",  screen: "validacion" },
+    { id: "negociacion",    no: 7, label: "Negociación",    phase: 4, status: "pendiente",  screen: "negociacion" },
+    { id: "validacion",     no: 8, label: "Validación",     phase: 4, status: "pendiente",  screen: "validacion" },
   ];
 
   // ---- Quién tiene la pelota ----

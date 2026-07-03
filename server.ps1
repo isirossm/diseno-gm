@@ -46,6 +46,50 @@ $listener.Prefixes.Add($url)
 try {
     $listener.Start()
     
+    # Iniciar túnel de Cloudflare de fondo
+    Write-Host "Generando link público temporal..." -ForegroundColor Cyan
+    $tunnelJob = Start-Job -ScriptBlock {
+        param($p)
+        $env:NODE_TLS_REJECT_UNAUTHORIZED = "0"
+        $env:NODE_NO_WARNINGS = "1"
+        cmd /c "npx cloudflared tunnel --url http://127.0.0.1:$p 2>&1"
+    } -ArgumentList $port
+
+    # Esperar y extraer el link
+    $tunnelUrl = $null
+    $attempts = 0
+    while ($attempts -lt 15 -and -not $tunnelUrl) {
+        Start-Sleep -Seconds 1
+        $output = Receive-Job -Job $tunnelJob -Keep
+        foreach ($line in $output) {
+            $lineStr = [string]$line
+            if ($lineStr -match "(https://[a-zA-Z0-9\-]+\.trycloudflare\.com)") {
+                $tunnelUrl = $Matches[1]
+                break
+            }
+        }
+        $attempts++
+    }
+
+    if ($tunnelUrl) {
+        $publicUrl = "${tunnelUrl}/Flujo.html"
+        Write-Host ""
+        Write-Host "==================================================" -ForegroundColor Green
+        Write-Host "         LINK DE COMPARTIR GENERADO" -ForegroundColor Green
+        Write-Host "==================================================" -ForegroundColor Green
+        Write-Host "Usa este link en cualquier dispositivo (celular, etc.):" -ForegroundColor Yellow
+        Write-Host "-> $publicUrl" -ForegroundColor Cyan
+        Write-Host ""
+        try {
+            Set-Clipboard -Value $publicUrl
+            Write-Host "(¡Copiado automáticamente al portapapeles!)" -ForegroundColor Gray
+        } catch {}
+        Write-Host "==================================================" -ForegroundColor Green
+        Write-Host ""
+    } else {
+        Write-Host "No se pudo generar el link público automáticamente." -ForegroundColor Red
+    }
+
     # Abrir el navegador automáticamente en Flujo.html
     Write-Host "Abriendo el navegador en: ${url}Flujo.html..." -ForegroundColor Green
     Start-Process "${url}Flujo.html"
@@ -109,5 +153,9 @@ catch {
 finally {
     if ($listener) {
         $listener.Close()
+    }
+    if ($tunnelJob) {
+        Stop-Job -Job $tunnelJob
+        Remove-Job -Job $tunnelJob
     }
 }

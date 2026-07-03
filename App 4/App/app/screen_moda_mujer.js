@@ -65,7 +65,7 @@
     return e("div", {
       className: "gm-coll" + (col.disabled ? "" : " gm-coll--clickable"),
       onClick: col.disabled ? undefined : onClick,
-      style: col.disabled ? { opacity: 0.4, filter: "grayscale(0.5)", cursor: "not-allowed" } : { cursor: "pointer" },
+      style: col.disabled ? { opacity: 0.6, filter: "grayscale(100%)", cursor: "not-allowed" } : { cursor: "pointer" },
     },
       // Imagen de colección
       e("div", { className: "gm-coll__img", style: (col.name === "Primavera–Verano 26" || col.name === "Verano 26")
