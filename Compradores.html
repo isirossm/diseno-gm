@@ -2127,6 +2127,99 @@ const AlertList = ({ items, link, title = 'Alertas activas' }) =>
 
 
 // ─────────────────────────────────────────────────────────────
+// TodoList module
+// ─────────────────────────────────────────────────────────────
+const TodoList = () => {
+  const [tasks, setTasks] = React.useState([
+    { id: 1, title: 'Confirmar muestras Vestidos REF-038', due: 'Hoy', completed: false, isToday: true },
+    { id: 2, title: 'Revisar tech pack Blusas REF-019', due: 'Mañana', completed: false },
+    { id: 3, title: 'Sign-off tabla de tallas Verano 25', due: '15 feb', completed: false },
+    { id: 4, title: 'Entregar brief Otoño 25', due: '01 mar', completed: false },
+    { id: 5, title: 'Aprobar fichas técnicas Faldas', due: 'Completado', completed: true }
+  ]);
+
+  const toggleTask = (id) => {
+    setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed, due: t.completed ? t.originalDue || t.due : 'Completado' } : t));
+  };
+
+  return (
+    <div className="gm-card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+        <div style={{ fontWeight: 700, fontSize: 15 }}>Tareas pendientes</div>
+        <button style={{ fontSize: 12.5, color: 'var(--wm-sb-400)', background: 'none', border: 'none', fontFamily: 'inherit', cursor: 'pointer', fontWeight: 600 }}>Ver todas</button>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {tasks.map((t, i) => {
+          const showCompleted = t.completed;
+          const dueText = showCompleted ? 'Completado' : t.due;
+          const dueColor = showCompleted ? 'var(--wm-ns-300)' : t.isToday ? 'var(--wm-error-500)' : 'var(--wm-ns-400)';
+          
+          return (
+            <div key={t.id} style={{
+              display: 'flex',
+              gap: 14,
+              alignItems: 'flex-start',
+              padding: '12px 0',
+              borderBottom: i < tasks.length - 1 ? '1px solid var(--wm-ns-100)' : 'none'
+            }}>
+              {/* Custom Checkbox */}
+              <div 
+                onClick={() => toggleTask(t.id)}
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 5,
+                  border: showCompleted ? 'none' : '2px solid var(--wm-ns-200)',
+                  background: showCompleted ? '#8cc37f' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                  marginTop: 2,
+                  transition: 'background 0.15s, border-color 0.15s',
+                }}
+              >
+                {showCompleted && (
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
+              
+              {/* Task details */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  fontWeight: 700,
+                  fontSize: '13.5px',
+                  lineHeight: 1.35,
+                  color: showCompleted ? 'var(--wm-ns-300)' : 'var(--wm-ns-600)',
+                  textDecoration: showCompleted ? 'line-through' : 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.15s'
+                }} onClick={() => toggleTask(t.id)}>
+                  {t.title}
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  color: dueColor,
+                  marginTop: 3,
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: t.isToday && !showCompleted ? '600' : 'normal'
+                }}>
+                  {dueText}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+
+// ─────────────────────────────────────────────────────────────
 // Step bar — 6-segment pipeline for category cards
 // ─────────────────────────────────────────────────────────────
 const WORKFLOW_STEPS = ['Brief', 'Diseño', 'Negociación', 'Contramuestra', 'Producción', 'Calidad'];
@@ -2280,12 +2373,12 @@ Object.assign(window, {
   Avatar, Btn, Field, Search, Sev, Sem, Chip, Progress,
   CardHead, Kanban, AlertList, AlertIcon, CategoryCard, CategoryIcon,
   StepBar, TeamsIcon, WORKFLOW_STEPS,
-  KANBAN_COLUMNS, SAMPLE_TASKS, initials, NAV_SUBCATS
+  KANBAN_COLUMNS, SAMPLE_TASKS, initials, NAV_SUBCATS, TodoList
 });
 </script>
   <script type="text/babel">
 // screens.jsx
-/* global React, SparkMark, WalmartWord, Masthead, SubBar, Avatar, Btn, Field, Search, Sev, Sem, Chip, Progress, CardHead, Kanban, AlertList, CategoryCard, initials */
+/* global React, SparkMark, WalmartWord, Masthead, SubBar, Avatar, Btn, Field, Search, Sev, Sem, Chip, Progress, CardHead, Kanban, AlertList, CategoryCard, initials, TodoList */
 
 // ─────────────────────────────────────────────────────────────
 // Pantalla 1 — Splash
@@ -3171,6 +3264,7 @@ const ModaMujer = ({ selectedStep = null }) =>
                 { level: 'warn', type: 'muestra',    title: 'Vestidos — aprobar muestra final', desc: 'Pendiente sign-off de Calidad', scope: 'Vestidos' },
                 { level: 'warn', type: 'tallas',     title: 'Tops — atraso 2 días', desc: 'Tech pack en revisión', scope: 'Tops' }
               ]} />
+            <TodoList />
             <div className="gm-card">
               <CardHead title="Accesos rápidos" />
               <div className="stack-sm">

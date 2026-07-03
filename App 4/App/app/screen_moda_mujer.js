@@ -4,7 +4,7 @@
 (function () {
   const e = React.createElement;
   const I = window.GMIcon;
-  const { Btn, AlertList, SeasonIcon, SEASON_THEME, ProgressBar, Chip } = window.GMUI;
+  const { Btn, AlertList, SeasonIcon, SEASON_THEME, ProgressBar, Chip, TodoList } = window.GMUI;
 
   const COLLECTIONS = [
     { name: "Primavera–Verano 26", from: "01 nov 25", to: "15 feb 26", pct: 72, active: true,  disabled: false },
@@ -159,8 +159,11 @@
                   filtered.map((p, i) =>
                     e(PrendaRow, { key: i, p, onDetalle: () => go("inicio") })))))),
 
-          // Alertas de la colección
-          e(AlertList, { items: COL_ALERTS, title: "Alertas de la colección", link: "Ver todas" }))));
+          // Alertas de la colección + Tareas pendientes (columna derecha)
+          e("div", { style: { display: "flex", flexDirection: "column", gap: 20 } },
+            e(AlertList, { items: COL_ALERTS, title: "Alertas de la colección", link: "Ver todas" }),
+            e(TodoList, {})
+          ))));
   }
 
   window.GMScreens = window.GMScreens || {};

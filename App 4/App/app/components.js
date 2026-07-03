@@ -401,6 +401,88 @@
         })));
   }
 
+  function TodoList() {
+    const [tasks, setTasks] = React.useState([
+      { id: 1, title: "Confirmar muestras Vestidos REF-038", due: "Hoy", completed: false, isToday: true },
+      { id: 2, title: "Revisar tech pack Blusas REF-019", due: "Mañana", completed: false },
+      { id: 3, title: "Sign-off tabla de tallas Verano 25", due: "15 feb", completed: false },
+      { id: 4, title: "Entregar brief Otoño 25", due: "01 mar", completed: false },
+      { id: 5, title: "Aprobar fichas técnicas Faldas", due: "Completado", completed: true }
+    ]);
+
+    const toggleTask = (id) => {
+      setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed, due: t.completed ? t.originalDue || t.due : "Completado" } : t));
+    };
+
+    return e("div", { className: "gm-card" },
+      e("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 } },
+        e("div", { style: { fontWeight: 700, fontSize: 15 } }, "Tareas pendientes"),
+        e("button", { style: { fontSize: 12.5, color: "var(--wm-sb-400)", background: "none", border: "none", fontFamily: "inherit", cursor: "pointer", fontWeight: 600 } }, "Ver todas")),
+      e("div", { style: { display: "flex", flexDirection: "column" } },
+        tasks.map((t, i) => {
+          const showCompleted = t.completed;
+          const dueText = showCompleted ? "Completado" : t.due;
+          const dueColor = showCompleted ? "var(--wm-ns-300)" : t.isToday ? "var(--wm-error-500)" : "var(--wm-ns-400)";
+          
+          return e("div", { key: t.id, style: {
+            display: "flex",
+            gap: 14,
+            alignItems: "flex-start",
+            padding: "12px 0",
+            borderBottom: i < tasks.length - 1 ? "1px solid var(--wm-ns-100)" : "none"
+          } },
+            // Checkbox
+            e("div", {
+              onClick: () => toggleTask(t.id),
+              style: {
+                width: 20,
+                height: 20,
+                borderRadius: 5,
+                border: showCompleted ? "none" : "2px solid var(--wm-ns-200)",
+                background: showCompleted ? "#8cc37f" : "transparent",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                flexShrink: 0,
+                marginTop: 2,
+                transition: "background 0.15s, border-color 0.15s",
+              }
+            },
+              showCompleted && e("svg", { width: 12, height: 12, viewBox: "0 0 24 24", fill: "none", stroke: "white", strokeWidth: 4, strokeLinecap: "round", strokeLinejoin: "round" },
+                e("polyline", { points: "20 6 9 17 4 12" })
+              )
+            ),
+            // Details
+            e("div", { style: { flex: 1, minWidth: 0 } },
+              e("div", {
+                onClick: () => toggleTask(t.id),
+                style: {
+                  fontWeight: 700,
+                  fontSize: "13.5px",
+                  lineHeight: 1.35,
+                  color: showCompleted ? "var(--wm-ns-300)" : "var(--wm-ns-600)",
+                  textDecoration: showCompleted ? "line-through" : "none",
+                  cursor: "pointer",
+                  transition: "color 0.15s"
+                }
+              }, t.title),
+              e("div", {
+                style: {
+                  fontSize: "12px",
+                  color: dueColor,
+                  marginTop: 3,
+                  fontFamily: "var(--font-sans)",
+                  fontWeight: t.isToday && !showCompleted ? "600" : "normal"
+                }
+              }, dueText)
+            )
+          );
+        })
+      )
+    );
+  }
+
   // Barra de progreso horizontal con % y barra
   function ProgressBar({ pct, disabled }) {
     return e("div", { style: { display: "flex", flexDirection: "column", gap: 4 } },
@@ -505,6 +587,6 @@
   window.GMUI = {
     Chip, Btn, IconBtn, ProdImg, Swatch, PageHead, Metric, Progress, ProgressBar,
     EmailThread, AIPanel, Editable, Empty, CLP, CHIP, DOT,
-    AdvanceBar, ApprovalPanel, AlertList, SeasonIcon, SEASON_THEME, CategoryCard,
+    AdvanceBar, ApprovalPanel, AlertList, SeasonIcon, SEASON_THEME, CategoryCard, TodoList
   };
 })();
