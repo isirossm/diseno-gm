@@ -46,7 +46,11 @@
     }
     function commitField(label, val) { sync(label + " actualizado", s.id + " · " + val, "edit"); }
 
-    return e(window.IPadDevice, { width: 1180, height: 810 },
+    return e("div", { style: {
+      width: "100%", height: 810, borderRadius: 16, overflow: "hidden", background: "#fff",
+      border: "1px solid var(--wm-ns-200)", boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+      position: "relative", display: "flex", flexDirection: "column",
+      fontFamily: "var(--font-sans)", WebkitFontSmoothing: "antialiased" } },
       // header
       e("div", { style: { flex: "0 0 auto", background: BLUE, color: "#fff", padding: "12px 22px", display: "flex", alignItems: "center", gap: 14 } },
         e("svg", { width: 26, height: 26, viewBox: "0 0 139.762 157.183", fill: SPARK, style: { flex: "0 0 auto" } },
@@ -120,10 +124,10 @@
   }
 
   function NegociacionField() {
-    return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" } },
+    return e("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", width: "100%" } },
       e(NegociacionApp),
       e("div", { style: { marginTop: 16, textAlign: "center", maxWidth: 640 } },
-        e("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--wm-sb-400)" } }, "iPad · en origen"),
+        e("div", { style: { fontSize: 11, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", color: "var(--wm-sb-400)" } }, "Negociación en origen"),
         e("div", { style: { fontSize: 16, fontWeight: 700, marginTop: 2 } }, "Revisión y negociación de la prenda"),
         e("div", { style: { fontSize: 12.5, color: "var(--wm-ns-300)", marginTop: 4, lineHeight: 1.5 } }, "Valentina anota sobre la imagen y edita los campos que cambian. Cada modificación sincroniza en tiempo real con la pantalla Negociación de la plataforma.")));
   }
