@@ -279,10 +279,10 @@
     // Subcategorías por categoría — se muestran en el menú hover del masthead
     const NAV_SUBCATS = {
       moda: [
-        { id: 'mujer', label: 'Moda Mujer' },
-        { id: 'hombre', label: 'Moda Hombre', disabled: true },
-        { id: 'infantil', label: 'Moda Infantil', disabled: true },
-        { id: 'baby', label: 'Moda Baby', disabled: true },
+        { id: 'mujer', label: 'Vestuario Mujer' },
+        { id: 'hombre', label: 'Vestuario Hombre', disabled: true },
+        { id: 'infantil', label: 'Vestuario Infantil', disabled: true },
+        { id: 'baby', label: 'Vestuario Baby', disabled: true },
         { id: 'calzado', label: 'Calzado', disabled: true },
         { id: 'interior', label: 'Ropa Interior', disabled: true }],
 
@@ -309,7 +309,7 @@
 
     const NAV_ITEMS = [
       { id: 'inicio', label: 'Inicio' },
-      { id: 'moda', label: 'Moda' },
+      { id: 'moda', label: 'Vestuario' },
       { id: 'casa', label: 'Casa', disabled: true },
       { id: 'electro', label: 'Electro', disabled: true },
       { id: 'hardlines', label: 'Hardlines', disabled: true }];
@@ -752,7 +752,7 @@
               const showCompleted = t.completed;
               const dueText = showCompleted ? 'Completado' : t.due;
               const dueColor = showCompleted ? 'var(--wm-ns-300)' : t.isToday ? 'var(--wm-error-500)' : 'var(--wm-ns-400)';
-              
+
               return (
                 <div key={t.id} style={{
                   display: 'flex',
@@ -762,7 +762,7 @@
                   borderBottom: i < tasks.length - 1 ? '1px solid var(--wm-ns-100)' : 'none'
                 }}>
                   {/* Custom Checkbox */}
-                  <div 
+                  <div
                     onClick={() => toggleTask(t.id)}
                     style={{
                       width: 20,
@@ -785,7 +785,7 @@
                       </svg>
                     )}
                   </div>
-                  
+
                   {/* Task details */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
@@ -4291,7 +4291,46 @@
     };
 
     // ── Navigation-aware Masthead ─────────────────────────────────────────────────
-    const NAV_ITEMS_P = [];
+    const NAV_ITEMS_P = [
+      { id: 'inicio', label: 'Inicio' },
+      { id: 'moda', label: 'Vestuario' },
+      { id: 'casa', label: 'Casa', disabled: true },
+      { id: 'electro', label: 'Electro', disabled: true },
+      { id: 'hardlines', label: 'Hardlines', disabled: true }
+    ];
+
+    const FLOW_WORKFLOW = [
+      {
+        phase: 'Fase 1 · Investigación',
+        steps: [
+          { id: 'tendencias', label: 'Tendencias', no: 1, icon: 'trend', screen: 'tendencias' },
+          { id: 'viaje', label: 'Viaje', no: 2, icon: 'plane', screen: 'viaje' },
+        ]
+      },
+      {
+        phase: 'Fase 2 · Diseño',
+        steps: [
+          { id: 'coleccion', label: 'Colección', no: 3, icon: 'layers', screen: 'coleccion' },
+          { id: 'muestras', label: 'Muestras', no: 4, icon: 'box', screen: 'muestras' },
+          { id: 'fichas', label: 'Fichas', no: 5, icon: 'doc', screen: 'fichas' },
+        ]
+      },
+      {
+        phase: 'Fase 3 · Materiales',
+        steps: [
+          { id: 'contramuestras', label: 'Contramuestras', no: 6, icon: 'image', screen: 'contramuestras' },
+          { id: 'manuales', label: 'Manual', no: 7, icon: 'box', screen: 'manuales' },
+        ]
+      },
+      {
+        phase: 'Fase 4 · Producción',
+        steps: [
+          { id: 'negociacion', label: 'Negociación', no: 8, icon: 'handshake', screen: 'negociacion' },
+          { id: 'fichas_revisadas', label: 'Fichas revisadas', no: 9, icon: 'docCheck', screen: 'fichas_revisadas' },
+          { id: 'validacion', label: 'Validación', no: 10, icon: 'clipboardCheck', screen: 'validacion' },
+        ]
+      }
+    ];
 
     const MASTHEAD_SCREEN = { inicio: 'panel', moda: 'moda' };
 
@@ -4305,8 +4344,8 @@
     ];
 
     const CTX_LABEL = {
-      'moda': 'Moda',
-      'moda-mujer': 'Moda Mujer',
+      'moda': 'Vestuario',
+      'moda-mujer': 'Vestuario Mujer',
     };
 
     // Maps router screen → nav item id, so active state is always correct
@@ -4362,6 +4401,19 @@
       const navActive = SCREEN_TO_NAV[currentScreen] || active;
       const ctxLabel = CTX_LABEL[currentScreen] || null;
 
+      const I = window.GMIcon || {};
+      const GridIcon = I.grid || (() => null);
+      const HangerIcon = I.hanger || (() => null);
+      const TrendIcon = I.trend || (() => null);
+      const PlaneIcon = I.plane || (() => null);
+      const LayersIcon = I.layers || (() => null);
+      const BoxIcon = I.box || (() => null);
+      const DocIcon = I.doc || (() => null);
+      const ImageIcon = I.image || (() => null);
+      const HandshakeIcon = I.handshake || (() => null);
+      const DocCheckIcon = I.docCheck || (() => null);
+      const ClipboardCheckIcon = I.clipboardCheck || (() => null);
+
       // Close dropdown on outside click
       React.useEffect(() => {
         if (!toolsOpen) return;
@@ -4392,274 +4444,180 @@
         navigate(toolId);
       };
 
+      // Navega a una pantalla del flujo de producción en App 4
+      const goToFlowScreen = (screenId) => {
+        localStorage.setItem('gm_route', JSON.stringify({ screen: screenId }));
+        if (window.__app && window.__app.screen === 'app4') {
+          window.top.dispatchEvent(new CustomEvent('gm_navigate_iframe', { detail: { screen: screenId } }));
+        } else {
+          navigate('app4');
+        }
+      };
+
       return (
         <header className="gm-mast">
           <div className="gm-mast__logo" onClick={() => navigate('panel')} style={{ cursor: 'pointer' }}>
             <img src="Img/Logo walmart chile.png" alt="Walmart Chile" style={{ height: '40px', display: 'block' }} />
           </div>
           <nav className="gm-mast__nav" style={{ flex: 1 }}>
-            {/* Categorías dropdown container */}
-            <div className="gm-mast__nav-wrap" ref={catWrapRef}>
+
+            {/* Menú de Categorías con dropdown hover y submenú */}
+            <div className="gm-mast__nav-group" style={{ marginRight: 16, position: 'relative' }}>
               <button
-                type="button"
                 className="gm-mast__nav-item"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
-                  padding: '8px 18px',
-                  borderRadius: 9999,
-                  border: catMenuOpen ? '2px solid #ffffff' : '2px solid rgba(255, 255, 255, 0.7)',
-                  background: catMenuOpen ? '#ffffff' : 'rgba(255, 255, 255, 0.08)',
-                  color: catMenuOpen ? 'var(--wm-sb-400)' : '#ffffff',
-                  fontWeight: 700,
-                  fontSize: 14,
+                  gap: '8px',
+                  height: '40px',
+                  padding: '0 20px',
+                  border: '2px solid rgba(255, 255, 255, 0.7)',
+                  background: 'transparent',
+                  color: '#fff',
+                  fontSize: '15px',
+                  fontWeight: '700',
+                  borderRadius: '20px',
                   cursor: 'pointer',
-                  height: 38,
-                  transition: 'background 0.15s, color 0.15s, border-color 0.15s',
-                  fontFamily: 'var(--font-sans)'
+                  transition: 'background .12s ease, border-color .12s ease'
                 }}
-                onClick={() => setCatMenuOpen(o => !o)}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                  e.currentTarget.style.borderColor = '#fff';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.7)';
+                }}
               >
-                <GridIcon size={16} color={catMenuOpen ? 'var(--wm-sb-400)' : '#ffffff'} />
-                Categorías
+                <GridIcon size={18} />
+                <span>Categorías</span>
               </button>
 
-              {catMenuOpen && (
-                <div className="gm-mast__submenu" style={{
-                  position: 'absolute',
-                  top: 'calc(100% + 6px)',
-                  left: 0,
-                  display: 'flex',
-                  padding: 0,
-                  background: '#ffffff',
-                  borderRadius: 12,
-                  border: '1px solid var(--wm-ns-200)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.16)',
-                  zIndex: 300,
-                  overflow: 'hidden',
-                  minWidth: 520,
-                  opacity: 1,
-                  visibility: 'visible',
-                  transform: 'translateY(0)'
-                }}>
-                  {/* Left Column: Category Areas */}
-                  <div style={{
-                    width: 200,
-                    borderRight: '1px solid var(--wm-ns-100)',
-                    background: '#fcfcfd',
-                    padding: '8px 0'
-                  }}>
-                    {CAT_AREAS.map(area => {
-                      const isActive = hoveredCat === area.id;
-                      return (
-                        <div
-                          key={area.id}
-                          onMouseEnter={() => setHoveredCat(area.id)}
-                          onClick={() => {
-                            if (area.id === 'moda') {
-                              setCatMenuOpen(false);
-                              navigate('moda');
-                            }
-                          }}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '10px 16px',
-                            cursor: 'pointer',
-                            background: isActive ? 'var(--wm-sb-200)' : 'transparent',
-                            color: isActive ? 'var(--wm-sb-500)' : 'var(--wm-ns-600)',
-                            fontWeight: isActive ? 700 : 500,
-                            fontSize: 13.5,
-                            transition: 'background 0.1s, color 0.1s'
-                          }}
-                        >
-                          <span>{area.label}</span>
-                          <span style={{ fontSize: 12, opacity: isActive ? 1 : 0.4 }}>›</span>
-                        </div>
-                      );
-                    })}
-                  </div>
+              <div className="gm-mega" role="menu" style={{ width: '300px' }}>
+                <div className="gm-mega__head">VESTUARIO</div>
 
-                  {/* Right Column: Subcategories list */}
-                  <div style={{
-                    flex: 1,
-                    padding: '12px 16px',
-                    minWidth: 300,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 4
-                  }}>
-                    <div style={{
-                      fontSize: 10.5,
-                      fontWeight: 700,
-                      color: 'var(--wm-ns-400)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '.06em',
-                      marginBottom: 6,
-                      paddingLeft: 8
-                    }}>
-                      {hoveredCat}
+                {/* Vestuario Mujer */}
+                <div className="gm-mega__item is-active" style={{ cursor: 'pointer' }} onClick={() => goToFlowScreen('inicio')}>
+                  <HangerIcon size={18} style={{ color: 'var(--wm-sb-400)' }} />
+                  <span style={{ flex: 1 }}>Vestuario Mujer</span>
+                  <span className="arr">›</span>
+
+                  {/* Flyout Submenu */}
+                  <div className="gm-mega__sub" role="menu" style={{ width: '280px' }}>
+                    <div className="gm-mega__head" style={{ marginBottom: 8 }}>FLUJO DE TRABAJO</div>
+
+                    {/* Fase 1 */}
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--wm-sb-400)', padding: '6px 12px 4px', fontFamily: 'var(--font-sans)', textTransform: 'uppercase' }}>
+                      Fase 1 · Investigación
                     </div>
-
-                    {(NAV_SUBCATS[hoveredCat] || []).map(sub => {
-                      const isSubAllowed = isScreenAllowed(user, sub.id === 'mujer' ? 'moda-mujer' : 'moda');
-                      const isSubDisabled = sub.disabled || !isSubAllowed;
-                      return (
-                        <a
-                          key={sub.id}
-                          href="#"
-                          className={`gm-mast__sub-item${isSubDisabled ? ' is-disabled' : ''}`}
-                          role="menuitem"
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '8px 12px',
-                            borderRadius: 6,
-                            textDecoration: 'none',
-                            color: isSubDisabled ? 'var(--wm-ns-300)' : 'var(--wm-ns-600)',
-                            fontSize: 13,
-                            fontWeight: 500,
-                            background: 'transparent',
-                            pointerEvents: isSubDisabled ? 'none' : 'auto',
-                            transition: 'background 0.1s, color 0.1s'
-                          }}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCatMenuOpen(false);
-                            navigate(sub.id === 'mujer' ? 'moda-mujer' : 'moda');
-                          }}
-                        >
-                          <span>{sub.label} {!isSubAllowed && '🔒'}</span>
-                          {sub.disabled ? (
-                            <span style={{
-                              fontSize: 9.5,
-                              fontWeight: 700,
-                              padding: '2px 7px',
-                              borderRadius: 20,
-                              background: 'var(--wm-ns-100)',
-                              color: 'var(--wm-ns-400)',
-                              lineHeight: 1
-                            }}>
-                              próximamente
-                            </span>
-                          ) : (
-                            <span style={{ color: 'var(--wm-sb-400)', fontSize: 14 }}>›</span>
-                          )}
-                        </a>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-            {NAV_ITEMS_P.map((n) => {
-              // ── Herramientas — same submenu style as Moda ───────────────
-              if (n.id === 'herramientas') {
-                return (
-                  <div key={n.id} className="gm-mast__nav-wrap" ref={toolsWrapRef}>
-                    <button
-                      className={`gm-mast__nav-item${navActive === 'herramientas' ? ' is-active' : ''}`}
-                      onClick={() => setToolsOpen(o => !o)}
-                    >
-                      {n.label}
-                      <span className="gm-mast__nav-caret" aria-hidden="true">▾</span>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('tendencias'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#c1c1c1' }}></span>
+                      <TrendIcon size={16} />
+                      <span className="gm-flow-item__label">Tendencias</span>
+                      <span className="gm-flow-item__step">Paso 1</span>
                     </button>
-                    <div className="gm-mast__submenu" role="menu" style={{
-                      position: 'fixed', top: 58, right: 8, left: 'auto',
-                      ...(toolsOpen ? { opacity: 1, visibility: 'visible', transform: 'translateY(0)' } : {})
-                    }}>
-                      <div className="gm-mast__submenu-head">Herramientas</div>
-                      {ctxLabel && (
-                        <div style={{ margin: '0 10px 4px', padding: '5px 8px', background: 'var(--wm-sb-050)', borderRadius: 5, display: 'flex', alignItems: 'center', gap: 6 }}>
-                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--wm-sb-400)', flexShrink: 0 }}></span>
-                          <span style={{ fontSize: 11, color: 'var(--wm-sb-600)', fontFamily: 'var(--font-sans)', fontWeight: 600 }}>Contexto: {ctxLabel}</span>
-                        </div>
-                      )}
-                      {TOOL_ITEMS.map(tool => (
-                        <div key={tool.id} className="gm-mast__sub-wrap">
-                          <a href="#" className="gm-mast__sub-item" role="menuitem"
-                            onClick={(e) => { e.preventDefault(); handleToolNav(tool.id); }}>
-                            <span>{tool.label} {tool.sub}</span>
-                            <span className="gm-mast__sub-chev">›</span>
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              }
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('viaje'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <PlaneIcon size={16} />
+                      <span className="gm-flow-item__label">Viaje</span>
+                      <span className="gm-flow-item__step">Paso 2</span>
+                    </button>
 
-              // ── Regular nav items ───────────────────────────────────────
-              const isAllowed = isScreenAllowed(user, n.id);
-              const isDisabled = n.disabled || !isAllowed;
-              const subs = NAV_SUBCATS[n.id];
-              const hasSubs = Array.isArray(subs) && subs.length > 0;
-              return (
-                <div key={n.id} className="gm-mast__nav-wrap" style={n.id === 'inicio' ? { marginLeft: 48 } : undefined}>
-                  <button
-                    className={`gm-mast__nav-item${n.id === navActive ? ' is-active' : ''}${isDisabled ? ' is-disabled' : ''}`}
-                    disabled={isDisabled}
-                    onClick={isDisabled ? undefined : () => navigate(MASTHEAD_SCREEN[n.id] || 'panel')}
-                    title={!isAllowed ? 'Tu perfil no tiene permisos para esta sección' : undefined}
-                  >
-                    {n.label}
-                    {hasSubs ? <span className="gm-mast__nav-caret" aria-hidden="true">▾</span> : null}
-                    {!isAllowed && <span style={{ fontSize: 10, marginLeft: 4 }}>🔒</span>}
-                  </button>
-                  {hasSubs && (
-                    <div className="gm-mast__submenu" role="menu">
-                      <div className="gm-mast__submenu-head">{n.label}</div>
-                      {subs.map((s) => {
-                        const isSubAllowed = isScreenAllowed(user, s.id === 'mujer' ? 'moda-mujer' : 'moda');
-                        const isSubDisabled = s.disabled || !isSubAllowed;
-                        const hasFlyout = s.id === 'mujer' && !s.disabled && isSubAllowed;
-                        return (
-                          <div key={s.id} className="gm-mast__sub-wrap">
-                            <a
-                              href="#"
-                              className={`gm-mast__sub-item${isSubDisabled ? ' is-disabled' : ''}`}
-                              role="menuitem"
-                              onClick={isSubDisabled ? undefined : (e) => {
-                                e.preventDefault();
-                                navigate(s.id === 'mujer' ? 'moda-mujer' : 'moda');
-                              }}
-                              title={!isSubAllowed ? 'Tu perfil no tiene permisos para esta sección' : undefined}
-                            >
-                              <span>{s.label} {!isSubAllowed && '🔒'}</span>
-                              {s.disabled
-                                ? <span className="gm-mast__sub-chip">próximamente</span>
-                                : <span className="gm-mast__sub-chev">›</span>}
-                            </a>
-                            {hasFlyout && (
-                              <div className="gm-mast__subflyout" role="menu">
-                                <div className="gm-mast__flyout-head">Flujo de trabajo</div>
-                                {FASES_NAV.map((fase, idx) => (
-                                  <button
-                                    key={fase}
-                                    className="gm-mast__flyout-step"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      window.__app?.setStep?.(fase);
-                                      navigate('moda-mujer');
-                                    }}
-                                  >
-                                    <span>{fase}</span>
-                                    <span className="gm-mast__flyout-num">Paso {idx + 1}</span>
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
+                    {/* Fase 2 */}
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--wm-sb-400)', padding: '10px 12px 4px', fontFamily: 'var(--font-sans)', textTransform: 'uppercase' }}>
+                      Fase 2 · Diseño
                     </div>
-                  )}
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('coleccion'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <LayersIcon size={16} />
+                      <span className="gm-flow-item__label">Colección</span>
+                      <span className="gm-flow-item__step">Paso 3</span>
+                    </button>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('muestras'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <BoxIcon size={16} />
+                      <span className="gm-flow-item__label">Muestras</span>
+                      <span className="gm-flow-item__step">Paso 4</span>
+                    </button>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('fichas'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <DocIcon size={16} />
+                      <span className="gm-flow-item__label">Fichas</span>
+                      <span className="gm-flow-item__step">Paso 5</span>
+                    </button>
+
+                    {/* Fase 3 */}
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--wm-sb-400)', padding: '10px 12px 4px', fontFamily: 'var(--font-sans)', textTransform: 'uppercase' }}>
+                      Fase 3 · Materiales
+                    </div>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('contramuestras'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <ImageIcon size={16} />
+                      <span className="gm-flow-item__label">Contramuestras</span>
+                      <span className="gm-flow-item__step">Paso 6</span>
+                    </button>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('manuales'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <BoxIcon size={16} />
+                      <span className="gm-flow-item__label">Manual</span>
+                      <span className="gm-flow-item__step">Paso 7</span>
+                    </button>
+
+                    {/* Fase 4 */}
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--wm-sb-400)', padding: '10px 12px 4px', fontFamily: 'var(--font-sans)', textTransform: 'uppercase' }}>
+                      Fase 4 · Producción
+                    </div>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('negociacion'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <HandshakeIcon size={16} />
+                      <span className="gm-flow-item__label">Negociación</span>
+                      <span className="gm-flow-item__step">Paso 8</span>
+                    </button>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('fichas_revisadas'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <DocCheckIcon size={16} />
+                      <span className="gm-flow-item__label">Fichas revisadas</span>
+                      <span className="gm-flow-item__step">Paso 9</span>
+                    </button>
+                    <button className="gm-flow-item" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); goToFlowScreen('validacion'); }}>
+                      <span className="gm-flow-item__dot" style={{ background: '#e1251b' }}></span>
+                      <ClipboardCheckIcon size={16} />
+                      <span className="gm-flow-item__label">Validación</span>
+                      <span className="gm-flow-item__step">Paso 10</span>
+                    </button>
+                  </div>
                 </div>
-              );
-            })}
+
+                {/* Disabled items */}
+                <div className="gm-mega__item is-disabled">
+                  <HangerIcon size={18} />
+                  <span>Vestuario Hombre</span>
+                  <span className="gm-mast__soon">próximamente</span>
+                </div>
+                <div className="gm-mega__item is-disabled">
+                  <HangerIcon size={18} />
+                  <span>Vestuario Infantil</span>
+                  <span className="gm-mast__soon">próximamente</span>
+                </div>
+                <div className="gm-mega__item is-disabled">
+                  <HangerIcon size={18} />
+                  <span>Vestuario Baby</span>
+                  <span className="gm-mast__soon">próximamente</span>
+                </div>
+                <div className="gm-mega__item is-disabled">
+                  <HangerIcon size={18} />
+                  <span>Calzado</span>
+                  <span className="gm-mast__soon">próximamente</span>
+                </div>
+                <div className="gm-mega__item is-disabled">
+                  <HangerIcon size={18} />
+                  <span>Ropa Interior</span>
+                  <span className="gm-mast__soon">próximamente</span>
+                </div>
+              </div>
+            </div>
+
+
           </nav>
           <div className="gm-mast__actions">
             <div style={{
@@ -5006,8 +4964,8 @@
       const otherChildren = childrenArray.filter(c => c !== subBarChild);
 
       const FLOW_SCREENS = [
-        'inicio', 'tendencias', 'viaje', 'coleccion', 
-        'muestras', 'fichas', 'contramuestras', 
+        'inicio', 'tendencias', 'viaje', 'coleccion',
+        'muestras', 'fichas', 'contramuestras',
         'manuales', 'negociacion', 'fichas_revisadas', 'validacion'
       ];
       const isFlowScreen = FLOW_SCREENS.includes(screen);
@@ -5018,7 +4976,7 @@
           {subBarChild}
           <div className="app-body">
             <NavSidebar />
-            <main className="app-main">
+            <main className="app-main" style={screen === 'comms' ? { overflow: 'hidden' } : null}>
               {isFlowScreen && (
                 <div className="gm-card" style={{ padding: '20px 24px', margin: '16px 24px 0 24px', flexShrink: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: 18 }}>

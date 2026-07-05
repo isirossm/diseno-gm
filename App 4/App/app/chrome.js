@@ -227,7 +227,7 @@
                 return e("div", {
                   key: area.id,
                   onMouseEnter: () => setHoveredCat(area.id),
-                  onClick: () => { if (area.id === "moda") { setCatMenuOpen(false); go("moda"); } },
+                  onClick: () => { if (area.id === "moda") { setCatMenuOpen(false); go("inicio"); } },
                   style: {
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     padding: "10px 16px", cursor: "pointer",
@@ -257,7 +257,7 @@
                     pointerEvents: isSubDisabled ? "none" : "auto",
                     transition: "background 0.1s, color 0.1s"
                   },
-                  onClick: (ev) => { ev.preventDefault(); setCatMenuOpen(false); if (sub.live) go("moda-mujer"); }
+                  onClick: (ev) => { ev.preventDefault(); setCatMenuOpen(false); if (sub.live) go("inicio"); }
                 },
                   e("span", null, sub.label, !isSubAllowed && " 🔒"),
                   sub.soon
