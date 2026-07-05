@@ -144,29 +144,6 @@
             e("div", { style: { fontWeight: 800, fontSize: 14, color: "var(--wm-ns-600)" } },
               "$" + totalCLP.toLocaleString("es-CL") + " CLP")))),
 
-      // app divider
-      e("div", { style: { display: "flex", alignItems: "center", gap: 12, margin: "4px 0 16px" } },
-        e("div", { style: { flex: 1, height: 1, background: "var(--wm-ns-100)" } }),
-        e("div", { style: { display: "flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 700,
-          letterSpacing: ".05em", textTransform: "uppercase", color: "var(--wm-ns-300)", whiteSpace: "nowrap",
-          padding: "4px 12px", border: "1px solid var(--wm-ns-100)", borderRadius: 100, background: "#fff" } },
-          e(I.plane, { size: 12 }), "App de campo · iPhone"),
-        e("div", { style: { flex: 1, height: 1, background: "var(--wm-ns-100)" } })),
-
-      e("div", { style: { overflow: "auto", borderRadius: 16, background: "var(--wm-ns-100)" } },
-        e("iframe", {
-          src: "Apps de campo.html?only=viaje",
-          title: "App Viaje · iPhone",
-          onLoad: (ev) => {
-            try {
-              const d = ev.target.contentDocument;
-              const h = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight);
-              if (h > 200) ev.target.style.height = (h + 16) + "px";
-            } catch (_) {}
-          },
-          style: { width: "100%", minWidth: 900, height: 1100, border: "none", display: "block", borderRadius: 16 },
-        })),
-
       e(AdvanceBar, { stepId: "viaje", onComplete: () => setApproved(true), go, completed: approved }));
   }
 

@@ -76,28 +76,6 @@
           "Proveedores · China"),
         CHINA_PROVS.map((p) => e(NegRow, { key: p, provId: p }))),
 
-      // app divider
-      e("div", { style: { display: "flex", alignItems: "center", gap: 12, margin: "4px 0 16px" } },
-         e("div", { style: { flex: 1, height: 1, background: "var(--wm-ns-100)" } }),
-         e("div", { style: { display: "flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 700,
-          letterSpacing: ".05em", textTransform: "uppercase", color: "var(--wm-ns-300)", whiteSpace: "nowrap",
-          padding: "4px 12px", border: "1px solid var(--wm-ns-100)", borderRadius: 100, background: "#fff" } },
-          e(I.handshake, { size: 12 }), "App de campo"),
-         e("div", { style: { flex: 1, height: 1, background: "var(--wm-ns-100)" } })),
-
-      e("div", { style: { overflow: "auto", borderRadius: 16, background: "var(--wm-ns-100)" } },
-        e("iframe", {
-          src: "Apps de campo.html?only=negociacion",
-          title: "App Negociación",
-          onLoad: (ev) => {
-            try {
-              const d = ev.target.contentDocument;
-              const h = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight);
-              if (h > 200) ev.target.style.height = (h + 16) + "px";
-            } catch (_) {}
-          },
-          style: { width: "100%", minWidth: 1240, height: 1020, border: "none", display: "block", borderRadius: 16 },
-        })),
 
       e(AdvanceBar, { stepId: "negociacion", onComplete: () => setApproved(true), go, completed: approved }));
   }

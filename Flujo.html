@@ -2844,17 +2844,30 @@
               <div className="stack-lg">
                 {/* Moodboard placeholder */}
                 {[
-                  { title: 'Básicos Permanentes', tagline: 'Fundamentos de la colección', pct: 45, colors: ['#E8A23A', '#BDC3C7', '#5B8DB8', '#FDFEFE', '#2C3E50'] },
-                  { title: 'De Temporada', tagline: 'El corazón de PV26', pct: 35, colors: ['#C0392B', '#1ABC9C', '#F39C12', '#D35400', '#ECF0F1'] },
-                  { title: 'Innovación', tagline: 'Propuestas disruptivas', pct: 20, colors: ['#9B59B6', '#3498DB', '#2ECC71', '#E74C3C', '#F1C40F'] },
+                  { title: 'Básicos Permanentes', tagline: 'Fundamentos de la colección', pct: 45, colors: ['#F9F9FB', '#633E31', '#89847A', '#6B2331', '#C2B8AD'], files: ["Básicos Permanente1.jpg", "Básicos Permanente2.webp", "Básicos Permanente3.webp", "Básicos Permanente4.webp", "Básicos Permanente5.jpg"] },
+                  { title: 'De Temporada', tagline: 'El corazón de PV26', pct: 35, colors: ['#1F1A1A', '#D6CDBF', '#1F1A1A', '#804E3B', '#121E36'], files: ["Básicos Temporada1.jpg", "Básicos Temporada2.jpg", "Básicos Temporada3.jpg", "Básicos Temporada4.jpg", "Básicos Temporada5.jpg"] },
+                  { title: 'Innovación', tagline: 'Propuestas disruptivas', pct: 20, colors: ['#E5DAC9', '#E5DAC9', '#3F6D79', '#6D8F81', '#7CA2CE'], files: ["Innovación1.jpg", "Innovación2.jpg", "Innovación3.jpg", "Innovación4.jpg", "Innovación5.jpg"] },
                 ].map((b, bi) => (
                   <div key={bi} className="gm-card" style={{ overflow: 'hidden', padding: 0 }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gridTemplateRows: '180px 140px', gridTemplateAreas: "'hero hero b c' 'hero hero d e'", gap: 3, background: 'var(--wm-ns-100)' }}>
-                      {b.colors.map((col, ci) => (
-                        <div key={ci} style={{ gridArea: ci === 0 ? 'hero' : ci === 1 ? 'b' : ci === 2 ? 'c' : ci === 3 ? 'd' : 'e', background: col, display: 'flex', alignItems: 'flex-end', padding: 12 }}>
-                          {ci === 0 && <div style={{ color: 'rgba(255,255,255,.9)', fontSize: 13, fontWeight: 700, fontFamily: 'var(--font-sans)', textShadow: '0 1px 3px rgba(0,0,0,.3)' }}>{b.title}</div>}
-                        </div>
-                      ))}
+                      {b.colors.map((col, ci) => {
+                        const imgSrc = b.files && b.files[ci] ? 'Img/Moodboard/' + b.files[ci] : null;
+                        const labelText = ci === 0 ? b.title : (ci === 1 ? 'GALERÍA' : (ci === 2 ? 'TEXTURA ALGODÓN' : (ci === 3 ? 'COMPETENCIA' : 'ROSA POLVO')));
+                        const lc = imgSrc ? "rgba(255, 255, 255, 0.95)" : "rgba(255,255,255,.9)";
+                        const shadow = imgSrc ? "0 1px 4px rgba(0,0,0,0.8)" : "none";
+                        return (
+                          <div key={ci} style={{ gridArea: ci === 0 ? 'hero' : ci === 1 ? 'b' : ci === 2 ? 'c' : ci === 3 ? 'd' : 'e', background: col, position: 'relative', overflow: 'hidden' }}>
+                            {imgSrc && <img src={imgSrc} alt={labelText} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
+                            {imgSrc && <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)" }} />}
+                            <div style={{ position: 'absolute', left: ci === 0 ? 16 : 10, bottom: ci === 0 ? 16 : 9, textShadow: shadow, display: 'flex', flexDirection: 'column' }}>
+                              {ci === 0 && <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: ".12em", color: lc, textTransform: "uppercase", opacity: .75, marginBottom: 4 }}>Hero</span>}
+                              <span style={{ color: lc, fontSize: ci === 0 ? 13 : 9.5, fontWeight: 700, fontFamily: 'var(--font-sans)', textTransform: 'uppercase', letterSpacing: ci === 0 ? 'normal' : '.07em', opacity: ci === 0 ? 1 : 0.85 }}>
+                                {labelText}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                     <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 16, borderTop: '1px solid var(--wm-ns-100)' }}>
                       <div style={{ flex: 1 }}>

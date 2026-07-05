@@ -61,10 +61,10 @@
   }
 
   // Mini card with image slot (user adds image later), % value tag + justification
-  function MiniCard({ name, pct, reason, icon, accent, chip }) {
+  function MiniCard({ name, pct, reason, icon, accent, chip, img }) {
     const ac = accent || "var(--wm-sb-400)";
     const isApp4 = window.location.pathname.toLowerCase().indexOf('/app 4/app/') !== -1 || window.location.pathname.toLowerCase().indexOf('/app%204/app/') !== -1;
-    const imgPath = (isApp4 ? "../../Img/" : "Img/") + name + ".png";
+    const imgPath = (isApp4 ? "../../Img/" : "Img/") + (img || (name + ".png"));
 
     return e("div", { style: { border: "1px solid var(--wm-ns-100)", borderRadius: 9, overflow: "hidden", display: "flex", flexDirection: "column", background: "#fff" } },
       // image placeholder — user drops a real image here later
@@ -119,24 +119,24 @@
         // Prendas
         e(Section, { title: "Prendas a priorizar", count: t.garments.length, style: { height: "100%" } },
           e("div", { style: cardGrid },
-            t.garments.map((g) => e(MiniCard, { key: g.name, name: g.name, pct: g.pct, reason: g.reason, icon: "hanger" })))),
+            t.garments.map((g) => e(MiniCard, { key: g.name, name: g.name, pct: g.pct, reason: g.reason, icon: "hanger", img: g.img })))),
 
         // Estampados
         e(Section, { title: "Estampados sugeridos", count: t.patterns.length, style: { height: "100%" } },
           e("div", { style: cardGrid },
-            t.patterns.map((p) => e(MiniCard, { key: p.name, name: p.name, pct: p.pct, reason: p.reason, icon: "image", accent: "#5f4b8b" })))),
+            t.patterns.map((p) => e(MiniCard, { key: p.name, name: p.name, pct: p.pct, reason: p.reason, icon: "image", accent: "#5f4b8b", img: p.img })))),
 
         // Telas / materiales
         e(Section, { title: "Telas / materiales", count: t.fabrics.length, style: { height: "100%" } },
           e("div", { style: cardGrid },
-            t.fabrics.map((f) => e(MiniCard, { key: f.name, name: f.name, reason: f.note, icon: "layers", pct: null,
+            t.fabrics.map((f) => e(MiniCard, { key: f.name, name: f.name, reason: f.note, icon: "layers", pct: null, img: f.img,
               chip: [fabricChip(f.trend), f.trend] }))),
           e("div", { style: { marginTop: 12, fontSize: 11, color: "var(--wm-ns-400)" } }, "El badge indica nivel de tendencia · performance histórica en cada ficha.")),
 
         // Licencias / IPs
         e(Section, { title: "Licencias / IPs", count: t.licenses.length, style: { height: "100%" } },
           e("div", { style: cardGrid },
-            t.licenses.map((l) => e(MiniCard, { key: l.name, name: l.name, pct: l.pct, reason: l.reason, icon: "sparkles", accent: "#5f4b8b",
+            t.licenses.map((l) => e(MiniCard, { key: l.name, name: l.name, pct: l.pct, reason: l.reason, icon: "sparkles", accent: "#5f4b8b", img: l.img,
               chip: [l.potential === "Alto" ? "success" : "active", l.window] }))))),
 
       // FUENTES DE INFORMACIÓN — full width
@@ -162,21 +162,79 @@
   }
   const labelColor = (hex) => lum(hex) > 0.62 ? "rgba(0,0,0,.55)" : "rgba(255,255,255,.9)";
 
-  function Tile({ t, hero, gridArea }) {
-    const lc = labelColor(t.c);
+  const MOODBOARD_IMAGES = {
+    mb1: [
+      "Básicos Permanente1.jpg",
+      "Básicos Permanente2.webp",
+      "Básicos Permanente3.webp",
+      "Básicos Permanente4.webp",
+      "Básicos Permanente5.jpg",
+      "Básicos Permanente6.jpg",
+      "Básicos Permanente7.jpg"
+    ],
+    mb2: [
+      "Básicos Temporada1.jpg",
+      "Básicos Temporada2.jpg",
+      "Básicos Temporada3.jpg",
+      "Básicos Temporada4.jpg",
+      "Básicos Temporada5.jpg",
+      "Básicos Temporada6.jpg",
+      "Básicos Temporada7.jpg"
+    ],
+    mb3: [
+      "Innovación1.jpg",
+      "Innovación2.jpg",
+      "Innovación3.jpg",
+      "Innovación4.jpg",
+      "Innovación5.jpg",
+      "Innovación6.jpg",
+      "Innovación7.jpg"
+    ]
+  };
+
+  function Tile({ t, hero, gridArea, imgSrc }) {
+    const lc = imgSrc ? "rgba(255, 255, 255, 0.95)" : labelColor(t.c);
+    const shadow = imgSrc ? "0 1px 4px rgba(0,0,0,0.8)" : "none";
     return e("div", { style: { gridArea, position: "relative", background: t.c, overflow: "hidden", minHeight: 0 } },
-      e("div", { style: { position: "absolute", inset: 0, display: "grid", placeItems: "center" } },
+      imgSrc && e("img", {
+        src: imgSrc,
+        alt: t.label,
+        style: { width: "100%", height: "100%", objectFit: "cover", display: "block" }
+      }),
+      imgSrc && e("div", { style: { position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)" } }),
+      !imgSrc && e("div", { style: { position: "absolute", inset: 0, display: "grid", placeItems: "center" } },
         e(I.image, { size: hero ? 38 : 22, style: { color: lc, opacity: .18 } })),
-      hero && e("div", { style: { position: "absolute", left: 16, bottom: 16 } },
-        e("div", { style: { fontSize: 9, fontWeight: 800, letterSpacing: ".12em", color: lc, textTransform: "uppercase", opacity: .7, marginBottom: 4 } }, "Hero"),
+      hero && e("div", { style: { position: "absolute", left: 16, bottom: 16, textShadow: shadow } },
+        e("div", { style: { fontSize: 9, fontWeight: 800, letterSpacing: ".12em", color: lc, textTransform: "uppercase", opacity: .75, marginBottom: 4 } }, "Hero"),
         e("div", { style: { fontSize: 13, fontWeight: 700, color: lc } }, t.label)),
-      !hero && e("div", { style: { position: "absolute", left: 10, bottom: 9, fontSize: 9.5, fontWeight: 700, letterSpacing: ".07em", color: lc, textTransform: "uppercase", opacity: .8 } }, t.label));
+      !hero && e("div", { style: { position: "absolute", left: 10, bottom: 9, fontSize: 9.5, fontWeight: 700, letterSpacing: ".07em", color: lc, textTransform: "uppercase", opacity: .85, textShadow: shadow } }, t.label));
   }
 
   function Moodboard({ approved }) {
     const boards = GM.trends.moodboards;
     const [sel, setSel] = React.useState(1);
     const b = boards[sel];
+
+    const [selectedImages, setSelectedImages] = React.useState({
+      mb1: MOODBOARD_IMAGES.mb1.slice(0, 5),
+      mb2: MOODBOARD_IMAGES.mb2.slice(0, 5),
+      mb3: MOODBOARD_IMAGES.mb3.slice(0, 5)
+    });
+
+    const isApp4 = window.location.pathname.toLowerCase().indexOf('/app 4/app/') !== -1 || window.location.pathname.toLowerCase().indexOf('/app%204/app/') !== -1;
+    const pathPrefix = isApp4 ? "../../Img/Moodboard/" : "Img/Moodboard/";
+
+    const handleRegenerate = () => {
+      const allForCat = MOODBOARD_IMAGES[b.id] || [];
+      const shuffled = [...allForCat].sort(() => 0.5 - Math.random());
+      const selected = shuffled.slice(0, 5);
+      setSelectedImages(prev => ({
+        ...prev,
+        [b.id]: selected
+      }));
+    };
+
+    const currentImages = selectedImages[b.id] || [];
 
     return e("div", { className: "gm-fade", style: { display: "flex", flexDirection: "column", gap: 20 } },
 
@@ -186,7 +244,7 @@
           boards.map((bd, i) => e("button", { key: bd.id, className: "gm-tab" + (i === sel ? " is-active" : ""), onClick: () => setSel(i) },
             bd.label,
             e("span", { style: { marginLeft: 7, fontSize: 11, fontWeight: 700, color: i === sel ? "var(--wm-sb-400)" : "var(--wm-ns-300)", fontVariantNumeric: "tabular-nums" } }, bd.pct + "%")))),
-        !approved && e(Btn, { variant: "ghost", size: "sm", icon: "refresh" }, "Regenerar")),
+        !approved && e(Btn, { variant: "ghost", size: "sm", icon: "refresh", onClick: handleRegenerate }, "Regenerar")),
 
       // board card
       e("div", { className: "gm-card", style: { overflow: "hidden", padding: 0 } },
@@ -197,12 +255,16 @@
           gridTemplateColumns: "repeat(4,1fr)", gridTemplateRows: "180px 140px",
           gridTemplateAreas: "'hero hero b c' 'hero hero d e'",
           gap: 3, background: "var(--wm-ns-100)" } },
-          e(Tile, { t: b.tiles[0], hero: true, gridArea: "hero" }),
-          e(Tile, { t: b.tiles[1], gridArea: "b" }),
-          e(Tile, { t: b.tiles[2], gridArea: "c" }),
-          e(Tile, { t: b.tiles[3], gridArea: "d" }),
+          e(Tile, { t: b.tiles[0], hero: true, gridArea: "hero", imgSrc: currentImages[0] ? pathPrefix + currentImages[0] : null }),
+          e(Tile, { t: b.tiles[1], gridArea: "b", imgSrc: currentImages[1] ? pathPrefix + currentImages[1] : null }),
+          e(Tile, { t: b.tiles[2], gridArea: "c", imgSrc: currentImages[2] ? pathPrefix + currentImages[2] : null }),
+          e(Tile, { t: b.tiles[3], gridArea: "d", imgSrc: currentImages[3] ? pathPrefix + currentImages[3] : null }),
           // 5th tile from palette if available, else repeat first non-hero
-          e(Tile, { t: b.palette[4] ? { c: b.palette[4].hex, label: b.palette[4].name } : b.tiles[1], gridArea: "e" })),
+          e(Tile, {
+            t: b.palette[4] ? { c: b.palette[4].hex, label: b.palette[4].name } : b.tiles[1],
+            gridArea: "e",
+            imgSrc: currentImages[4] ? pathPrefix + currentImages[4] : null
+          })),
 
         // footer dentro de la card
         e("div", { style: { padding: "16px 20px", display: "flex", alignItems: "center", gap: 16, borderTop: "1px solid var(--wm-ns-100)" } },
