@@ -3171,18 +3171,18 @@
     };
 
     const COLECCION_SKUS = [
-      { id: 'MJ-3101', name: 'Polera básica', cat: 'basicos', swatch: '#E8A23A', precio: 9990, prov: 'Ningbo', muestra: 'pendiente', ficha: 'en_progreso' },
-      { id: 'MJ-3104', name: 'Jeans slim', cat: 'basicos', swatch: '#2C3E50', precio: 24990, prov: 'Jiangsu', muestra: 'enviado', ficha: 'completa' },
-      { id: 'MJ-3122', name: 'Vestido midi floral', cat: 'temporada', swatch: '#C0392B', precio: 34990, prov: 'Hangzhou', muestra: 'recibido', ficha: 'en_revision' },
-      { id: 'MJ-3140', name: 'Blusa fluida', cat: 'temporada', swatch: '#5B8DB8', precio: 19990, prov: 'Ningbo', muestra: 'enviado', ficha: 'en_progreso' },
-      { id: 'MJ-3155', name: 'Short cargo', cat: 'temporada', swatch: '#1ABC9C', precio: 17990, prov: 'Tex.Andina', muestra: 'pendiente', ficha: 'sin_iniciar' },
-      { id: 'MJ-3162', name: 'Bikini tropical', cat: 'innovacion', swatch: '#F39C12', precio: 14990, prov: 'Shantou', muestra: 'pendiente', ficha: 'sin_iniciar' },
-      { id: 'MJ-3170', name: 'Falda plisada', cat: 'temporada', swatch: '#9B59B6', precio: 21990, prov: 'Jiangsu', muestra: 'recibido', ficha: 'aprobada' },
-      { id: 'MJ-3187', name: 'Blazer lino', cat: 'innovacion', swatch: '#BDC3C7', precio: 39990, prov: 'Hangzhou', muestra: 'recibido', ficha: 'en_revision' },
-      { id: 'MJ-3201', name: 'Maxi vestido', cat: 'temporada', swatch: '#E74C3C', precio: 29990, prov: 'Shantou', muestra: 'pendiente', ficha: 'sin_iniciar' },
-      { id: 'MJ-3210', name: 'Top crop', cat: 'basicos', swatch: '#FDFEFE', precio: 8990, prov: 'Ningbo', muestra: 'enviado', ficha: 'completa' },
-      { id: 'MJ-3218', name: 'Pantalón culotte', cat: 'innovacion', swatch: '#D35400', precio: 22990, prov: 'Jiangsu', muestra: 'recibido', ficha: 'aprobada' },
-      { id: 'MJ-3099', name: 'Calza deportiva', cat: 'basicos', swatch: '#3498DB', precio: 12990, prov: 'Tex.Andina', muestra: 'enviado', ficha: 'en_progreso' },
+      { id: 'MJ-3101', name: 'Polera básica algodón pima', cat: 'basicos', swatch: '#f4f3ee', precio: 5990, prov: 'Ningbo Garments', muestra: 'recibido', ficha: 'aprobada' },
+      { id: 'MJ-3104', name: 'Jeans skinny tiro alto', cat: 'basicos', swatch: '#2a3b59', precio: 14990, prov: 'Ningbo Garments', muestra: 'recibido', ficha: 'aprobada' },
+      { id: 'MJ-3122', name: 'Vestido midi floral viscosa', cat: 'temporada', swatch: '#ffbe98', precio: 19990, prov: 'Jiangsu Textile', muestra: 'recibido', ficha: 'en_revision' },
+      { id: 'MJ-3140', name: 'Blusa manga abullonada', cat: 'temporada', swatch: '#92a8d1', precio: 12990, prov: 'Jiangsu Textile', muestra: 'enviado', ficha: 'en_progreso' },
+      { id: 'MJ-3155', name: 'Short lino cintura paperbag', cat: 'temporada', swatch: '#f4d35e', precio: 11990, prov: 'Tex.Andina', muestra: 'enviado', ficha: 'en_progreso' },
+      { id: 'MJ-3162', name: 'Bikini estampado tropical', cat: 'temporada', swatch: '#f88379', precio: 13990, prov: 'Shantou Apparel', muestra: 'enviado', ficha: 'en_progreso' },
+      { id: 'MJ-3170', name: 'Falta plisada satinada', cat: 'temporada', swatch: '#46b4a0', precio: 15990, prov: 'Tex.Andina', muestra: 'pendiente_envio', ficha: 'sin_iniciar' },
+      { id: 'MJ-3187', name: 'Blazer lino oversize', cat: 'temporada', swatch: '#9a9893', precio: 24990, prov: 'Ningbo Garments', muestra: 'recibido', ficha: 'en_revision' },
+      { id: 'MJ-3201', name: 'Maxi vestido tie-dye', cat: 'innovacion', swatch: '#5f4b8b', precio: 22990, prov: 'Shantou Apparel', muestra: 'pendiente_envio', ficha: 'sin_iniciar' },
+      { id: 'MJ-3210', name: 'Top crop metalizado', cat: 'innovacion', swatch: '#c7e000', precio: 9990, prov: 'Tex.Andina', muestra: 'pendiente_envio', ficha: 'en_progreso' },
+      { id: 'MJ-3218', name: 'Pantalón cargo utility', cat: 'innovacion', swatch: '#f96714', precio: 18990, prov: 'Ningbo Garments', muestra: 'recibido', ficha: 'aprobada' },
+      { id: 'MJ-3099', name: 'Calza deportiva seamless', cat: 'basicos', swatch: '#26262a', precio: 8990, prov: 'Ningbo Garments', muestra: 'recibido', ficha: 'aprobada' },
     ];
 
     const COL_CATS = [
@@ -4606,6 +4606,10 @@
 
       // Navega a una pantalla del flujo de producción en App 4
       const goToFlowScreen = (screenId) => {
+        if (user && user.access === 'practicante') {
+          navigate('fichas');
+          return;
+        }
         localStorage.setItem('gm_route', JSON.stringify({ screen: screenId }));
         if (window.__app && window.__app.screen === 'app4') {
           window.top.dispatchEvent(new CustomEvent('gm_navigate_iframe', { detail: { screen: screenId } }));
@@ -5529,6 +5533,10 @@
       const [user, setUser] = React.useState(null);
 
       const navigate = (s) => {
+        if (user && user.access === 'practicante' && (s === 'panel' || s === 'inicio' || s === 'app4' || s === 'moda-mujer' || s === 'moda')) {
+          setScreen('fichas');
+          return;
+        }
         if (s !== 'login' && s !== 'splash' && user && !isScreenAllowed(user, s)) {
           showToast('Acceso restringido para tu perfil');
           return;
