@@ -5537,7 +5537,7 @@
           setScreen('fichas');
           return;
         }
-        if (user && user.access === 'moda' && s === 'panel') {
+        if (user && (user.access === 'moda' || user.access === 'compras') && s === 'panel') {
           setScreen('moda-mujer');
           return;
         }
