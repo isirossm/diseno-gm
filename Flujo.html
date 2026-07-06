@@ -5131,7 +5131,8 @@
 
     // ── App layout shell ─────────────────────────────────────────────────────────
     const AppLayout = ({ children, active = '', unread = 3 }) => {
-      const { screen, navigate, user } = React.useContext(RouterCtx);
+      const { screen, navigate, user, showToast } = React.useContext(RouterCtx);
+      const [decisions, setDecisions] = React.useState({});
       const childrenArray = React.Children.toArray(children);
       const subBarChild = childrenArray.find(c => {
         if (!c) return false;
@@ -5147,6 +5148,7 @@
         'manuales', 'negociacion', 'fichas_revisadas', 'validacion'
       ];
       const isFlowScreen = FLOW_SCREENS.includes(screen);
+      const currentDecision = decisions[screen];
 
       return (
         <div className="app-shell">
@@ -5198,6 +5200,66 @@
               )}
 
               {otherChildren}
+
+              {user && user.access === 'compras' && isFlowScreen && (
+                <div style={{
+                  position: 'fixed', bottom: 20, left: 'calc(50% + 32px)', transform: 'translateX(-50%)',
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+                  borderRadius: 12, padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 14,
+                  zIndex: 9999, border: '1px solid var(--wm-ns-200)',
+                  backdropFilter: 'blur(8px)',
+                  fontFamily: 'var(--font-sans)',
+                }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--wm-ns-700)' }}>
+                    Decisión Comprador ({FLOW_STEPS.find(s => s.screen === screen)?.label || ''}):
+                  </span>
+                  
+                  {currentDecision ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <span style={{
+                        fontSize: 12, fontWeight: 700,
+                        padding: '4px 10px', borderRadius: 20,
+                        background: currentDecision === 'aprobado' ? '#dcfce7' : '#fee2e2',
+                        color: currentDecision === 'aprobado' ? '#166534' : '#991b1b',
+                        display: 'flex', alignItems: 'center', gap: 4
+                      }}>
+                        {currentDecision === 'aprobado' ? '✓ Aprobado' : '⚠ Cambios solicitados'}
+                      </span>
+                      <button
+                        className="gm-btn gm-btn--ghost gm-btn--sm"
+                        onClick={() => setDecisions(d => ({ ...d, [screen]: null }))}
+                        style={{ padding: '2px 8px', fontSize: 11, height: 24 }}
+                      >
+                        Modificar
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button
+                        className="gm-btn gm-btn--secondary gm-btn--sm"
+                        style={{ borderColor: '#ef4444', color: '#ef4444', height: 32 }}
+                        onClick={() => {
+                          setDecisions(d => ({ ...d, [screen]: 'cambios' }));
+                          showToast('Se solicitaron cambios para este paso');
+                        }}
+                      >
+                        Pedir cambios
+                      </button>
+                      <button
+                        className="gm-btn gm-btn--primary gm-btn--sm"
+                        style={{ background: '#22c55e', borderColor: '#22c55e', color: '#fff', height: 32 }}
+                        onClick={() => {
+                          setDecisions(d => ({ ...d, [screen]: 'aprobado' }));
+                          showToast('Paso aprobado exitosamente');
+                        }}
+                      >
+                        Aprobar paso
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </main>
           </div>
         </div>
