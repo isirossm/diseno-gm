@@ -227,14 +227,22 @@
       if (!user) return false;
       if (user.access === 'full') return true;
 
-      if (user.access === 'moda') {
-        return ['panel', 'inicio', 'moda', 'moda-mujer', 'calendario', 'comms'].includes(scr);
+      if (user.access === 'moda') { // Valentina
+        return [
+          'panel', 'inicio', 'moda', 'moda-mujer', 'calendario', 'comms',
+          'tendencias', 'viaje', 'coleccion', 'muestras', 'fichas'
+        ].includes(scr);
       }
-      if (user.access === 'compras') {
-        return ['panel', 'inicio', 'comms', 'documentos', 'historial', 'colecciones'].includes(scr);
+      if (user.access === 'compras') { // Compradores
+        return [
+          'panel', 'inicio', 'comms', 'documentos', 'historial', 'colecciones',
+          'negociacion', 'fichas_revisadas', 'validacion'
+        ].includes(scr);
       }
-      if (user.access === 'practicante') {
-        return ['panel', 'inicio', 'documentos'].includes(scr);
+      if (user.access === 'practicante') { // Practicante
+        return [
+          'panel', 'inicio', 'documentos'
+        ].includes(scr);
       }
       return false;
     };
@@ -1149,6 +1157,11 @@
       { id: 'calidad', group: 'general', name: 'Calidad · QA muestras', last: 'Aprobado vestido REF-038 sin observaciones.', time: 'lun', unread: 1, init: 'QA', tag: 'Calidad', members: 'Pablo Lara, equipo QA' },
     ];
 
+    const PRACTICANTE_INT_CONV = [
+      { id: 'diseno-vale', group: 'disenadores', name: 'Valentina Díaz (La Vale)', last: '¿Pudiste terminar las fichas técnicas?', time: '10:42', unread: 2, init: 'VD', tag: 'Diseñadoras', members: 'Valentina Díaz, Practicante GM' },
+      { id: 'practicantes', group: 'general', name: 'Sync Practicantes GM', last: 'Recuerden subir los reportes hoy.', time: '09:15', unread: 0, init: 'SP', tag: 'Practicantes', members: 'Tomás Ossa, Sofía Rojas, Practicante GM' },
+    ];
+
     const INT_GROUPS = [
       { id: 'disenadores', label: 'Diseñadoras' },
       { id: 'compradores', label: 'Compradores' },
@@ -1209,6 +1222,25 @@
           { side: 'tx', text: 'Excelente. ¿El reporte de calidad ya está en el drive?', time: 'lun 15:00' },
           { side: 'rx', author: 'PL', text: 'Sí, está en la carpeta QA / Primavera–Verano 26.', time: 'lun 15:10' },
           { side: 'tx', text: 'Perfecto, gracias. Queda registrado.', time: 'lun 15:18' },
+        ]
+      },
+      'diseno-vale': {
+        members: '2 participantes',
+        bubbles: [
+          { side: 'rx', author: 'VD', text: 'Hola! ¿Pudiste avanzar con el ingreso de fichas técnicas para Primavera-Verano 26?', time: '09:30' },
+          { side: 'tx', text: 'Sí Vale, ya ingresé las dos fichas de vestidos principales.', time: '09:45' },
+          { side: 'rx', author: 'VD', text: 'Buenísimo! ¿Quedaron con la tabla de medidas final?', time: '10:15' },
+          { side: 'tx', text: 'Sí, las tablas del fit 2 ya están listas.', time: '10:20' },
+          { side: 'rx', author: 'VD', text: 'Perfecto. Avísame cuando aprueben los mockups.', time: '10:42' },
+        ]
+      },
+      'practicantes': {
+        members: '3 participantes',
+        bubbles: [
+          { side: 'rx', author: 'TO', text: 'Chicos, ¿alguien tiene las planillas de SKU a mano?', time: 'Ayer 15:30' },
+          { side: 'rx', author: 'SR', text: 'Están en la carpeta compartida de Documentos.', time: 'Ayer 15:35' },
+          { side: 'tx', text: 'Sí, en Documentos -> Fichas de Referencia.', time: 'Ayer 15:40' },
+          { side: 'rx', author: 'TO', text: 'Buenísimo, gracias!', time: 'Ayer 15:42' },
         ]
       }
     };
@@ -1511,10 +1543,16 @@
       </section>;
 
     const CommsScreen = () => {
-      const [activeTab, setActiveTab] = React.useState('int');
-      const [activeConvId, setActiveConvId] = React.useState('diseno');
+      const { user } = React.useContext(RouterCtx);
+      const isPracticante = user && user.access === 'practicante';
 
-      const activeIntConv = INT_CONV.find(c => c.id === activeConvId);
+      const internalConvs = isPracticante ? PRACTICANTE_INT_CONV : INT_CONV;
+      const initialConvId = isPracticante ? 'diseno-vale' : 'diseno';
+
+      const [activeTab, setActiveTab] = React.useState('int');
+      const [activeConvId, setActiveConvId] = React.useState(initialConvId);
+
+      const activeIntConv = internalConvs.find(c => c.id === activeConvId);
       const isInternal = activeIntConv != null;
 
       const handleConvClick = (conv, kind) => {
@@ -1557,36 +1595,50 @@
                 <div className="gm-comms__tabs">
                   <button type="button"
                     className={`gm-comms__tab gm-comms__tab--int${activeTab === 'int' ? ' is-active' : ''}`}
-                    onClick={() => { setActiveTab('int'); setActiveConvId('diseno'); }}>
+                    onClick={() => { setActiveTab('int'); setActiveConvId(isPracticante ? 'diseno-vale' : 'diseno'); }}>
                     <span className="gm-comms__tab-dot gm-comms__tab-dot--int"></span>
                     Equipo interno
-                    <span className="gm-comms__tab-count">{INT_CONV.length}</span>
+                    <span className="gm-comms__tab-count">{internalConvs.length}</span>
                   </button>
-                  <button type="button"
-                    className={`gm-comms__tab gm-comms__tab--ext${activeTab === 'ext' ? ' is-active' : ''}`}
-                    onClick={() => { setActiveTab('ext'); setActiveConvId('trends-co'); }}>
-                    <span className="gm-comms__tab-dot gm-comms__tab-dot--ext"></span>
-                    Proveedores
-                    <span className="gm-comms__tab-count gm-comms__tab-count--alert">
-                      {PROV_CONV.reduce((a, c) => a + c.unread, 0)}
-                    </span>
-                  </button>
+                  {!isPracticante && (
+                    <button type="button"
+                      className={`gm-comms__tab gm-comms__tab--ext${activeTab === 'ext' ? ' is-active' : ''}`}
+                      onClick={() => { setActiveTab('ext'); setActiveConvId('trends-co'); }}>
+                      <span className="gm-comms__tab-dot gm-comms__tab-dot--ext"></span>
+                      Proveedores
+                      <span className="gm-comms__tab-count gm-comms__tab-count--alert">
+                        {PROV_CONV.reduce((a, c) => a + c.unread, 0)}
+                      </span>
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="gm-comms__list-body">
                 {activeTab === 'int' ? (
                   <>
-                    <GroupLabel label="Disenadores" dot="var(--wm-sb-400)" count={INT_CONV.filter(c => c.group === 'disenadores').length} />
-                    {INT_CONV.filter(c => c.group === 'disenadores').map(c =>
-                      <Conv key={c.id} c={c} kind="int" active={activeConvId === c.id} onClick={() => handleConvClick(c, 'int')} />
+                    {internalConvs.filter(c => c.group === 'disenadores').length > 0 && (
+                      <>
+                        <GroupLabel label="Disenadores" dot="var(--wm-sb-400)" count={internalConvs.filter(c => c.group === 'disenadores').length} />
+                        {internalConvs.filter(c => c.group === 'disenadores').map(c =>
+                          <Conv key={c.id} c={c} kind="int" active={activeConvId === c.id} onClick={() => handleConvClick(c, 'int')} />
+                        )}
+                      </>
                     )}
-                    <GroupLabel label="Compradores" dot="#0D9488" count={INT_CONV.filter(c => c.group === 'compradores').length} />
-                    {INT_CONV.filter(c => c.group === 'compradores').map(c =>
-                      <Conv key={c.id} c={c} kind="int" active={activeConvId === c.id} onClick={() => handleConvClick(c, 'int')} />
+                    {internalConvs.filter(c => c.group === 'compradores').length > 0 && (
+                      <>
+                        <GroupLabel label="Compradores" dot="#0D9488" count={internalConvs.filter(c => c.group === 'compradores').length} />
+                        {internalConvs.filter(c => c.group === 'compradores').map(c =>
+                          <Conv key={c.id} c={c} kind="int" active={activeConvId === c.id} onClick={() => handleConvClick(c, 'int')} />
+                        )}
+                      </>
                     )}
-                    <GroupLabel label="General" dot="var(--wm-ns-400)" count={INT_CONV.filter(c => c.group === 'general').length} />
-                    {INT_CONV.filter(c => c.group === 'general').map(c =>
-                      <Conv key={c.id} c={c} kind="int" active={activeConvId === c.id} onClick={() => handleConvClick(c, 'int')} />
+                    {internalConvs.filter(c => c.group === 'general').length > 0 && (
+                      <>
+                        <GroupLabel label="General" dot="var(--wm-ns-400)" count={internalConvs.filter(c => c.group === 'general').length} />
+                        {internalConvs.filter(c => c.group === 'general').map(c =>
+                          <Conv key={c.id} c={c} kind="int" active={activeConvId === c.id} onClick={() => handleConvClick(c, 'int')} />
+                        )}
+                      </>
                     )}
                   </>
                 ) : (
@@ -2340,11 +2392,30 @@
     };
 
     const DocumentosScreen = ({ toolCtx }) => {
+      const { user } = React.useContext(RouterCtx);
+      const isPracticante = user && user.access === 'practicante';
+
       const initFolder = 'fichas-verano26';
       const [activeFolder, setActiveFolder] = React.useState(initFolder);
       const [openFolders, setOpenFolders] = React.useState({ 'fichas-tecnicas': true, 'packaging': false });
       const [ctx, setCtx] = React.useState(toolCtx || null);
-      const files = DOC_FILES[activeFolder] || DOC_FILES['fichas-verano26'] || [];
+
+      const rawFiles = DOC_FILES[activeFolder] || DOC_FILES['fichas-verano26'] || [];
+      const files = isPracticante
+        ? rawFiles.filter(f => f.name.includes('REF-038') || f.name.includes('REF-019'))
+        : rawFiles;
+
+      const visibleFolders = isPracticante
+        ? [
+            {
+              id: 'fichas-tecnicas', label: 'Fichas técnicas', count: 2,
+              children: [
+                { id: 'fichas-verano26', label: 'Primavera–Verano 26', count: 2 }
+              ]
+            }
+          ]
+        : DOC_FOLDERS;
+
       const toggleFolder = (id) => setOpenFolders(p => ({ ...p, [id]: !p[id] }));
 
       const STALE_MARKERS = ['10 oct', '01 oct', '08 oct', '15 nov', '10 nov'];
@@ -2379,7 +2450,7 @@
             <div className="grid" style={{ gridTemplateColumns: '240px 1fr', gap: 20, alignItems: 'start' }}>
               <div className="gm-card gm-card--p0">
                 <div style={{ padding: '12px 16px', fontWeight: 700, fontSize: 12, color: 'var(--wm-ns-500)', fontFamily: 'var(--font-sans)', textTransform: 'uppercase', letterSpacing: '.04em', borderBottom: '1px solid var(--wm-ns-100)' }}>Categorias</div>
-                {DOC_FOLDERS.map((folder) => {
+                {visibleFolders.map((folder) => {
                   const isParentActive = folder.children && folder.children.some(c => c.id === activeFolder);
                   return (
                     <div key={folder.id}>
@@ -4910,7 +4981,13 @@
         const foundProfile = PROFILES.find(p => p.email === selectedEmail);
         if (foundProfile) {
           setUser(foundProfile);
-          navigate('panel');
+          if (foundProfile.access === 'moda' || foundProfile.access === 'compras') {
+            navigate('moda-mujer');
+          } else if (foundProfile.access === 'practicante') {
+            navigate('fichas');
+          } else {
+            navigate('panel');
+          }
         }
       };
 
@@ -5051,7 +5128,7 @@
 
     // ── App layout shell ─────────────────────────────────────────────────────────
     const AppLayout = ({ children, active = '', unread = 3 }) => {
-      const { screen, navigate } = React.useContext(RouterCtx);
+      const { screen, navigate, user } = React.useContext(RouterCtx);
       const childrenArray = React.Children.toArray(children);
       const subBarChild = childrenArray.find(c => {
         if (!c) return false;
@@ -5086,15 +5163,18 @@
                 }}>
                   {FLOW_STEPS.map((s, i) => {
                     const isActive = s.screen === screen;
+                    const isAllowed = isScreenAllowed(user, s.screen);
                     return (
                       <React.Fragment key={s.id}>
                         {i > 0 && (
                           <span style={{ color: 'var(--wm-ns-200)', fontSize: 13, padding: '0 6px', userSelect: 'none' }}>/</span>
                         )}
                         <button
-                          onClick={() => navigate(s.screen)}
+                          onClick={() => { if (isAllowed) navigate(s.screen); }}
                           style={{
-                            background: 'none', border: 'none', cursor: 'pointer',
+                            background: 'none', border: 'none',
+                            cursor: isAllowed ? 'pointer' : 'not-allowed',
+                            opacity: isAllowed ? 1 : 0.35,
                             fontSize: 13,
                             fontWeight: isActive ? 700 : 500,
                             color: isActive ? 'var(--wm-sb-500)' : 'var(--wm-ns-400)',
@@ -5103,8 +5183,8 @@
                             textUnderlineOffset: 3,
                             transition: 'color 0.12s',
                           }}
-                          onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--wm-ns-600)'; }}
-                          onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--wm-ns-400)'; }}
+                          onMouseEnter={e => { if (!isActive && isAllowed) e.currentTarget.style.color = 'var(--wm-ns-600)'; }}
+                          onMouseLeave={e => { if (!isActive && isAllowed) e.currentTarget.style.color = 'var(--wm-ns-400)'; }}
                         >
                           {s.label}
                         </button>
@@ -5129,7 +5209,7 @@
       { id: 'historial', label: 'Historial', icon: 'clock' },
     ];
     const NavSidebar = () => {
-      const { navigate, screen } = React.useContext(RouterCtx);
+      const { navigate, screen, user } = React.useContext(RouterCtx);
       if (['splash', 'login'].includes(screen)) return null;
 
       const I = window.GMIcon || {};
@@ -5138,11 +5218,16 @@
         <nav className="gm-navsidebar">
           {NAV_SIDEBAR_ITEMS.map(({ id, label, icon }) => {
             const IconComponent = I[icon] || (() => null);
+            const isAllowed = isScreenAllowed(user, id);
             return (
               <button key={id}
                 className={`gm-navsidebar__item${screen === id ? ' is-active' : ''}`}
-                onClick={() => navigate(id)}
-                title={label}
+                onClick={() => { if (isAllowed) navigate(id); }}
+                title={isAllowed ? label : `${label} (Acceso restringido)`}
+                style={{
+                  opacity: isAllowed ? 1 : 0.4,
+                  cursor: isAllowed ? 'pointer' : 'not-allowed'
+                }}
               >
                 <span className="gm-navsidebar__icon"><IconComponent size={22} /></span>
                 <span className="gm-navsidebar__label">{label}</span>
@@ -5445,6 +5530,10 @@
       const [user, setUser] = React.useState(null);
 
       const navigate = (s) => {
+        if (s !== 'login' && s !== 'splash' && user && !isScreenAllowed(user, s)) {
+          showToast('Acceso restringido para tu perfil');
+          return;
+        }
         if (s !== screen) {
           window.top.__gmHistoryStack = window.top.__gmHistoryStack || [];
           if (screen && screen !== 'splash' && screen !== 'login') {
