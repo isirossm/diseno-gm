@@ -2893,80 +2893,70 @@
       const { navigate } = React.useContext(RouterCtx);
       const [tab, setTab] = React.useState('viaje');
 
-      const CITY_COLOR = {
-        Madrid:    'var(--wm-sb-400)',
-        Barcelona: '#f59e0b',
-        Milan:     '#a78bfa',
-        Paris:     '#ec4899',
-      };
-      const CITY_LABELS = { Madrid: 'Madrid', Barcelona: 'Barcelona', Milan: 'MilÃ¡n', Paris: 'ParÃ­s' };
+      const CITY_COLOR = { Madrid:'var(--wm-sb-400)', Barcelona:'#f59e0b', Milan:'#a78bfa', Paris:'#ec4899' };
+      const CITY_LABELS = { Madrid:'Madrid', Barcelona:'Barcelona', Milan:'Milan', Paris:'Paris' };
 
       const CAL_WEEKS = [
-        [null, null, 1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10, 11, 12],
-        [13, 14, 15, 16, 17, 18, 19],
-        [20, 21, 22, 23, 24, 25, 26],
-        [27, 28, 29, 30, null, null, null],
+        [null,null,1,2,3,4,5],[6,7,8,9,10,11,12],[13,14,15,16,17,18,19],[20,21,22,23,24,25,26],[27,28,29,30,null,null,null],
       ];
-      const DAY_CITY = { 7:'Madrid', 8:'Madrid', 9:'Barcelona', 10:'Barcelona', 11:'Barcelona', 12:'Milan', 13:'Paris' };
+      const DAY_CITY = { 7:'Madrid',8:'Madrid',9:'Barcelona',10:'Barcelona',11:'Barcelona',12:'Milan',13:'Paris' };
       const DOW = ['L','M','X','J','V','S','D'];
 
       const WISHLIST = [
         { cat: 'Prendas referencia', items: [
-          { name: 'Vestido midi floral',   sub: 'Zara Gran VÃ­a Â· Madrid',        found: true  },
-          { name: 'Conjunto coordinado',   sub: 'Zara Passeig Â· Barcelona',      found: true  },
-          { name: 'Trench coat',           sub: 'Multimarca Â· MilÃ¡n',            found: true  },
-          { name: 'Blazer lino oversize',  sub: 'El Corte InglÃ©s Â· Madrid',      found: true  },
+          { name: 'Vestido midi floral',   sub: 'Zara Gran Via - Madrid',    found: true  },
+          { name: 'Conjunto coordinado',   sub: 'Zara Passeig - Barcelona',  found: true  },
+          { name: 'Trench coat',           sub: 'Multimarca - Milan',        found: true  },
+          { name: 'Blazer lino oversize',  sub: 'El Corte Ingles - Madrid',  found: true  },
         ]},
         { cat: 'Texturas y materiales', items: [
-          { name: 'Punto francÃ©s (muestra)', sub: 'Born district Â· Barcelona',                      found: true  },
-          { name: 'Lino ligero verano',      sub: 'Ver Mango Â· Zara prÃ³xima temporada',             found: false },
+          { name: 'Punto frances (muestra)', sub: 'Born district - Barcelona',           found: true  },
+          { name: 'Lino ligero verano',      sub: 'Ver Mango - Zara proxima temporada', found: false },
         ]},
       ];
       const totalWish = WISHLIST.reduce((a,c) => a + c.items.length, 0);
       const foundWish = WISHLIST.reduce((a,c) => a + c.items.filter(x=>x.found).length, 0);
 
       const COMPRAS_CIUDAD = [
-        { ciudad:'Madrid',    color: CITY_COLOR.Madrid,    total:148390, boletas:3, items:[
+        { ciudad:'Madrid',    color:CITY_COLOR.Madrid,    total:148390, boletas:3, items:[
             { name:'Referencia vestido midi floral',  fecha:'8 abr',  tipo:'Prendas ref.',  monto:45990  },
-            { name:'Lookbook temporada Mango AW26',   fecha:'8 abr',  tipo:'DocumentaciÃ³n', monto:12500  },
+            { name:'Lookbook temporada Mango AW26',   fecha:'8 abr',  tipo:'Documentacion', monto:12500  },
             { name:'Referencia blazer lino oversize', fecha:'9 abr',  tipo:'Prendas ref.',  monto:89900  },
         ]},
-        { ciudad:'Barcelona', color: CITY_COLOR.Barcelona, total:98400,  boletas:2, items:[
-            { name:'Muestra punto francÃ©s (50 cm)',   fecha:'10 abr', tipo:'Textiles',      monto:18400  },
-            { name:'Referencia conjunto coordinado',  fecha:'11 abr', tipo:'Prendas ref.',  monto:80000  },
+        { ciudad:'Barcelona', color:CITY_COLOR.Barcelona, total:98400,  boletas:2, items:[
+            { name:'Muestra punto frances (50 cm)',  fecha:'10 abr', tipo:'Textiles',     monto:18400  },
+            { name:'Referencia conjunto coordinado', fecha:'11 abr', tipo:'Prendas ref.', monto:80000  },
         ]},
-        { ciudad:'MilÃ¡n',     color: CITY_COLOR.Milan,     total:128500, boletas:2, items:[
-            { name:'Trench coat referencia',          fecha:'12 abr', tipo:'Prendas ref.',  monto:95000  },
-            { name:'CatÃ¡logo tendencias MilÃ¡n SS26',  fecha:'12 abr', tipo:'DocumentaciÃ³n', monto:33500  },
+        { ciudad:'Milan',     color:CITY_COLOR.Milan,     total:128500, boletas:2, items:[
+            { name:'Trench coat referencia',       fecha:'12 abr', tipo:'Prendas ref.',  monto:95000  },
+            { name:'Catalogo tendencias Milan SS26', fecha:'12 abr', tipo:'Documentacion', monto:33500 },
         ]},
       ];
       const totalCompras = COMPRAS_CIUDAD.reduce((a,c) => a + c.total, 0);
       const totalBoletas = COMPRAS_CIUDAD.reduce((a,c) => a + c.boletas, 0);
+      const fmtClp = (n) => '$' + n.toLocaleString('es-CL');
 
       return (
         <AppLayout>
-          <SubBar trail={['Inicio', 'Moda', 'Moda Mujer', 'Primaveraâ€“Verano 26', 'Viaje']} />
+          <SubBar trail={['Inicio', 'Moda', 'Moda Mujer', 'Primavera-Verano 26', 'Viaje']} />
           <div className="gm-page">
 
             <div className="gm-page__head">
               <div>
                 <h1 className="gm-page__title">Viaje de tendencias</h1>
-                <div className="gm-page__sub">Fase 1 Â· InvestigaciÃ³n â€” tiendas de moda Europa: EspaÃ±a, Italia, Francia</div>
+                <div className="gm-page__sub">Fase 1 - Investigacion - tiendas de moda Europa: Espana, Italia, Francia</div>
               </div>
             </div>
 
-            {/* Tarjeta resumen */}
             <div className="gm-card" style={{ padding:'14px 20px', marginBottom:16, display:'flex', alignItems:'center', gap:16 }}>
               <div style={{ width:44, height:44, borderRadius:12, background:'var(--wm-sb-050)', color:'var(--wm-sb-400)', display:'grid', placeItems:'center', fontSize:22, flexShrink:0 }}>âœˆï¸</div>
               <div style={{ flex:1 }}>
-                <div style={{ fontWeight:700, fontSize:15, fontFamily:'var(--font-sans)', color:'var(--wm-ns-700)' }}>Viaje Europa Â· Primaveraâ€“Verano 26</div>
-                <div style={{ fontSize:12.5, color:'var(--wm-ns-400)', marginTop:2, fontFamily:'var(--font-sans)' }}>7 - 13 abr 2026 Â· Madrid Â· Barcelona Â· MilÃ¡n Â· ParÃ­s Â· Valentina RÃ­os</div>
+                <div style={{ fontWeight:700, fontSize:15, fontFamily:'var(--font-sans)', color:'var(--wm-ns-700)' }}>Viaje Europa - Primavera-Verano 26</div>
+                <div style={{ fontSize:12.5, color:'var(--wm-ns-400)', marginTop:2, fontFamily:'var(--font-sans)' }}>7 - 13 abr 2026 - Madrid - Barcelona - Milan - Paris - Valentina Rios</div>
               </div>
               <Chip kind="success" dot>Completado</Chip>
             </div>
 
-            {/* Tabs */}
             <div style={{ display:'flex', borderBottom:'2px solid var(--wm-ns-100)', marginBottom:20 }}>
               {[['viaje','Viaje'],['compras','Compras']].map(([k,l]) => (
                 <button key={k} onClick={() => setTab(k)} style={{
@@ -2980,26 +2970,25 @@
               ))}
             </div>
 
-            {/* Tab: Viaje */}
             {tab === 'viaje' && (
               <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:20, alignItems:'start' }}>
                 <div className="gm-card" style={{ padding:'20px 22px' }}>
-                  <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.06em', textTransform:'uppercase', color:'var(--wm-ns-300)', marginBottom:16, fontFamily:'var(--font-sans)' }}>Itinerario Â· Abril 2026</div>
+                  <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.06em', textTransform:'uppercase', color:'var(--wm-ns-300)', marginBottom:16, fontFamily:'var(--font-sans)' }}>Itinerario - Abril 2026</div>
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', marginBottom:6 }}>
                     {DOW.map(d => <div key={d} style={{ textAlign:'center', fontSize:11, fontWeight:600, color:'var(--wm-ns-300)', fontFamily:'var(--font-sans)' }}>{d}</div>)}
                   </div>
                   {CAL_WEEKS.map((week,wi) => (
                     <div key={wi} style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', gap:4, marginBottom:4 }}>
                       {week.map((day,di) => {
-                        const ck = day ? DAY_CITY[day] : null;
-                        const col = ck ? CITY_COLOR[ck] : null;
+                        const ck  = day ? DAY_CITY[day] : null;
+                        const col = ck  ? CITY_COLOR[ck] : null;
                         return (
                           <div key={di} style={{ display:'flex', justifyContent:'center' }}>
                             {day ? (
                               <div style={{
                                 width:34, height:34, borderRadius:'50%', display:'grid', placeItems:'center',
                                 background: ck==='Paris' ? '#ede9fe' : 'transparent',
-                                border: ck ? 2px solid  : '2px solid transparent',
+                                border: ck ? ('2px solid ' + col) : '2px solid transparent',
                                 color: ck ? col : 'var(--wm-ns-400)',
                                 fontWeight: ck ? 700 : 400, fontSize:13, fontFamily:'var(--font-sans)',
                               }}>{day}</div>
@@ -3012,17 +3001,18 @@
                   <div style={{ display:'flex', gap:14, marginTop:12, flexWrap:'wrap' }}>
                     {Object.entries(CITY_COLOR).map(([k,c]) => (
                       <span key={k} style={{ display:'flex', alignItems:'center', gap:5, fontSize:11.5, fontFamily:'var(--font-sans)', color:'var(--wm-ns-500)' }}>
-                        <span style={{ width:9, height:9, borderRadius:'50%', background:c, display:'inline-block' }} />{CITY_LABELS[k]}
+                        <span style={{ width:9, height:9, borderRadius:'50%', background:c, display:'inline-block' }} />
+                        {CITY_LABELS[k]}
                       </span>
                     ))}
                   </div>
                   <div style={{ marginTop:20, borderTop:'1px solid var(--wm-ns-100)', paddingTop:16 }}>
                     <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
                       <span style={{ width:10, height:10, borderRadius:'50%', background:'var(--wm-sb-400)' }} />
-                      <span style={{ fontSize:13, fontWeight:700, fontFamily:'var(--font-sans)', color:'var(--wm-ns-700)' }}>Mar 7 abr Â· Madrid</span>
+                      <span style={{ fontSize:13, fontWeight:700, fontFamily:'var(--font-sans)', color:'var(--wm-ns-700)' }}>Mar 7 abr - Madrid</span>
                     </div>
-                    {['Llegada vuelo SCL â†’ MAD','Check-in Â· Gran VÃ­a'].map(it => (
-                      <div key={it} style={{ padding:'6px 0', borderBottom:'1px solid var(--wm-ns-050)', fontFamily:'var(--font-sans)', fontSize:13, color:'var(--wm-ns-500)' }}>â€¢ {it}</div>
+                    {['Llegada vuelo SCL - MAD','Check-in Gran Via'].map(it => (
+                      <div key={it} style={{ padding:'6px 0', borderBottom:'1px solid var(--wm-ns-050)', fontFamily:'var(--font-sans)', fontSize:13, color:'var(--wm-ns-500)' }}>- {it}</div>
                     ))}
                   </div>
                 </div>
@@ -3053,7 +3043,6 @@
               </div>
             )}
 
-            {/* Tab: Compras */}
             {tab === 'compras' && (
               <div>
                 <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14, marginBottom:24 }}>
@@ -3073,7 +3062,7 @@
                   <div className="gm-card" style={{ padding:'16px 20px' }}>
                     <div style={{ fontSize:10.5, fontWeight:700, textTransform:'uppercase', letterSpacing:'.05em', color:'var(--wm-ns-300)', fontFamily:'var(--font-sans)', marginBottom:6 }}>Ciudades</div>
                     <div style={{ fontSize:32, fontWeight:800, color:'var(--wm-ns-700)', fontFamily:'var(--font-sans)' }}>4</div>
-                    <div style={{ fontSize:11.5, color:'var(--wm-ns-300)', fontFamily:'var(--font-sans)' }}>Madrid Â· Barcelona Â· MilÃ¡n Â· ParÃ­s</div>
+                    <div style={{ fontSize:11.5, color:'var(--wm-ns-300)', fontFamily:'var(--font-sans)' }}>Madrid - Barcelona - Milan - Paris</div>
                   </div>
                 </div>
                 <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
@@ -3081,10 +3070,11 @@
                     <div key={grupo.ciudad}>
                       <div style={{ display:'flex', alignItems:'center', marginBottom:8 }}>
                         <span style={{ display:'flex', alignItems:'center', gap:7, fontSize:14, fontWeight:700, color:'var(--wm-ns-700)', fontFamily:'var(--font-sans)' }}>
-                          <span style={{ width:10, height:10, borderRadius:'50%', background:grupo.color, display:'inline-block' }} />{grupo.ciudad}
+                          <span style={{ width:10, height:10, borderRadius:'50%', background:grupo.color, display:'inline-block' }} />
+                          {grupo.ciudad}
                         </span>
                         <span style={{ marginLeft:'auto', fontSize:13, fontWeight:600, color:'var(--wm-ns-500)', fontFamily:'var(--font-sans)' }}>
-                          ${grupo.total.toLocaleString('es-CL')} Â· {grupo.boletas} boletas
+                          {fmtClp(grupo.total)} - {grupo.boletas} boletas
                         </span>
                       </div>
                       <div className="gm-card" style={{ padding:0, overflow:'hidden' }}>
@@ -3093,9 +3083,9 @@
                             <span style={{ fontSize:18, color:'var(--wm-sb-300)', flexShrink:0 }}>ðŸ“„</span>
                             <div style={{ flex:1 }}>
                               <div style={{ fontSize:13.5, fontWeight:600, color:'var(--wm-ns-700)', fontFamily:'var(--font-sans)' }}>{item.name}</div>
-                              <div style={{ fontSize:11.5, color:'var(--wm-ns-300)', fontFamily:'var(--font-sans)', marginTop:2 }}>{item.fecha} Â· {item.tipo}</div>
+                              <div style={{ fontSize:11.5, color:'var(--wm-ns-300)', fontFamily:'var(--font-sans)', marginTop:2 }}>{item.fecha} - {item.tipo}</div>
                             </div>
-                            <div style={{ fontWeight:700, fontSize:14, color:'var(--wm-ns-700)', fontFamily:'var(--font-sans)', flexShrink:0 }}>${item.monto.toLocaleString('es-CL')}</div>
+                            <div style={{ fontWeight:700, fontSize:14, color:'var(--wm-ns-700)', fontFamily:'var(--font-sans)', flexShrink:0 }}>{fmtClp(item.monto)}</div>
                           </div>
                         ))}
                       </div>
@@ -3105,12 +3095,11 @@
               </div>
             )}
 
-            {/* Nav inferior */}
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:32, paddingTop:16, borderTop:'1px solid var(--wm-ns-100)' }}>
-              <button onClick={() => navigate('tendencias')} className="gm-btn gm-btn--ghost gm-btn--sm">â€¹ Tendencias</button>
+              <button onClick={() => navigate('tendencias')} className="gm-btn gm-btn--ghost gm-btn--sm">&lsaquo; Tendencias</button>
               <div style={{ display:'flex', gap:10 }}>
                 <button className="gm-btn gm-btn--primary gm-btn--sm">âœ“ Marcar como completado</button>
-                <button onClick={() => navigate('coleccion')} className="gm-btn gm-btn--secondary gm-btn--sm">ColecciÃ³n â€º</button>
+                <button onClick={() => navigate('coleccion')} className="gm-btn gm-btn--secondary gm-btn--sm">Coleccion &rsaquo;</button>
               </div>
             </div>
 
