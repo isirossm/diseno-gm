@@ -4978,44 +4978,44 @@
             <NavSidebar />
             <main className="app-main" style={screen === 'comms' ? { overflow: 'hidden' } : null}>
               {isFlowScreen && (
-                <div className="gm-card" style={{ padding: '20px 24px', margin: '16px 24px 0 24px', flexShrink: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: 18 }}>
-                    <h2 className="gm-card__title" style={{ margin: 0, fontSize: '15px' }}>Flujo de la temporada</h2>
-                    <span style={{ marginLeft: 10, fontSize: 12.5, color: 'var(--wm-ns-300)', fontFamily: 'var(--font-sans)' }}>{FLOW_STEPS.length} pasos</span>
-                    <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, fontSize: 11.5, color: 'var(--wm-ns-400)', fontFamily: 'var(--font-sans)' }}>
-                      {[['Completado', STEPC_COLOR.completado], ['En curso', STEPC_COLOR.curso], ['Pendiente', STEPC_COLOR.pendiente], ['Bloqueado', STEPC_COLOR.bloqueado]].map(([l, c]) => (
-                        <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                          <span style={{ width: 8, height: 8, borderRadius: '50%', background: c, display: 'inline-block' }} />{l}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 0, overflowX: 'auto', paddingBottom: 6 }}>
-                    {FLOW_STEPS.map((s, i) => {
-                      const c = STEPC_COLOR[s.status];
-                      const done = s.status === 'completado';
-                      const isActive = s.screen === screen;
-                      return (
-                        <div key={s.id} style={{ flex: '1 1 0', minWidth: 88, position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          {i < FLOW_STEPS.length - 1 && <div style={{ position: 'absolute', top: 17, left: '50%', width: '100%', height: 3, background: done ? STEPC_COLOR.completado : 'var(--wm-ns-100)', zIndex: 0 }} />}
-                          <button onClick={() => navigate(s.screen)} title={s.label} style={{
-                            width: 36, height: 36, borderRadius: '50%', border: `2.5px solid ${isActive ? 'var(--wm-sb-400)' : c}`, zIndex: 1,
-                            background: done ? c : '#fff', color: done ? '#fff' : (isActive ? 'var(--wm-sb-400)' : c),
-                            display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 13, cursor: 'pointer',
-                            boxShadow: (s.status === 'curso' || isActive) ? '0 0 0 4px rgba(0,113,220,.18)' : 'none',
-                            transition: 'all 0.15s'
-                          }}>
-                            {done ? '✓' : s.no}
-                          </button>
-                          <div style={{ marginTop: 8, fontSize: 11.5, fontWeight: isActive ? 700 : 600, textAlign: 'center', color: isActive ? 'var(--wm-sb-500)' : (s.status === 'pendiente' ? 'var(--wm-ns-300)' : 'var(--wm-ns-600)'), lineHeight: 1.2, fontFamily: 'var(--font-sans)' }}>{s.label}</div>
-                          {s.status === 'curso' && <span className="gm-chip gm-chip--active" style={{ marginTop: 4, fontSize: 9 }}>En curso</span>}
-                          {s.status === 'bloqueado' && <span className="gm-chip gm-chip--error" style={{ marginTop: 4, fontSize: 9, borderColor: 'var(--wm-error-500)', color: 'var(--wm-error-500)' }}>Bloqueado</span>}
-                        </div>
-                      );
-                    })}
-                  </div>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 0,
+                  padding: '0 24px', height: 38,
+                  background: 'var(--wm-ns-050)',
+                  borderBottom: '1px solid var(--wm-ns-100)',
+                  overflowX: 'auto', flexShrink: 0,
+                  fontFamily: 'var(--font-sans)',
+                }}>
+                  {FLOW_STEPS.map((s, i) => {
+                    const isActive = s.screen === screen;
+                    return (
+                      <React.Fragment key={s.id}>
+                        {i > 0 && (
+                          <span style={{ color: 'var(--wm-ns-200)', fontSize: 13, padding: '0 6px', userSelect: 'none' }}>/</span>
+                        )}
+                        <button
+                          onClick={() => navigate(s.screen)}
+                          style={{
+                            background: 'none', border: 'none', cursor: 'pointer',
+                            fontSize: 13,
+                            fontWeight: isActive ? 700 : 500,
+                            color: isActive ? 'var(--wm-sb-500)' : 'var(--wm-ns-400)',
+                            padding: '0 4px', whiteSpace: 'nowrap',
+                            textDecoration: isActive ? 'underline' : 'none',
+                            textUnderlineOffset: 3,
+                            transition: 'color 0.12s',
+                          }}
+                          onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--wm-ns-600)'; }}
+                          onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--wm-ns-400)'; }}
+                        >
+                          {s.label}
+                        </button>
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
               )}
+
               {otherChildren}
             </main>
           </div>
