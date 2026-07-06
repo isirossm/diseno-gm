@@ -225,24 +225,15 @@
 
     const isScreenAllowed = (user, scr) => {
       if (!user) return false;
-      if (user.access === 'full') return true;
+      if (user.access === 'full') return true; // Renata has access to everything
 
-      if (user.access === 'moda') { // Valentina
-        return [
-          'panel', 'inicio', 'moda', 'moda-mujer', 'calendario', 'comms',
-          'tendencias', 'viaje', 'coleccion', 'muestras', 'fichas'
-        ].includes(scr);
-      }
-      if (user.access === 'compras') { // Compradores
-        return [
-          'panel', 'inicio', 'comms', 'documentos', 'historial', 'colecciones',
-          'negociacion', 'fichas_revisadas', 'validacion'
-        ].includes(scr);
+      if (user.access === 'moda' || user.access === 'compras') { // Valentina and Compradores
+        // Can access everything EXCEPT general panel (Inicio) and general moda overview (Moda)
+        return !['panel', 'moda'].includes(scr);
       }
       if (user.access === 'practicante') { // Practicante
-        return [
-          'panel', 'inicio', 'documentos'
-        ].includes(scr);
+        // Practicante only has access to fichas, comms, calendario, documentos
+        return ['fichas', 'comms', 'calendario', 'documentos'].includes(scr);
       }
       return false;
     };
@@ -4625,7 +4616,15 @@
 
       return (
         <header className="gm-mast">
-          <div className="gm-mast__logo" onClick={() => navigate('panel')} style={{ cursor: 'pointer' }}>
+          <div className="gm-mast__logo" onClick={() => {
+            if (user && (user.access === 'moda' || user.access === 'compras')) {
+              navigate('moda-mujer');
+            } else if (user && user.access === 'practicante') {
+              navigate('fichas');
+            } else {
+              navigate('panel');
+            }
+          }} style={{ cursor: 'pointer' }}>
             <img src="Img/Logo walmart chile.png" alt="Walmart Chile" style={{ height: '40px', display: 'block' }} />
           </div>
           <nav className="gm-mast__nav" style={{ flex: 1 }}>
