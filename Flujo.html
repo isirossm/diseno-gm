@@ -5537,6 +5537,10 @@
           setScreen('fichas');
           return;
         }
+        if (user && user.access === 'moda' && s === 'panel') {
+          setScreen('moda-mujer');
+          return;
+        }
         if (s !== 'login' && s !== 'splash' && user && !isScreenAllowed(user, s)) {
           showToast('Acceso restringido para tu perfil');
           return;
