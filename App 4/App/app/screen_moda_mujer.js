@@ -69,9 +69,9 @@
     },
       // Imagen de colección
       e("div", { className: "gm-coll__img", style: (col.name === "Primavera–Verano 26" || col.name === "Verano 26")
-        ? { backgroundImage: "url('../../Img/Banner/B_I.png')", backgroundSize: "cover", backgroundPosition: "center center", position: "relative" }
+        ? { backgroundImage: "url('Img/Banner/B_I.png')", backgroundSize: "cover", backgroundPosition: "center center", position: "relative" }
         : col.name === "Invierno 26"
-          ? { backgroundImage: "url('../../Img/Banner/B_V.png')", backgroundSize: "cover", backgroundPosition: "center center", position: "relative" }
+          ? { backgroundImage: "url('Img/Banner/B_V.png')", backgroundSize: "cover", backgroundPosition: "center center", position: "relative" }
           : { background: theme.bg, color: theme.fg } },
         col.active && e("span", { className: "gm-coll__img-chip gm-coll__img-chip--active" }, e("span", { className: "gm-coll__img-chip-dot" }), "activa"),
         col.disabled && e("span", { className: "gm-coll__img-chip gm-coll__img-chip--inactive",

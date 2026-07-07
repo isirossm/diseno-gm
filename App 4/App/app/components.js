@@ -37,16 +37,7 @@
   }
 
   function ProdImg({ swatch = "#e6e6e6", style, label }) {
-    const isApp4 = window.location.pathname.toLowerCase().indexOf('/app 4/app/') !== -1 || window.location.pathname.toLowerCase().indexOf('/app%204/app/') !== -1;
-    const isFicha = window.location.pathname.toLowerCase().indexOf('/ficha/') !== -1 || window.location.pathname.toLowerCase().indexOf('/uploads/') !== -1;
-    const isProd = window.location.pathname.toLowerCase().indexOf('/producción copy/') !== -1 || window.location.pathname.toLowerCase().indexOf('/producci%c3%b3n%20copy/') !== -1;
-
-    let imgPrefix = "Img/16 prendas/";
-    if (isApp4 || isFicha) {
-      imgPrefix = "../../Img/16 prendas/";
-    } else if (isProd) {
-      imgPrefix = "../Img/16 prendas/";
-    }
+    const imgPrefix = "Img/16 prendas/";
 
     const SWATCH_TO_IMG = {
       "#f4f3ee": "Polera básica algodón pima.png",

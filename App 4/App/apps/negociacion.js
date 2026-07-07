@@ -54,7 +54,7 @@
       // header (Walmart-style design system matching Flujo)
       e("header", { className: "gm-mast", style: { flex: "0 0 auto", height: 76, padding: "0 28px", display: "flex", alignItems: "center", gap: 24, background: "var(--wm-sb-400)", color: "#fff", borderBottom: "1px solid rgba(0, 0, 0, 0.06)" } },
         e("div", { className: "gm-mast__logo" },
-          e("img", { src: "../../Img/Logo walmart chile.png", alt: "Walmart Chile", style: { height: "40px", display: "block" } })
+          e("img", { src: "Img/Logo walmart chile.png", alt: "Walmart Chile", style: { height: "40px", display: "block" } })
         ),
         e("div", { style: { flex: 1, color: "#fff", display: "flex", flexDirection: "column", justifyContent: "center" } },
           e("div", { style: { fontSize: 16, fontWeight: 700, lineHeight: 1.1 } }, "Negociación en origen"),

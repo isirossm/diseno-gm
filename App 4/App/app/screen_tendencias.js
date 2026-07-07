@@ -63,8 +63,7 @@
   // Mini card with image slot (user adds image later), % value tag + justification
   function MiniCard({ name, pct, reason, icon, accent, chip, img }) {
     const ac = accent || "var(--wm-sb-400)";
-    const isApp4 = window.location.pathname.toLowerCase().indexOf('/app 4/app/') !== -1 || window.location.pathname.toLowerCase().indexOf('/app%204/app/') !== -1;
-    const imgPath = (isApp4 ? "../../Img/" : "Img/") + (img || (name + ".png"));
+    const imgPath = "Img/" + (img || (name + ".png"));
 
     return e("div", { style: { border: "1px solid var(--wm-ns-100)", borderRadius: 9, overflow: "hidden", display: "flex", flexDirection: "column", background: "#fff" } },
       // image placeholder — user drops a real image here later
@@ -221,8 +220,7 @@
       mb3: MOODBOARD_IMAGES.mb3.slice(0, 5)
     });
 
-    const isApp4 = window.location.pathname.toLowerCase().indexOf('/app 4/app/') !== -1 || window.location.pathname.toLowerCase().indexOf('/app%204/app/') !== -1;
-    const pathPrefix = isApp4 ? "../../Img/Moodboard/" : "Img/Moodboard/";
+    const pathPrefix = "Img/Moodboard/";
 
     const handleRegenerate = () => {
       const allForCat = MOODBOARD_IMAGES[b.id] || [];

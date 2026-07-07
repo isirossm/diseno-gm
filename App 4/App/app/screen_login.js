@@ -18,8 +18,7 @@
 
     const selected = PROFILES[profileId] || PROFILES.default;
 
-    const isApp4 = window.location.pathname.toLowerCase().indexOf('/app 4/app/') !== -1 || window.location.pathname.toLowerCase().indexOf('/app%204/app/') !== -1;
-    const logoPath = isApp4 ? "../../Img/Logo walmart chile.png" : "Img/Logo walmart chile.png";
+    const logoPath = "Img/Logo walmart chile.png";
 
     return e("div", { className: "gm-login", style: { height: "100vh" } },
 
