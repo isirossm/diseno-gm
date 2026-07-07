@@ -57,7 +57,7 @@
       },
         e('iframe', {
           ref: iframeRef,
-          src: window.location.pathname.endsWith('Flujo.html') ? 'Producción copy/manual.html' : '../Producción copy/manual.html',
+          src: window.GM_CONTEXT === 'flujo' ? 'Producción copy/manual.html' : '../Producción copy/manual.html',
           title: 'Manual de Implementación',
           scrolling: 'no',
           style: { display: 'block', width: '100%', height: iframeH + 'px', border: 'none' },

@@ -140,7 +140,7 @@
   function FichaEditor({ skuId, onBack, setSku }) {
     const s = GM.skus.find((x) => x.id === skuId);
     const [complete, setComplete] = React.useState(s.ficha === "completa");
-    const isRoot = window.location.pathname.endsWith('Flujo.html');
+    const isRoot = window.GM_CONTEXT === 'flujo';
     const src = (isRoot ? 'App 4/App/ficha/Ficha Técnica.html' : 'ficha/Ficha Técnica.html') + "?embed=1&type=" + fichaType(s);
     return e("div", { className: "gm-fade", style: { display: "grid", gridTemplateColumns: "240px 1fr", gap: 16, alignItems: "start" } },
       e(EditorSidebar, { skuId, setSku, onBack }),
